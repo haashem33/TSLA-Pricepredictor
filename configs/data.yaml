@@ -1,0 +1,26 @@
+# Data configuration (Phase 1)
+source: local_alpaca            # local_alpaca | alphavantage
+local_source_dir: C:/Users/haash/Desktop/Data/raw   # Alpaca SIP 1-minute bars, split-adjusted, UTC bar-start stamps
+symbols: [TSLA, SPY, QQQ]
+target: TSLA
+start_month: "2016-01"
+# Final holdout (CLAUDE.md 10.5): most recent 9 months. Source data is sealed after 2026-10-09,
+# so the holdout is 2026-01-01 .. 2026-10-09. Nothing on/after holdout_start is copied or loaded.
+holdout_start: "2026-01-01"
+sealed_end: "2026-10-09"
+bar_minutes: 5
+bars_per_day: 78
+max_missing_frac: 0.05          # drop sessions with more missing 5-min bars than this
+bad_tick_mult: 15               # |r| > mult * trailing median |r|  -> flagged, not deleted
+bad_tick_window_bars: 390       # trailing window for intraday bars (5 sessions)
+bad_tick_window_sessions: 20    # trailing window for bar_index 0 (overnight gap)
+dividends_dir: data/raw/dividends
+earnings_file: data/raw/earnings/TSLA_earnings_dates.csv
+alphavantage:
+  api_key_env: ALPHAVANTAGE_API_KEY
+  min_seconds_between_calls: 12
+volatility:
+  seasonal_window_sessions: 60
+  lambda_grid: [0.90, 0.93, 0.95, 0.97, 0.98, 0.99, 0.995]
+  lambda_default: 0.97
+  burn_in_sessions: 5

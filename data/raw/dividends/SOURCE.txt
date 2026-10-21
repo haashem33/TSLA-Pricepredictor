@@ -1,0 +1,1 @@
+# Source: Alpha Vantage DIVIDENDS / SPLITS endpoints, fetched 2026-10-21 via MCP. Rows from 2016-01 onward.

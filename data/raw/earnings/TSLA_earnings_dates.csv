@@ -1,0 +1,47 @@
+# TSLA quarterly earnings report dates. Source: Alpha Vantage EARNINGS endpoint (fetched 2026-10-11).
+# All are post-market (after 16:00 New York), so the price reaction happens the NEXT trading day.
+# Add the next report date (normally announced ~2-3 weeks ahead) before running final_test.py.
+reported_date,fiscal_quarter_end,report_time
+2016-02-10,2015-12-31,post-market
+2016-05-04,2016-03-31,post-market
+2016-08-03,2016-06-30,post-market
+2016-10-26,2016-09-30,post-market
+2017-02-22,2016-12-31,post-market
+2017-05-03,2017-03-31,post-market
+2017-08-02,2017-06-30,post-market
+2017-11-01,2017-09-30,post-market
+2018-02-07,2017-12-31,post-market
+2018-05-02,2018-03-31,post-market
+2018-08-01,2018-06-30,post-market
+2018-10-24,2018-09-30,post-market
+2019-01-30,2018-12-31,post-market
+2019-04-24,2019-03-31,post-market
+2019-07-24,2019-06-30,post-market
+2019-10-23,2019-09-30,post-market
+2020-01-29,2019-12-31,post-market
+2020-04-29,2020-03-31,post-market
+2020-07-22,2020-06-30,post-market
+2020-10-21,2020-09-30,post-market
+2021-01-27,2020-12-31,post-market
+2021-04-26,2021-03-31,post-market
+2021-07-26,2021-06-30,post-market
+2021-10-20,2021-09-30,post-market
+2022-01-26,2021-12-31,post-market
+2022-04-20,2022-03-31,post-market
+2022-07-20,2022-06-30,post-market
+2022-10-19,2022-09-30,post-market
+2023-01-25,2022-12-31,post-market
+2023-04-19,2023-03-31,post-market
+2023-07-19,2023-06-30,post-market
+2023-10-18,2023-09-30,post-market
+2024-01-24,2023-12-31,post-market
+2024-04-23,2024-03-31,post-market
+2024-07-23,2024-06-30,post-market
+2024-10-23,2024-09-30,post-market
+2025-01-29,2024-12-31,post-market
+2025-04-22,2025-03-31,post-market
+2025-07-23,2025-06-30,post-market
+2025-10-22,2025-09-30,post-market
+2026-01-28,2025-12-31,post-market
+2026-04-22,2026-03-31,post-market
+2026-07-22,2026-06-30,post-market

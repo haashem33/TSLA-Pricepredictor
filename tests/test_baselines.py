@@ -24,3 +24,24 @@ def test_lgb_reproducible(bars):
     p1 = fit_predict_lgb(X.iloc[:n], y[:n], X.iloc[n:])[0]
     p2 = fit_predict_lgb(X.iloc[:n], y[:n], X.iloc[n:])[0]
     np.testing.assert_array_equal(p1, p2)
+
+
+def test_ic_metric_bias_placebo():
+    """On a random walk (no predictability) the per-day IC of a momentum signal is strongly negative;
+    the per-slot and per-fold IC are not. Guards the choice of the primary IC metric."""
+    import sys
+    from pathlib import Path
+
+    sys.path.insert(0, str(Path(__file__).parent))
+    from conftest import make_bars
+
+    from tslaq.backtest.metrics import fold_ic, ic_summary, per_slot_ic
+    from tslaq.labels.forward_returns import add_labels
+
+    d = add_labels(add_sigma(add_returns(make_bars("2016-01-01", "2018-12-31", seed=7)), 0.97, 60, 5))
+    p = simple_return_features(d)["zcum_78"].to_numpy()
+    y = d["fwd_12"].to_numpy()
+    assert ic_summary(p, y, d["session_date"].to_numpy())["rank_ic"] < -0.2
+    assert abs(per_slot_ic(p, y, d["bar_index"].to_numpy())) < 0.05
+    month = d["session_date"].dt.to_period("M").astype(str).to_numpy()
+    assert abs(fold_ic(p, y, month).mean()) < 0.05

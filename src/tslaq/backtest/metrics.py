@@ -25,6 +25,26 @@ def ic_summary(pred, realized, day) -> dict:
             "pooled_ic": pooled, "n_days": len(ic)}
 
 
+def per_slot_ic(pred, realized, slot, min_obs: int = 20) -> float:
+    """Mean over time-of-day slots of the Spearman IC computed ACROSS days within each slot.
+
+    For a single stock the per-day IC ranks bars over time within a day; with overlapping forward
+    windows that is mechanically biased (a random walk gives strongly negative IC for any predictor
+    correlated with the day's past path). Ranking across days at a fixed slot avoids this.
+    """
+    df = pd.DataFrame({"p": pred, "y": realized, "k": slot}).dropna()
+    ics = [spearmanr(g["p"], g["y"]).statistic for _, g in df.groupby("k")
+           if len(g) >= min_obs and g["p"].nunique() > 1]
+    return float(np.mean(ics)) if ics else np.nan
+
+
+def fold_ic(pred, realized, fold) -> pd.Series:
+    """Pooled Spearman IC within each fold (one validation month)."""
+    df = pd.DataFrame({"p": pred, "y": realized, "f": fold}).dropna()
+    return pd.Series({f: spearmanr(g["p"], g["y"]).statistic for f, g in df.groupby("f")
+                      if g["p"].nunique() > 1}, dtype=float)
+
+
 def hit_rate(pred: np.ndarray, realized: np.ndarray) -> float:
     """Share of non-zero predictions whose sign matches a non-zero realized return."""
     m = np.isfinite(pred) & np.isfinite(realized) & (pred != 0) & (realized != 0)

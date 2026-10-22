@@ -1,7 +1,8 @@
 {
+  "data_version": "v2",
   "lambda": 0.97,
-  "prediction_digest": "6002f6318960",
-  "n_folds": 2,
+  "prediction_digest": "8de32dc7a7df",
+  "n_folds": 96,
   "lgb_params": {
     "objective": "regression",
     "learning_rate": 0.03,
@@ -18,5 +19,5 @@
     "num_threads": 4,
     "verbose": -1
   },
-  "seconds": 11
+  "seconds": 484
 }

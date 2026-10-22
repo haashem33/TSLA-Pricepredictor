@@ -127,7 +127,8 @@ def main(max_folds: int | None, log: bool) -> None:
                              for (h, m, y), g in V.groupby(["h", "model", "year"])])
     digest = hashlib.sha1(np.ascontiguousarray(R["pred_z"].to_numpy()).tobytes()
                           + np.ascontiguousarray(np.nan_to_num(V["f"].to_numpy())).tobytes()).hexdigest()[:12]
-    suffix = f"_check{max_folds}" if max_folds else ""
+    version = dcfg.get("data_version", "v1")
+    suffix = f"_{version}" + (f"_check{max_folds}" if max_folds else "")
     OUT.mkdir(parents=True, exist_ok=True)
     pred_dir = ROOT / "data" / "processed"
     pred_dir.mkdir(parents=True, exist_ok=True)
@@ -139,8 +140,8 @@ def main(max_folds: int | None, log: bool) -> None:
     vol_sum.to_csv(OUT / f"phase1_vol_summary{suffix}.csv", index=False)
     vol_year.to_csv(OUT / f"phase1_vol_by_year{suffix}.csv", index=False)
     info.to_csv(OUT / f"phase1_fold_info{suffix}.csv", index=False)
-    lam_tab.to_csv(OUT / "phase1_lambda_tuning.csv", index=False)
-    meta = {"lambda": lam, "prediction_digest": digest, "n_folds": int(info["fold"].nunique()),
+    lam_tab.to_csv(OUT / f"phase1_lambda_tuning{suffix}.csv", index=False)
+    meta = {"data_version": version, "lambda": lam, "prediction_digest": digest, "n_folds": int(info["fold"].nunique()),
             "lgb_params": LGB_PARAMS, "seconds": round(time.time() - t0)}
     (OUT / f"phase1_meta{suffix}.json").write_text(json.dumps(meta, indent=2))
     print(ret_sum.to_string())
@@ -148,22 +149,25 @@ def main(max_folds: int | None, log: bool) -> None:
     print(meta)
     if log:
         chash = config_hash(dcfg, bcfg, LGB_PARAMS)
-        scheme = f"expanding monthly WF {wf['first_val_month']}..{wf['last_val_month']}, purge+embargo {wf['embargo_bars']}"
+        scheme = (f"expanding monthly WF {wf['first_val_month']}..{wf['last_val_month']}, "
+                  f"purge+embargo {wf['embargo_bars']}")
+        # on a new data version the same models are re-runs of the v1 trials, not new trials
+        rerun = {"rerun_of": "phase1 v1 baselines (same model/config)"} if version != "v1" else {}
         for m in ["zero", "hist_mean", "lgb_returns"]:
             row = {"config_hash": chash, "phase": 1, "model": m, "fold_scheme": scheme,
                    "n_params": lgb_n_params() if m == "lgb_returns" else (1 if m == "hist_mean" else 0),
-                   "notes": f"digest={digest}; lambda={lam}"}
+                   "data_version": version, **rerun, "notes": f"digest={digest}; lambda={lam}"}
             for h in HORIZONS:
                 s = ret_sum[(ret_sum["h"] == h) & (ret_sum["model"] == m)].iloc[0]
-                row.update({f"rank_ic_h{h}": s["z_fold_ic"], f"icir_h{h}": s["z_fold_icir"], f"hit_rate_h{h}": s["hit_rate"],
-                            f"crps_h{h}": s["crps_z"], f"brier_h{h}": s["brier"]})
+                row.update({f"rank_ic_h{h}": s["z_fold_ic"], f"icir_h{h}": s["z_fold_icir"],
+                            f"hit_rate_h{h}": s["hit_rate"], f"crps_h{h}": s["crps_z"], f"brier_h{h}": s["brier"]})
             log_run(row)
         for m in ["vol_seasonal", "vol_ewma", "vol_garch_t"]:
             q = "; ".join(f"h{h} qlike={vol_sum[(vol_sum.h == h) & (vol_sum.model == m)]['qlike'].iloc[0]:.4f}"
                           for h in HORIZONS)
             log_run({"config_hash": chash, "phase": 1, "model": m, "fold_scheme": scheme,
                      "n_params": {"vol_seasonal": 1, "vol_ewma": 1, "vol_garch_t": 4}[m],
-                     "notes": f"{q}; digest={digest}"})
+                     "data_version": version, **rerun, "notes": f"{q}; digest={digest}"})
 
 
 if __name__ == "__main__":

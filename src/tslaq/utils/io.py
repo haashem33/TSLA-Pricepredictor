@@ -20,5 +20,10 @@ def config_hash(*cfgs: dict) -> str:
     return hashlib.sha1(blob).hexdigest()[:10]
 
 
-def interim_path(symbol: str) -> Path:
-    return ROOT / "data" / "interim" / f"{symbol}_5min.parquet"
+def data_version() -> str:
+    return load_config("data").get("data_version", "v1")
+
+
+def interim_path(symbol: str, version: str | None = None) -> Path:
+    """data/interim/<version>/<symbol>_5min.parquet (version defaults to configs/data.yaml)."""
+    return ROOT / "data" / "interim" / (version or data_version()) / f"{symbol}_5min.parquet"

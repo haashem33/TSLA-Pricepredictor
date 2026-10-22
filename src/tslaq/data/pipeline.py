@@ -11,8 +11,8 @@ from tslaq.utils.io import interim_path, load_config
 HORIZONS = (1, 3, 12)
 
 
-def load_bars(symbol: str) -> pd.DataFrame:
-    df = pd.read_parquet(interim_path(symbol))
+def load_bars(symbol: str, version: str | None = None) -> pd.DataFrame:
+    df = pd.read_parquet(interim_path(symbol, version))
     return df.sort_values("timestamp").reset_index(drop=True)
 
 
@@ -24,9 +24,9 @@ def choose_lambda(df: pd.DataFrame, train_end_month: str, cfg: dict) -> tuple[fl
     return float(tab.loc[tab["qlike"].idxmin(), "lambda"]), tab
 
 
-def build_base(symbol: str, lam: float, cfg: dict | None = None) -> pd.DataFrame:
+def build_base(symbol: str, lam: float, cfg: dict | None = None, version: str | None = None) -> pd.DataFrame:
     cfg = cfg or load_config("data")
     v = cfg["volatility"]
-    df = add_returns(load_bars(symbol))
+    df = add_returns(load_bars(symbol, version))
     df = add_sigma(df, lam, v["seasonal_window_sessions"], v["burn_in_sessions"], HORIZONS)
     return add_labels(df, HORIZONS)

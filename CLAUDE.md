@@ -33,7 +33,7 @@ Rules for Claude Code (follow these at all times):
 | Target stock | TSLA only |
 | Main bars | 5-minute bars, regular session only (09:30–16:00 US/Eastern), 78 bars per day |
 | Context streams | SPY and QQQ 5-minute bars (market), TSLA/SPY/QQQ daily bars (slow context) |
-| Price adjustment | Split- and dividend-adjusted (TSLA split 5:1 in Aug 2020 and 3:1 in Aug 2022 — verify adjustment is correct around both) |
+| Price adjustment | Split- and dividend-adjusted (TSLA split 5:1 in Aug 2020 and 3:1 in Aug 2022 — verify adjustment is correct around both). **Data v2 (D9):** TSLA 2016-01..2022-08 is built from unadjusted (Alpaca `Adjustment.RAW`) 1-min bars divided by the cumulative split factor in floating point (no rounding), volumes × factor; the vendor's split-adjusted prices are rounded to $0.01 and are not used for TSLA before 2022-09. SPY/QQQ: dividend back-adjusted |
 | Forecast horizons | h = 1, 3, 12 bars (5, 15, 60 minutes) as training targets; **primary trading horizon h = 12** (backtests and gates are judged on h = 12) |
 | Volatility scale | EWMA × seasonal σ̂ / S_{t,h} (section 5.2, 9.1) is the scale for tokens and labels. GARCH-t is a feature and a benchmark, not the scale |
 | Horizon rule | Labels never cross the session close; drop samples within h bars of the close for horizon h |
@@ -42,7 +42,7 @@ Rules for Claude Code (follow these at all times):
 | Context length | 256 bars (~3.3 trading days), option to test 512 |
 | Model | 2–4 layer causal Transformer, d_model = 128, ~0.74–1.5M parameters (tiny fallback: d_model = 64, ~0.2M) |
 | Validation | Expanding-window walk-forward with purging and embargo; inner validation = last 2 months of each training window; final untouched holdout (2026-01-01..2026-10-09) plus a sealed forward test (after 2026-10-09) |
-| Success metrics | Out-of-sample IC (section 10.6 definition: z-space, pooled per monthly fold), ICIR, t-stat, binomial p of IC>0 folds, hit rate, CRPS, net Sharpe after costs, break-even cost, deflated Sharpe ratio — each for the full period, 2023–2025, and the most recent 24 folds |
+| Success metrics | Out-of-sample IC (section 10.6 definition: z-space, pooled per monthly fold), ICIR, t-stat, binomial p of IC>0 folds, hit rate, CRPS, net Sharpe after costs, break-even cost, deflated Sharpe ratio — each for the full period, 2023–2025, and the most recent 24 folds (information only; gates use the D10 recency check) |
 | Hardware | GTX 1070 (8 GB): train in **FP32** (no bf16/fp16) |
 | Later experiments (not now) | Dollar bars; training on many stocks. (Self-supervised pre-training and a fine-tuned Kronos-mini comparison are part of Phase 4, sections 9.4 and 10.3.) |
 
@@ -357,7 +357,7 @@ e_t = Σ_fields E_f[tok_f,t] + W_c · clip(x_cont_t, −5, 5) + positional encod
 - Bin occupancy: every RET bin has ≥ 50 training samples; merge sparse tail bins otherwise.
 - Round-trip: correlation between de-tokenized and true returns, and RMSE in σ units — report both.
 - Leakage test (section 11).
-- **Gate 3 — token-only baseline:** LightGBM on the last 24 bars of tokens (one-hot or ordinal) predicting the h = 3 and h = 12 return sign and z. If the out-of-sample IC (section 10.6) is not above zero with a stable sign across years **and** on the most recent 24 folds, stop and report to the user before building the network.
+- **Gate 3 — token-only baseline:** LightGBM on the last 24 bars of tokens (one-hot or ordinal) predicting the h = 3 and h = 12 return sign and z. If the out-of-sample IC (section 10.6) is not above zero with a stable sign across years **and** does not pass the recency check (section 10.6, D10: full period t ≥ 2; 2023–2025 mean IC > 0 with t ≥ 1), stop and report to the user before building the network.
 
 Write `reports/phase3_tokenizer.md`.
 
@@ -434,7 +434,7 @@ AdamW, lr 3e-4, warm-up 2% of steps then cosine decay, batch 256 windows, gradie
 
 - **Retraining cadence:** neural models retrain **quarterly** (each model predicts the next 3 test months), warm-started from the previous fold's weights; tree models stay monthly. Report how many epochs each warm start ran.
 - **Timing:** time the first training run and report projected total Phase 4 hours to the user before starting the full Phase 4 grid.
-- **Volatility head target:** it must beat GARCH-t×seasonal on out-of-sample QLIKE (Phase 1: 1.307 / 0.521 / 0.248 at h = 1 / 3 / 12, full period; recompute on the same folds).
+- **Volatility head target:** it must beat GARCH-t×seasonal on out-of-sample QLIKE (Phase 1, data v2: 1.435 / 0.522 / 0.248 at h = 1 / 3 / 12, full period; recompute on the same folds and data version).
 
 ### 9.4 Optional self-supervised pre-training (Phase 4 ablation)
 
@@ -465,7 +465,7 @@ Split the development period into N = 10 blocks, test on every combination of k 
 ### 10.3 Baselines (must be reported next to every model result)
 
 1. Zero-return forecast (and historical-mean forecast)
-2. EWMA/seasonal σ̂ and GARCH-t for volatility (Phase 1 QLIKE to beat: GARCH-t 1.307 / 0.521 / 0.248 at h = 1 / 3 / 12)
+2. EWMA/seasonal σ̂ and GARCH-t for volatility (Phase 1 QLIKE to beat, data v2: GARCH-t 1.435 / 0.522 / 0.248 at h = 1 / 3 / 12)
 3. Logistic regression, LightGBM and CatBoost on the selected continuous features (tree ensembles were the strongest benchmarks in the 2025 study above)
 4. LightGBM on tokens (Gate 3 model)
 5. Phase 4 reference models (optional but recommended): Kronos-mini (4.1M parameters, 2,048-bar context; github.com/shiyu-coder/Kronos) zero-shot and fine-tuned on TSLA training folds with the repo's fine-tuning scripts; optionally Chronos-2. Run them on exactly the same folds and metrics. Expect weak zero-shot results; the fine-tuned version is the fair comparison.
@@ -498,7 +498,8 @@ Metrics definitions:
 - **IC (primary)** = Spearman correlation between predicted z and realized z (z = forward return / S_{t,h}), **pooled within each monthly test fold**. Report the mean over folds; **ICIR = mean / std across folds**; **t = ICIR · sqrt(n_folds)**; and a **one-sided binomial p-value** for the share of folds with IC > 0 (H0: p = 0.5).
 - **Cross-check:** per-time-slot IC = Spearman across days at each bar_index, averaged over slots (and shown per half-hour slot).
 - **Do not use** Spearman per day averaged over days: for one stock it ranks bars over time within a day, and overlapping forward windows bias it (on a random walk a 78-bar momentum signal scores ≈ −0.31 at h = 12; see `tests/test_baselines.py::test_ic_metric_bias_placebo`). Do not rank E[r] = ẑ·S either: that rewards ranking by volatility (a constant-mean forecast gets a non-zero IC).
-- **Recency:** every metric is reported for the full period, for 2023–2025, and for the most recent 24 folds. Every gate must also hold on the most recent 24 folds.
+- **Recency:** every metric is reported for the full period, for 2023–2025, and for the most recent 24 folds (the last 24 are for information only).
+- **Recency check (decision D10)** — a gate passes the recency check only if **(a)** the full-period result passes with **t ≥ 2** and **(b)** over **2023–2025 (36 folds)** the mean IC is **> 0 with t ≥ 1**. For Sharpe-based gates, use the same rule on the per-fold net returns (full period t ≥ 2; 2023–2025 mean > 0 with t ≥ 1).
 - **Execution delay:** every IC is also reported with one bar of delay (prediction at t vs realized z from t+1 to t+1+h).
 - **Model comparisons (Phase 4 and later)** are paired by fold: share of folds won, Wilcoxon signed-rank test on fold ICs, and a Diebold–Mariano test on CRPS / QLIKE loss differentials with day-clustered (session-level) standard errors. Raw averages alone are not evidence.
 - Hit rate and P(up) calibration. For reference, the 2025 study found best-model directional accuracy of only about 51–52% on daily returns; treat substantially higher out-of-sample accuracy on 5-minute TSLA data as a red flag to investigate for leakage.
@@ -543,9 +544,9 @@ T = number of return observations, γ3 = skewness, γ4 = raw kurtosis, N = numbe
 | --- | --- | --- |
 | 1. Data and baselines | Sections 4, 5.1–5.2, 10.1, 10.3 (zero/GARCH/LightGBM on simple returns), tests | Leakage and alignment tests pass; data report complete; baselines reproducible |
 | 2. Features | Sections 5.3–5.5, 6 (including 6.9) | Feature report with IC tables and conditional up-probability tables, charts and pair heatmaps; number of cells surviving Benjamini–Hochberg reported; 20–40 features selected, each with a stated reason (stable IC and/or stable extreme lift) |
-| 3. Tokenizer | Section 7 | Tokenizer checks pass; **token-only LightGBM shows out-of-sample IC > 0 (section 10.6) with a stable sign, on the full period and the most recent 24 folds** — otherwise stop and discuss with the user |
-| 4. Model | Sections 8, 9 (including 9.4), 10.3 | Transformer beats LightGBM and CatBoost on IC and CRPS in **paired fold-level tests** (share of folds won, Wilcoxon on fold ICs, Diebold–Mariano on CRPS with day-clustered errors; report per fold), on the full period and the most recent 24 folds; volatility head beats GARCH-t QLIKE; compared with fine-tuned Kronos-mini; ablations: without continuous features, without market stream, with/without self-supervised pre-training, 2 vs 4 layers, expanding vs rolling 3-year vs recency-weighted training window |
-| 5. Backtest and selection | Section 10.2, 10.4, 10.6, 10.7 | At h = 12: net Sharpe positive at 2× costs on the full period **and** the most recent 24 folds; DSR > 0.95; break-even cost reported; then ask the user before evaluating the holdout once (and, later, the forward test once) |
+| 3. Tokenizer | Section 7 | Tokenizer checks pass; **token-only LightGBM shows out-of-sample IC > 0 (section 10.6) with a stable sign and passes the recency check (D10)** — otherwise stop and discuss with the user |
+| 4. Model | Sections 8, 9 (including 9.4), 10.3 | Transformer beats LightGBM and CatBoost on IC and CRPS in **paired fold-level tests** (share of folds won, Wilcoxon on fold ICs, Diebold–Mariano on CRPS with day-clustered errors; report per fold); the Transformer itself passes the recency check (D10); volatility head beats GARCH-t QLIKE; compared with fine-tuned Kronos-mini; ablations: without continuous features, without market stream, with/without self-supervised pre-training, 2 vs 4 layers, expanding vs rolling 3-year vs recency-weighted training window |
+| 5. Backtest and selection | Section 10.2, 10.4, 10.6, 10.7 | At h = 12: net Sharpe positive at 2× costs and passing the recency check (D10: full period t ≥ 2; 2023–2025 mean > 0 with t ≥ 1); DSR > 0.95; break-even cost reported; then ask the user before evaluating the holdout once (and, later, the forward test once) |
 | 6. Paper trading (only if the user asks) | Live inference script on new bars, logging predictions vs outcomes | Live IC over ≥ 3 months within the backtest range before any real capital |
 
 Each phase ends with `reports/phaseN_*.md`: what was built, the gate numbers, failures, and the proposed next step.

@@ -28,8 +28,8 @@ def md(df: pd.DataFrame, floatfmt="{:.4g}") -> str:
 def main() -> None:
     cfg = load_config("data")
     FIG.mkdir(parents=True, exist_ok=True)
-    L = ["# Phase 1 data-quality report", "",
-         "Source: Alpaca SIP 1-minute bars (split-adjusted) from the user's local copy, aggregated to 5-minute "
+    L = ["# Phase 1 data-quality report (data v2)", "",
+         "Source: Alpaca SIP 1-minute bars, aggregated to 5-minute "
          "regular-session bars (timestamps = bar end, America/New_York). SPY/QQQ back-adjusted for cash dividends "
          "(Alpha Vantage DIVIDENDS). Development period only: holdout (>= "
          f"{cfg['holdout_start']}) was not copied or loaded.", ""]
@@ -87,8 +87,9 @@ def main() -> None:
           "Full sessions have 78 bars; NYSE half-days (13:00 close) have 42.", "",
           "## Missing bars", "", md(pd.DataFrame(miss_rows)), "",
           "Missing 5-minute bars are forward-filled (O=H=L=C=previous close, volume 0, `missing=True`). "
-          "Sessions with > 5% missing bars are dropped. 2016-02-22 and 2018-05-02/03 are gaps in the vendor "
-          "file (the same days are missing in QQQ). **2018-08-07 (TSLA) was a real trading halt** (\"funding "
+          "Sessions with > 5% missing bars are dropped. 2016-02-22 is a gap in the vendor files (TSLA and QQQ). "
+          "2018-05-02/03 are missing from the split-adjusted downloads (QQQ, and TSLA in data v1) but present in "
+          "the TSLA RAW download used by data v2. **2018-08-07 (TSLA) was a real trading halt** (\"funding "
           "secured\" tweet, halted ~14:08-15:45 ET); the session was dropped under the 5% rule, so the "
           "next session's bar-0 return covers the gap from that day's close.", "",
           "## Bad ticks (flagged, not deleted)", "",

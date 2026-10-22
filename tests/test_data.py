@@ -70,9 +70,9 @@ def test_holdout_guard():
         load_raw_month("TSLA", cfg["holdout_start"][:7], cfg)
 
 
-@pytest.mark.skipif(not interim_path("TSLA").exists(), reason="interim TSLA bars not built")
+@pytest.mark.skipif(not interim_path("TSLA", "v2").exists(), reason="interim TSLA bars not built")
 def test_split_adjustment():
-    df = pd.read_parquet(interim_path("TSLA"))
+    df = pd.read_parquet(interim_path("TSLA", "v2"))
     r = np.log(df["close"] / df["close"].shift(1))
     for d in ["2020-08-31", "2022-08-25"]:
         on = (df["session_date"] == d).to_numpy()
@@ -84,9 +84,9 @@ def test_split_adjustment():
     assert r.abs().max() < np.log(1.6)   # no 60%+ jump anywhere
 
 
-@pytest.mark.skipif(not interim_path("TSLA").exists(), reason="interim TSLA bars not built")
+@pytest.mark.skipif(not interim_path("TSLA", "v2").exists(), reason="interim TSLA bars not built")
 def test_interim_has_no_holdout_data():
     cfg = load_config("data")
     for s in cfg["symbols"]:
-        df = pd.read_parquet(interim_path(s))
+        df = pd.read_parquet(interim_path(s, "v2"))
         assert df["session_date"].max() < pd.Timestamp(cfg["holdout_start"])

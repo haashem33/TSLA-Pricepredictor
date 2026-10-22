@@ -106,13 +106,56 @@ def flag_bad_ticks(df: pd.DataFrame, mult: float, window_bars: int, window_sessi
     return df
 
 
-def build_symbol(symbol: str, cfg: dict | None = None) -> tuple[pd.DataFrame, dict]:
+def split_factor(session_date: pd.Series, splits: pd.DataFrame) -> np.ndarray:
+    """Cumulative split factor per session: product of the split ratios effective AFTER that session.
+    Adjusted price = raw price / factor; adjusted volume = raw volume * factor."""
+    f = np.ones(len(session_date))
+    sd = session_date.to_numpy()
+    for eff, ratio in zip(pd.to_datetime(splits["effective_date"]), splits["split_factor"]):
+        f[sd < np.datetime64(eff)] *= float(ratio)
+    return f
+
+
+def split_adjust_bars(bars: pd.DataFrame, splits: pd.DataFrame) -> pd.DataFrame:
+    """Float (unrounded) split adjustment of bars built from unadjusted prices."""
+    bars = bars.copy()
+    f = split_factor(bars["session_date"], splits)
+    for c in PRICE + ["vwap"]:
+        bars[c] = bars[c] / f
+    bars["volume"] = bars["volume"] * f
+    return bars
+
+
+def load_raw_v2(symbol: str, months: list[str], cfg: dict) -> pd.DataFrame:
+    """v2 TSLA source: unadjusted RAW 1-min files for months before v2.raw_end_month_exclusive,
+    the split-adjusted source files afterwards (no splits after 2022-08, so raw == adjusted)."""
+    v2 = cfg["v2"]
+    parts = []
+    for m in months:
+        if m < v2["raw_end_month_exclusive"]:
+            parts.append(pd.read_parquet(ROOT / v2["raw_dir"] / f"{m}.parquet"))
+        else:
+            parts.append(load_raw_month(symbol, m, cfg))
+    return pd.concat(parts, ignore_index=True)
+
+
+def build_symbol(symbol: str, cfg: dict | None = None, version: str | None = None,
+                 months: list[str] | None = None) -> tuple[pd.DataFrame, dict]:
     cfg = cfg or load_config("data")
-    months = month_range(cfg["start_month"], cfg["holdout_start"][:7])
-    m1 = pd.concat([load_raw_month(symbol, m, cfg) for m in months], ignore_index=True)
-    end = (pd.Timestamp(cfg["holdout_start"]) - pd.Timedelta(days=1)).strftime("%Y-%m-%d")
-    sessions = nyse_sessions(f"{cfg['start_month']}-01", end, cfg["bar_minutes"])
+    version = version or cfg.get("data_version", "v1")
+    months = months or month_range(cfg["start_month"], cfg["holdout_start"][:7])
+    use_raw = version == "v2" and symbol == cfg["target"]
+    if use_raw:
+        m1 = load_raw_v2(symbol, months, cfg)
+    else:
+        m1 = pd.concat([load_raw_month(symbol, m, cfg) for m in months], ignore_index=True)
+    start = f"{months[0]}-01"
+    end = (pd.Period(months[-1], "M").end_time).strftime("%Y-%m-%d")
+    end = min(end, (pd.Timestamp(cfg["holdout_start"]) - pd.Timedelta(days=1)).strftime("%Y-%m-%d"))
+    sessions = nyse_sessions(start, end, cfg["bar_minutes"])
     bars = aggregate_to_bars(m1, sessions, cfg["bar_minutes"])
+    if use_raw:
+        bars = split_adjust_bars(bars, pd.read_csv(ROOT / cfg["v2"]["splits_file"]))
     df = fill_missing(bars, sessions, cfg["bar_minutes"])
     info = {"n_sessions_calendar": len(sessions), "n_missing_bars_before_drop": int(df["missing"].sum()),
             "sessions_without_data": int(len(sessions) - df["session_date"].nunique())}
@@ -156,16 +199,20 @@ def earnings_sessions(cfg: dict | None = None) -> pd.DataFrame:
     return pd.DataFrame(out)
 
 
-def main() -> None:
+def main(version: str | None = None) -> None:
     cfg = load_config("data")
-    interim_path("X").parent.mkdir(parents=True, exist_ok=True)
+    version = version or cfg.get("data_version", "v1")
+    interim_path("X", version).parent.mkdir(parents=True, exist_ok=True)
     for s in cfg["symbols"]:
-        df, info = build_symbol(s, cfg)
-        df.to_parquet(interim_path(s), index=False)
-        daily_from_bars(df).to_parquet(interim_path(s).with_name(f"{s}_daily.parquet"), index=False)
-        print(s, len(df), "bars;", len(info["dropped_sessions"]), "sessions dropped")
-    earnings_sessions(cfg).to_parquet(interim_path("X").with_name("TSLA_earnings_sessions.parquet"), index=False)
+        df, info = build_symbol(s, cfg, version)
+        df.to_parquet(interim_path(s, version), index=False)
+        daily_from_bars(df).to_parquet(interim_path(s, version).with_name(f"{s}_daily.parquet"), index=False)
+        print(version, s, len(df), "bars;", len(info["dropped_sessions"]), "sessions dropped")
+    earnings_sessions(cfg).to_parquet(interim_path("X", version).with_name("TSLA_earnings_sessions.parquet"),
+                                      index=False)
 
 
 if __name__ == "__main__":
-    main()
+    import sys
+
+    main(sys.argv[1] if len(sys.argv) > 1 else None)

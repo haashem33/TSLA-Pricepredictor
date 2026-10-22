@@ -1,0 +1,24 @@
+h=1: 96 folds done, 236s
+h=3: 96 folds done, 344s
+h=12: 96 folds done, 438s
+    h        model  daily_ic(biased)  daily_icir(biased)  pooled_ic  z_fold_ic  z_fold_icir  z_folds_pos  z_slot_ic   slot_ic  fold_ic_mean  fold_icir  folds_ic_pos  hit_rate    crps_z     brier       n   up_rate
+0   1    hist_mean          0.005269            0.044828  -0.006811        NaN          NaN          NaN  -0.006185 -0.006595     -0.000800  -0.029131      0.489583  0.502423  0.560793  0.250000  154122  0.504296
+1   1  lgb_returns          0.008490            0.072560   0.026266   0.024715     0.864005     0.864583   0.023769  0.025571      0.024723   0.844459      0.812500  0.508666  0.560644  0.249968  154122  0.504296
+2   1         zero               NaN                 NaN        NaN        NaN          NaN          NaN        NaN       NaN           NaN        NaN           NaN       NaN  0.560793  0.250000  154122  0.504296
+3   3    hist_mean          0.010855            0.055321  -0.006857        NaN          NaN          NaN  -0.009105 -0.007143      0.002283   0.051720      0.520833  0.505313  0.542672  0.249996  150102  0.505727
+4   3  lgb_returns         -0.033672           -0.217709   0.020902   0.021524     0.656911     0.739583   0.020783  0.019831      0.016867   0.534341      0.708333  0.504086  0.542711  0.250273  150102  0.505727
+5   3         zero               NaN                 NaN        NaN        NaN          NaN          NaN        NaN       NaN           NaN        NaN           NaN       NaN  0.542671  0.250000  150102  0.505727
+6  12    hist_mean          0.027403            0.070204  -0.015484        NaN          NaN          NaN  -0.016135 -0.015694      0.011300   0.139107      0.583333  0.501626  0.546355  0.250005  132012  0.506667
+7  12  lgb_returns         -0.128365           -0.482182   0.015919   0.010612     0.171089     0.614583   0.020255  0.015619      0.005291   0.083261      0.552083  0.504643  0.546938  0.250630  132012  0.506667
+8  12         zero               NaN                 NaN        NaN        NaN          NaN          NaN        NaN       NaN           NaN        NaN           NaN       NaN  0.546342  0.250000  132012  0.506667
+    h         model     qlike  zero_rv_share   mse_log  spearman       n
+0   1      vol_ewma  1.449425       0.003439  6.819128  0.402716  153592
+1   1   vol_garch_t  1.434747       0.003439  6.910288  0.404880  153592
+2   1  vol_seasonal  1.751847       0.003439  8.232296  0.279533  153592
+3   3      vol_ewma  0.532260       0.000000  1.460986  0.632944  150102
+4   3   vol_garch_t  0.522181       0.000000  1.491122  0.636135  150102
+5   3  vol_seasonal  0.826097       0.000000  2.320635  0.435782  150102
+6  12      vol_ewma  0.253229       0.000000  0.497797  0.770208  132012
+7  12   vol_garch_t  0.247980       0.000000  0.516901  0.770739  132012
+8  12  vol_seasonal  0.514909       0.000000  1.124948  0.507670  132012
+{'data_version': 'v2', 'lambda': 0.97, 'prediction_digest': '8de32dc7a7df', 'n_folds': 96, 'lgb_params': {'objective': 'regression', 'learning_rate': 0.03, 'n_estimators': 300, 'num_leaves': 15, 'min_child_samples': 1000, 'subsample': 0.8, 'subsample_freq': 1, 'colsample_bytree': 0.8, 'reg_lambda': 1.0, 'random_state': 0, 'deterministic': True, 'force_row_wise': True, 'num_threads': 4, 'verbose': -1}, 'seconds': 484}

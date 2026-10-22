@@ -93,9 +93,9 @@ def test_garch_fixed_params(bars):
         np.testing.assert_array_equal(nxt_full[: t + 1], nxt_t)
 
 
-@pytest.mark.skipif(not interim_path("TSLA").exists(), reason="interim TSLA bars not built")
+@pytest.mark.skipif(not interim_path("TSLA", "v2").exists(), reason="interim TSLA bars not built")
 def test_no_lookahead_features_real_data():
-    df = pd.read_parquet(interim_path("TSLA"))
+    df = pd.read_parquet(interim_path("TSLA", "v2"))
     df = df[(df["session_date"] >= "2020-01-01") & (df["session_date"] < "2021-01-01")].reset_index(drop=True)
     full = _features(df)
     rng = np.random.default_rng(4)

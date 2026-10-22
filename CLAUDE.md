@@ -244,6 +244,8 @@ Compute everything multi-scale. Windows are in 5-minute bars (78 = one day).
 
 ### 6.7 Market and daily context
 
+**D12:** on TSLA sessions where QQQ or SPY bars are missing (e.g. QQQ 2018-05-02/03, SPY 2019-08-12), keep the TSLA rows and set the market features/tokens to MISSING (also for forward-filled market bars and the market bar-0 return after a missing market session).
+
 - SPY and QQQ: same-bar return z-scores, 12-bar momentum, relative volume
 - Rolling beta of TSLA to QQQ over 390 bars (5 sessions); residual return r_TSLA − β·r_QQQ (z-scored)
 - Daily (known at the open, i.e. from the previous completed day): previous day return / daily ATR, daily ATR / C, C_prev / SMA_20(daily) − 1, 5-day momentum, today's gap
@@ -342,7 +344,7 @@ tok_ret_t  = number of edges e_k with clip(z_t, −6, 6) ≥ e_k,   e_k = quanti
 | EVENT | earnings-reaction session, session after it, opex, half-day, none (see 6.7) | 5 |
 | Special | PAD, MASK, BOS, MISSING (per field), DAY_SEP | 5 |
 
-Every field must have a MISSING token for warm-up periods and data gaps.
+Every field must have a MISSING token for warm-up periods and data gaps (including missing QQQ/SPY sessions for MKT, D12).
 
 ### 7.3 Input vector per bar
 
@@ -434,7 +436,7 @@ AdamW, lr 3e-4, warm-up 2% of steps then cosine decay, batch 256 windows, gradie
 
 - **Retraining cadence:** neural models retrain **quarterly** (each model predicts the next 3 test months), warm-started from the previous fold's weights; tree models stay monthly. Report how many epochs each warm start ran.
 - **Timing:** time the first training run and report projected total Phase 4 hours to the user before starting the full Phase 4 grid.
-- **Volatility head target:** it must beat GARCH-t×seasonal on out-of-sample QLIKE (Phase 1, data v2: 1.435 / 0.522 / 0.248 at h = 1 / 3 / 12, full period; recompute on the same folds and data version).
+- **Volatility head target (D11):** it must beat GARCH-t×seasonal on out-of-sample QLIKE **on identical rows** (RV > 0, no forward-filled bar in the label window), fold by fold, with a Diebold–Mariano test on the QLIKE differential (day-clustered errors). The Phase 1 v2 values 1.435 / 0.522 / 0.248 (h = 1 / 3 / 12) are reference values only. Also report QLIKE with RV floored at the 1st percentile of the training-fold RV (robustness: h = 1 QLIKE is dominated by a few tiny-RV rows).
 
 ### 9.4 Optional self-supervised pre-training (Phase 4 ablation)
 
@@ -465,7 +467,7 @@ Split the development period into N = 10 blocks, test on every combination of k 
 ### 10.3 Baselines (must be reported next to every model result)
 
 1. Zero-return forecast (and historical-mean forecast)
-2. EWMA/seasonal σ̂ and GARCH-t for volatility (Phase 1 QLIKE to beat, data v2: GARCH-t 1.435 / 0.522 / 0.248 at h = 1 / 3 / 12)
+2. EWMA/seasonal σ̂ and GARCH-t for volatility (compared on identical rows, fold by fold, D11; Phase 1 v2 reference QLIKE: GARCH-t 1.435 / 0.522 / 0.248 at h = 1 / 3 / 12)
 3. Logistic regression, LightGBM and CatBoost on the selected continuous features (tree ensembles were the strongest benchmarks in the 2025 study above)
 4. LightGBM on tokens (Gate 3 model)
 5. Phase 4 reference models (optional but recommended): Kronos-mini (4.1M parameters, 2,048-bar context; github.com/shiyu-coder/Kronos) zero-shot and fine-tuned on TSLA training folds with the repo's fine-tuning scripts; optionally Chronos-2. Run them on exactly the same folds and metrics. Expect weak zero-shot results; the fine-tuned version is the fair comparison.
@@ -545,7 +547,7 @@ T = number of return observations, γ3 = skewness, γ4 = raw kurtosis, N = numbe
 | 1. Data and baselines | Sections 4, 5.1–5.2, 10.1, 10.3 (zero/GARCH/LightGBM on simple returns), tests | Leakage and alignment tests pass; data report complete; baselines reproducible |
 | 2. Features | Sections 5.3–5.5, 6 (including 6.9) | Feature report with IC tables and conditional up-probability tables, charts and pair heatmaps; number of cells surviving Benjamini–Hochberg reported; 20–40 features selected, each with a stated reason (stable IC and/or stable extreme lift) |
 | 3. Tokenizer | Section 7 | Tokenizer checks pass; **token-only LightGBM shows out-of-sample IC > 0 (section 10.6) with a stable sign and passes the recency check (D10)** — otherwise stop and discuss with the user |
-| 4. Model | Sections 8, 9 (including 9.4), 10.3 | Transformer beats LightGBM and CatBoost on IC and CRPS in **paired fold-level tests** (share of folds won, Wilcoxon on fold ICs, Diebold–Mariano on CRPS with day-clustered errors; report per fold); the Transformer itself passes the recency check (D10); volatility head beats GARCH-t QLIKE; compared with fine-tuned Kronos-mini; ablations: without continuous features, without market stream, with/without self-supervised pre-training, 2 vs 4 layers, expanding vs rolling 3-year vs recency-weighted training window |
+| 4. Model | Sections 8, 9 (including 9.4), 10.3 | Transformer beats LightGBM and CatBoost on IC and CRPS in **paired fold-level tests** (share of folds won, Wilcoxon on fold ICs, Diebold–Mariano on CRPS with day-clustered errors; report per fold); the Transformer itself passes the recency check (D10); volatility head beats GARCH-t QLIKE on identical rows, fold by fold, with Diebold–Mariano (D11); compared with fine-tuned Kronos-mini; ablations: without continuous features, without market stream, with/without self-supervised pre-training, 2 vs 4 layers, expanding vs rolling 3-year vs recency-weighted training window |
 | 5. Backtest and selection | Section 10.2, 10.4, 10.6, 10.7 | At h = 12: net Sharpe positive at 2× costs and passing the recency check (D10: full period t ≥ 2; 2023–2025 mean > 0 with t ≥ 1); DSR > 0.95; break-even cost reported; then ask the user before evaluating the holdout once (and, later, the forward test once) |
 | 6. Paper trading (only if the user asks) | Live inference script on new bars, logging predictions vs outcomes | Live IC over ≥ 3 months within the backtest range before any real capital |
 

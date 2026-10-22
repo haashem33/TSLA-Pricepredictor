@@ -12,7 +12,6 @@ Usage: python scripts/time_phase2_fold.py
 """
 from __future__ import annotations
 
-import importlib.util
 import time
 import warnings
 
@@ -25,6 +24,7 @@ from tslaq.features.normalize import rolling_z
 from tslaq.features.returns import add_returns
 from tslaq.features.volatility import add_sigma, seasonal_profile
 from tslaq.labels.forward_returns import add_labels
+from tslaq.selection import phase2 as p2
 from tslaq.selection.ic import delayed, monthly_ic
 from tslaq.selection.importance import clustered_mda
 from tslaq.selection.redundancy import cluster_features, spearman_matrix
@@ -32,9 +32,6 @@ from tslaq.selection.stationarity import stationarity
 from tslaq.utils.io import ROOT, interim_path, load_config
 
 warnings.filterwarnings("ignore")
-spec = importlib.util.spec_from_file_location("p2", ROOT / "scripts" / "run_phase2_analysis.py")
-p2 = importlib.util.module_from_spec(spec)
-spec.loader.exec_module(p2)
 H = (1, 3, 12)
 
 

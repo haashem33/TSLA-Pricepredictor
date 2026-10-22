@@ -45,6 +45,22 @@ def fold_ic(pred, realized, fold) -> pd.Series:
                       if g["p"].nunique() > 1}, dtype=float)
 
 
+def fold_ic_stats(fic: pd.Series) -> dict:
+    """Primary IC summary (CLAUDE.md 10.6): mean fold IC, ICIR = mean/std across folds,
+    t = ICIR * sqrt(n_folds), share of folds with IC > 0 and its one-sided binomial p-value."""
+    from scipy.stats import binomtest
+
+    v = fic.dropna()
+    n = len(v)
+    if n < 2:
+        return {"ic": v.mean() if n else np.nan, "icir": np.nan, "t": np.nan, "pos_share": np.nan,
+                "binom_p": np.nan, "n_folds": n}
+    k = int((v > 0).sum())
+    icir = v.mean() / v.std()
+    return {"ic": v.mean(), "icir": icir, "t": icir * np.sqrt(n), "pos_share": k / n,
+            "binom_p": binomtest(k, n, 0.5, alternative="greater").pvalue, "n_folds": n}
+
+
 def hit_rate(pred: np.ndarray, realized: np.ndarray) -> float:
     """Share of non-zero predictions whose sign matches a non-zero realized return."""
     m = np.isfinite(pred) & np.isfinite(realized) & (pred != 0) & (realized != 0)

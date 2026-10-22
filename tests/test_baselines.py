@@ -45,3 +45,15 @@ def test_ic_metric_bias_placebo():
     assert abs(per_slot_ic(p, y, d["bar_index"].to_numpy())) < 0.05
     month = d["session_date"].dt.to_period("M").astype(str).to_numpy()
     assert abs(fold_ic(p, y, month).mean()) < 0.05
+
+
+def test_fold_ic_stats():
+    import pandas as pd
+
+    from tslaq.backtest.metrics import fold_ic_stats
+
+    s = fold_ic_stats(pd.Series([0.01, 0.02, 0.03, -0.01]))
+    v = np.array([0.01, 0.02, 0.03, -0.01])
+    assert np.isclose(s["icir"], v.mean() / v.std(ddof=1))
+    assert np.isclose(s["t"], s["icir"] * 2)
+    assert s["pos_share"] == 0.75 and np.isclose(s["binom_p"], 5 / 16)

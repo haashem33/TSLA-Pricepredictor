@@ -12,4 +12,5 @@ pydantic>=2.7
 matplotlib>=3.8
 pytest>=8
 ruff>=0.5
-# Phase 2+: hmmlearn, catboost, torch
+numba>=0.60          # HMM forward/backward, Kalman, rolling Hurst/entropy (hmmlearn has no Python 3.14 wheel)
+# Phase 4: catboost, torch

@@ -4,13 +4,13 @@ from __future__ import annotations
 import matplotlib
 
 matplotlib.use("Agg")
-import matplotlib.pyplot as plt  # noqa: E402
-import numpy as np  # noqa: E402
-import pandas as pd  # noqa: E402
+import matplotlib.pyplot as plt
+import numpy as np
+import pandas as pd
 
-from tslaq.data.clean import build_symbol  # noqa: E402
-from tslaq.features.returns import add_returns  # noqa: E402
-from tslaq.utils.io import ROOT, interim_path, load_config  # noqa: E402
+from tslaq.data.clean import build_symbol
+from tslaq.features.returns import add_returns
+from tslaq.utils.io import ROOT, interim_path, load_config
 
 FIG = ROOT / "reports" / "figures"
 OUT = ROOT / "reports" / "phase1_data_quality.md"

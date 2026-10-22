@@ -1,0 +1,22 @@
+step,seconds,n_train
+once: base frames + labels,5.488146781921387,
+once: parameter-free features (+ one throwaway fit),6.361257314682007,
+"once: monthly IC of parameter-free features (raw h=1..24 + delayed, rz)",35.20636463165283,
+fold 2018-01: 1 fit GARCH/HMM/Kalman/frac-d,2.2591521739959717,39048.0
+fold 2018-01: 2 apply fitted filters,0.654818058013916,39048.0
+fold 2018-01: 3 ADF/KPSS,0.5438671112060547,39048.0
+fold 2018-01: 4 monthly IC (fitted feats) + IC stats,7.928585767745972,39048.0
+fold 2018-01: 5a clustering,0.1456758975982666,39048.0
+fold 2018-01: 5b clustered MDA (3 h x 5 CV folds),8.380212306976318,39048.0
+fold 2018-01: 6 condprob cells + BH + selection,10.189895868301392,39048.0
+fold 2018-01: TOTAL,30.10220718383789,39048.0
+fold 2025-12: 1 fit GARCH/HMM/Kalman/frac-d,17.742725372314453,193500.0
+fold 2025-12: 2 apply fitted filters,0.6674859523773193,193500.0
+fold 2025-12: 3 ADF/KPSS,2.7058048248291016,193500.0
+fold 2025-12: 4 monthly IC (fitted feats) + IC stats,13.928409099578857,193500.0
+fold 2025-12: 5a clustering,0.7489900588989258,193500.0
+fold 2025-12: 5b clustered MDA (3 h x 5 CV folds),45.952797651290894,193500.0
+fold 2025-12: 6 condprob cells + BH + selection,28.496824026107788,193500.0
+fold 2025-12: TOTAL,110.24303698539734,193500.0
+PROJECTED 96 folds (linear in n_train),6737.925976240285,
+PROJECTED total incl. one-time steps,6784.9817449685415,

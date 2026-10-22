@@ -1,0 +1,186 @@
+prepared 46s
+2018-01: 28s n_train=39048 kept=12 BH=[72, 3, 0] BHd=[0, 0] h12boot=0/0 elapsed 74s
+2018-02: 29s n_train=40686 kept=12 BH=[73, 4, 0] BHd=[0, 0] h12boot=0/0 elapsed 103s
+2018-03: 29s n_train=42168 kept=13 BH=[77, 4, 0] BHd=[0, 0] h12boot=0/0 elapsed 132s
+2018-04: 29s n_train=43806 kept=13 BH=[79, 5, 0] BHd=[0, 0] h12boot=0/0 elapsed 162s
+2018-05: 31s n_train=45444 kept=13 BH=[83, 6, 0] BHd=[0, 0] h12boot=0/0 elapsed 192s
+2018-06: 32s n_train=47160 kept=14 BH=[85, 6, 0] BHd=[0, 0] h12boot=0/0 elapsed 224s
+2018-07: 34s n_train=48798 kept=14 BH=[87, 6, 0] BHd=[1, 0] h12boot=0/0 elapsed 259s
+2018-08: 34s n_train=50400 kept=15 BH=[90, 7, 0] BHd=[4, 0] h12boot=0/0 elapsed 293s
+2018-09: 35s n_train=52116 kept=16 BH=[87, 6, 0] BHd=[2, 0] h12boot=0/0 elapsed 329s
+2018-10: 36s n_train=53598 kept=18 BH=[90, 7, 0] BHd=[2, 0] h12boot=0/0 elapsed 364s
+2018-11: 35s n_train=55392 kept=17 BH=[95, 9, 0] BHd=[2, 0] h12boot=0/0 elapsed 399s
+2018-12: 38s n_train=56994 kept=17 BH=[94, 8, 0] BHd=[4, 0] h12boot=0/0 elapsed 437s
+2019-01: 46s n_train=58440 kept=18 BH=[101, 9, 0] BHd=[2, 0] h12boot=0/0 elapsed 483s
+2019-02: 44s n_train=60078 kept=21 BH=[101, 8, 0] BHd=[0, 0] h12boot=0/0 elapsed 527s
+2019-03: 41s n_train=61560 kept=20 BH=[97, 8, 0] BHd=[0, 0] h12boot=0/0 elapsed 568s
+2019-04: 43s n_train=63198 kept=21 BH=[101, 9, 0] BHd=[1, 0] h12boot=0/0 elapsed 610s
+2019-05: 43s n_train=64836 kept=19 BH=[100, 10, 0] BHd=[8, 0] h12boot=0/0 elapsed 653s
+2019-06: 43s n_train=66552 kept=16 BH=[94, 10, 0] BHd=[2, 0] h12boot=0/0 elapsed 696s
+2019-07: 44s n_train=68112 kept=16 BH=[95, 10, 0] BHd=[3, 0] h12boot=0/0 elapsed 740s
+2019-08: 45s n_train=69792 kept=17 BH=[88, 9, 0] BHd=[6, 0] h12boot=0/0 elapsed 785s
+2019-09: 46s n_train=71508 kept=19 BH=[95, 10, 0] BHd=[5, 0] h12boot=0/0 elapsed 832s
+2019-10: 47s n_train=73068 kept=18 BH=[93, 7, 0] BHd=[3, 0] h12boot=0/0 elapsed 878s
+2019-11: 47s n_train=74862 kept=20 BH=[101, 9, 0] BHd=[4, 0] h12boot=0/0 elapsed 925s
+2019-12: 48s n_train=76386 kept=21 BH=[109, 10, 0] BHd=[7, 0] h12boot=0/0 elapsed 974s
+2020-01: 50s n_train=77988 kept=19 BH=[110, 13, 0] BHd=[2, 0] h12boot=0/0 elapsed 1024s
+2020-02: 52s n_train=79626 kept=20 BH=[118, 14, 0] BHd=[9, 0] h12boot=0/0 elapsed 1076s
+2020-03: 53s n_train=81108 kept=20 BH=[121, 14, 0] BHd=[6, 0] h12boot=0/0 elapsed 1129s
+2020-04: 52s n_train=82824 kept=19 BH=[118, 19, 0] BHd=[8, 0] h12boot=0/0 elapsed 1181s
+2020-05: 55s n_train=84462 kept=24 BH=[126, 16, 0] BHd=[8, 0] h12boot=0/0 elapsed 1236s
+2020-06: 58s n_train=86022 kept=21 BH=[125, 19, 0] BHd=[26, 0] h12boot=0/0 elapsed 1294s
+2020-07: 57s n_train=87738 kept=23 BH=[128, 20, 0] BHd=[28, 0] h12boot=0/0 elapsed 1351s
+2020-08: 56s n_train=89454 kept=20 BH=[127, 28, 0] BHd=[38, 0] h12boot=0/0 elapsed 1407s
+2020-09: 58s n_train=91092 kept=21 BH=[130, 31, 0] BHd=[43, 0] h12boot=0/0 elapsed 1466s
+2020-10: 57s n_train=92730 kept=20 BH=[134, 34, 0] BHd=[47, 1] h12boot=0/0 elapsed 1523s
+2020-11: 58s n_train=94446 kept=23 BH=[138, 36, 0] BHd=[55, 1] h12boot=0/0 elapsed 1581s
+2020-12: 59s n_train=95970 kept=21 BH=[131, 36, 0] BHd=[58, 1] h12boot=0/0 elapsed 1639s
+2021-01: 61s n_train=97650 kept=23 BH=[137, 40, 0] BHd=[70, 1] h12boot=0/0 elapsed 1700s
+2021-02: 59s n_train=99132 kept=22 BH=[134, 40, 0] BHd=[66, 1] h12boot=0/0 elapsed 1760s
+2021-03: 62s n_train=100614 kept=22 BH=[129, 42, 0] BHd=[62, 1] h12boot=0/0 elapsed 1821s
+2021-04: 61s n_train=102408 kept=23 BH=[136, 43, 0] BHd=[67, 2] h12boot=0/0 elapsed 1882s
+2021-05: 60s n_train=104046 kept=23 BH=[135, 43, 0] BHd=[73, 3] h12boot=0/0 elapsed 1943s
+2021-06: 60s n_train=105606 kept=27 BH=[137, 46, 0] BHd=[82, 6] h12boot=0/0 elapsed 2003s
+2021-07: 61s n_train=107322 kept=26 BH=[141, 45, 0] BHd=[84, 7] h12boot=0/0 elapsed 2064s
+2021-08: 63s n_train=108960 kept=30 BH=[161, 51, 1] BHd=[94, 11] h12boot=1/1 elapsed 2127s
+2021-09: 65s n_train=110676 kept=30 BH=[157, 56, 0] BHd=[96, 12] h12boot=0/0 elapsed 2192s
+2021-10: 65s n_train=112314 kept=27 BH=[145, 47, 0] BHd=[90, 11] h12boot=0/0 elapsed 2256s
+2021-11: 65s n_train=113952 kept=26 BH=[150, 50, 0] BHd=[82, 9] h12boot=0/0 elapsed 2322s
+2021-12: 67s n_train=115554 kept=25 BH=[153, 52, 0] BHd=[83, 10] h12boot=0/0 elapsed 2388s
+2022-01: 66s n_train=117270 kept=22 BH=[161, 50, 0] BHd=[88, 9] h12boot=0/0 elapsed 2454s
+2022-02: 68s n_train=118830 kept=27 BH=[150, 48, 0] BHd=[74, 9] h12boot=0/0 elapsed 2522s
+2022-03: 66s n_train=120312 kept=28 BH=[169, 53, 1] BHd=[82, 10] h12boot=1/1 elapsed 2588s
+2022-04: 66s n_train=122106 kept=27 BH=[166, 54, 2] BHd=[81, 11] h12boot=2/2 elapsed 2655s
+2022-05: 68s n_train=123666 kept=23 BH=[157, 50, 1] BHd=[77, 9] h12boot=1/1 elapsed 2722s
+2022-06: 69s n_train=125304 kept=23 BH=[160, 49, 1] BHd=[78, 9] h12boot=1/1 elapsed 2791s
+2022-07: 69s n_train=126942 kept=25 BH=[146, 45, 1] BHd=[73, 6] h12boot=1/1 elapsed 2860s
+2022-08: 68s n_train=128502 kept=26 BH=[149, 48, 1] BHd=[75, 8] h12boot=1/1 elapsed 2927s
+2022-09: 68s n_train=130296 kept=24 BH=[140, 44, 1] BHd=[66, 7] h12boot=1/1 elapsed 2996s
+2022-10: 71s n_train=131934 kept=27 BH=[164, 46, 2] BHd=[92, 8] h12boot=2/2 elapsed 3067s
+2022-11: 73s n_train=133572 kept=25 BH=[159, 43, 1] BHd=[81, 5] h12boot=1/1 elapsed 3140s
+2022-12: 73s n_train=135174 kept=25 BH=[155, 40, 1] BHd=[76, 5] h12boot=1/1 elapsed 3213s
+2023-01: 77s n_train=136812 kept=26 BH=[152, 37, 2] BHd=[64, 4] h12boot=2/2 elapsed 3290s
+2023-02: 72s n_train=138372 kept=26 BH=[143, 36, 2] BHd=[65, 4] h12boot=2/2 elapsed 3361s
+2023-03: 75s n_train=139854 kept=27 BH=[142, 36, 1] BHd=[68, 5] h12boot=1/1 elapsed 3437s
+2023-04: 74s n_train=141648 kept=29 BH=[134, 33, 2] BHd=[60, 5] h12boot=2/2 elapsed 3511s
+2023-05: 75s n_train=143130 kept=28 BH=[141, 37, 2] BHd=[72, 5] h12boot=2/2 elapsed 3586s
+2023-06: 77s n_train=144846 kept=27 BH=[142, 39, 3] BHd=[71, 6] h12boot=3/3 elapsed 3663s
+2023-07: 78s n_train=146484 kept=28 BH=[155, 37, 1] BHd=[82, 6] h12boot=1/1 elapsed 3742s
+2023-08: 80s n_train=148008 kept=32 BH=[166, 43, 1] BHd=[92, 8] h12boot=1/1 elapsed 3822s
+2023-09: 80s n_train=149802 kept=32 BH=[174, 42, 1] BHd=[103, 6] h12boot=1/1 elapsed 3901s
+2023-10: 81s n_train=151362 kept=30 BH=[177, 42, 3] BHd=[100, 6] h12boot=3/3 elapsed 3982s
+2023-11: 83s n_train=153078 kept=32 BH=[185, 44, 3] BHd=[108, 9] h12boot=3/3 elapsed 4066s
+2023-12: 85s n_train=154680 kept=31 BH=[172, 41, 3] BHd=[101, 8] h12boot=3/3 elapsed 4150s
+2024-01: 86s n_train=156240 kept=32 BH=[176, 37, 3] BHd=[104, 8] h12boot=3/3 elapsed 4237s
+2024-02: 85s n_train=157878 kept=30 BH=[170, 36, 3] BHd=[102, 9] h12boot=3/3 elapsed 4322s
+2024-03: 88s n_train=159438 kept=30 BH=[181, 37, 3] BHd=[109, 9] h12boot=3/3 elapsed 4409s
+2024-04: 88s n_train=160998 kept=29 BH=[178, 35, 3] BHd=[112, 8] h12boot=3/3 elapsed 4498s
+2024-05: 89s n_train=162714 kept=32 BH=[177, 33, 3] BHd=[108, 6] h12boot=3/3 elapsed 4587s
+2024-06: 88s n_train=164430 kept=33 BH=[175, 35, 3] BHd=[110, 6] h12boot=3/3 elapsed 4675s
+2024-07: 93s n_train=165912 kept=34 BH=[178, 35, 2] BHd=[108, 6] h12boot=2/2 elapsed 4768s
+2024-08: 91s n_train=167592 kept=34 BH=[165, 31, 1] BHd=[99, 4] h12boot=1/1 elapsed 4859s
+2024-09: 93s n_train=169308 kept=32 BH=[167, 31, 0] BHd=[97, 5] h12boot=0/0 elapsed 4952s
+2024-10: 95s n_train=170868 kept=34 BH=[176, 31, 0] BHd=[100, 6] h12boot=0/0 elapsed 5047s
+2024-11: 96s n_train=172662 kept=32 BH=[178, 32, 3] BHd=[108, 7] h12boot=3/3 elapsed 5143s
+2024-12: 91s n_train=174186 kept=33 BH=[181, 34, 2] BHd=[113, 8] h12boot=2/2 elapsed 5234s
+2025-01: 96s n_train=175788 kept=34 BH=[183, 35, 2] BHd=[116, 9] h12boot=2/2 elapsed 5331s
+2025-02: 95s n_train=177348 kept=33 BH=[181, 36, 2] BHd=[116, 10] h12boot=2/2 elapsed 5426s
+2025-03: 100s n_train=178830 kept=33 BH=[168, 31, 3] BHd=[103, 8] h12boot=3/3 elapsed 5526s
+2025-04: 101s n_train=180468 kept=35 BH=[176, 35, 3] BHd=[101, 8] h12boot=3/3 elapsed 5627s
+2025-05: 99s n_train=182106 kept=35 BH=[168, 27, 1] BHd=[95, 6] h12boot=1/1 elapsed 5726s
+2025-06: 101s n_train=183744 kept=34 BH=[157, 25, 0] BHd=[91, 5] h12boot=0/0 elapsed 5827s
+2025-07: 100s n_train=185304 kept=32 BH=[152, 23, 0] BHd=[90, 5] h12boot=0/0 elapsed 5927s
+2025-08: 104s n_train=186984 kept=34 BH=[156, 23, 0] BHd=[93, 5] h12boot=0/0 elapsed 6031s
+2025-09: 104s n_train=188622 kept=33 BH=[170, 24, 0] BHd=[99, 7] h12boot=0/0 elapsed 6135s
+2025-10: 106s n_train=190260 kept=34 BH=[177, 26, 0] BHd=[106, 7] h12boot=0/0 elapsed 6241s
+2025-11: 109s n_train=192054 kept=35 BH=[178, 27, 0] BHd=[107, 7] h12boot=0/0 elapsed 6350s
+2025-12: 123s n_train=193500 kept=33 BH=[151, 24, 0] BHd=[98, 7] h12boot=0/0 elapsed 6473s
+96 folds loaded
+{
+ "n_folds": 96,
+ "n_features_built": 85,
+ "selected_per_fold": {
+  "count": 96.0,
+  "mean": 24.947916666666668,
+  "std": 6.518588467915051,
+  "min": 12.0,
+  "25%": 20.0,
+  "50%": 25.0,
+  "75%": 31.25,
+  "max": 35.0
+ },
+ "n_distinct_selected": 55,
+ "cells_per_fold_last": {
+  "1": 1016,
+  "3": 1014,
+  "12": 1007
+ },
+ "bh_last_fold": {
+  "1": 151,
+  "3": 24,
+  "12": 0
+ },
+ "bh_last_fold_delayed": {
+  "1": 98,
+  "3": 7
+ },
+ "bh_by_outcome_h": {
+  "1-bar delay h1": {
+   "mean": 59.9,
+   "min": 0.0,
+   "50%": 73.0,
+   "max": 116.0
+  },
+  "1-bar delay h3": {
+   "mean": 4.3,
+   "min": 0.0,
+   "50%": 5.0,
+   "max": 12.0
+  },
+  "no delay h1": {
+   "mean": 138.4,
+   "min": 72.0,
+   "50%": 142.5,
+   "max": 185.0
+  },
+  "no delay h3": {
+   "mean": 29.1,
+   "min": 3.0,
+   "50%": 33.5,
+   "max": 56.0
+  },
+  "no delay h12": {
+   "mean": 0.8,
+   "min": 0.0,
+   "50%": 0.0,
+   "max": 3.0
+  }
+ },
+ "h12_bh_cells_total": 74,
+ "h12_bh_cells_boot_hold": 74,
+ "kalman_any_bound": 0,
+ "kalman_any_near_zero": 89,
+ "kalman_not_converged": 0,
+ "d10_pass_h12": [
+  "amihud",
+  "dL",
+  "d_atr_c",
+  "d_mom5",
+  "d_prev_ret_atr",
+  "d_sma20_dev",
+  "sign_first30",
+  "spy_z"
+ ],
+ "d10_pass_d12": [
+  "amihud",
+  "d_atr_c",
+  "d_mom5",
+  "d_prev_ret_atr",
+  "d_sma20_dev",
+  "r_first30",
+  "sign_first30"
+ ],
+ "n_features_tested_h12": 83,
+ "fold_seconds_total": 6424.427043199539
+}
+report extras: bootstrap 1270, pair cells 465 (BH 26)

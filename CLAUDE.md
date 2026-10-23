@@ -260,7 +260,7 @@ On training folds only:
 3. Cluster features by |Spearman correlation| distance (hierarchical clustering, threshold 0.7).
 4. Clustered MDA with LightGBM under purged CV: permute a whole cluster at once.
 5. Run the conditional up-probability analysis (section 6.9).
-6. Keep 20–40 features: the most stable 1–2 per useful cluster by IC, **plus** any feature with weak IC that passes the extreme-bucket rule in 6.9. Save the list to `configs/features.yaml` with the reason each was kept (IC, extreme lift, or both).
+6. Keep 20–40 features: the most stable 1–2 per useful cluster by IC, **plus** any feature with weak IC that passes the extreme-bucket rule in 6.9. Save the list to `configs/features.yaml` with the reason each was kept (IC, extreme lift, or both). Selection is per fold (`by_fold`); Phase 4 uses each fold's own list. **D13:** a fold with fewer than 20 features that pass the rules keeps its short list; never pad it.
 
 Write `reports/phase2_features.md` with tables and figures.
 
@@ -336,7 +336,7 @@ tok_ret_t  = number of edges e_k with clip(z_t, −6, 6) ≥ e_k,   e_k = quanti
 | REL | Relation to previous candle: {inside, outside, higher-high-higher-low, lower-high-lower-low, mixed} × {bullish engulfing, bearish engulfing, none} | 15 |
 | GAP | Overnight gap / σ̂ for bar_index 0, quantile bins; a dedicated "no gap" token for all other bars | 9 + 1 |
 | VOLU | Relative volume by time of day (6.5), quantile bins | 12 |
-| VREG | Percentile of σ̂_t within its trailing 20-session history | 8 |
+| VREG | Percentile of σ̂_t within its trailing 20-session history (D14: fixed by this spec, not chosen from Phase 2 results) | 8 |
 | HMM | Filtered most-likely HMM state | 3 + unknown |
 | MKT | QQQ same-bar return z-score, quantile bins | 16 |
 | TOD | bar_index bucketed into 13 half-hour slots | 13 |
@@ -359,7 +359,7 @@ e_t = Σ_fields E_f[tok_f,t] + W_c · clip(x_cont_t, −5, 5) + positional encod
 - Bin occupancy: every RET bin has ≥ 50 training samples; merge sparse tail bins otherwise.
 - Round-trip: correlation between de-tokenized and true returns, and RMSE in σ units — report both.
 - Leakage test (section 11).
-- **Gate 3 — token-only baseline:** LightGBM on the last 24 bars of tokens (one-hot or ordinal) predicting the h = 3 and h = 12 return sign and z. If the out-of-sample IC (section 10.6) is not above zero with a stable sign across years **and** does not pass the recency check (section 10.6, D10: full period t ≥ 2; 2023–2025 mean IC > 0 with t ≥ 1), stop and report to the user before building the network.
+- **Gate 3 (D15):** per fold, three LightGBM variants with the fixed Phase 1 parameters (no tuning): **A** = tokens only (last 24 bars, one-hot or ordinal), **B** = that fold's `by_fold` continuous features only, **C** = tokens + that fold's `by_fold` features. Score the h = 12 (primary), h = 1 and h = 3 z, each with and without the one-bar-delayed outcome (section 10.6). **Gate 3 passes if C passes the recency check (D10: full period t ≥ 2; 2023–2025 mean IC > 0 with t ≥ 1) at h = 12 with the delayed outcome.** Report the value of the tokens as C vs B (share of folds won, Wilcoxon on fold ICs). If A fails and C is not better than B, stop and discuss with the user before Phase 4.
 
 Write `reports/phase3_tokenizer.md`.
 
@@ -469,8 +469,9 @@ Split the development period into N = 10 blocks, test on every combination of k 
 1. Zero-return forecast (and historical-mean forecast)
 2. EWMA/seasonal σ̂ and GARCH-t for volatility (compared on identical rows, fold by fold, D11; Phase 1 v2 reference QLIKE: GARCH-t 1.435 / 0.522 / 0.248 at h = 1 / 3 / 12)
 3. Logistic regression, LightGBM and CatBoost on the selected continuous features (tree ensembles were the strongest benchmarks in the 2025 study above)
-4. LightGBM on tokens (Gate 3 model)
+4. LightGBM on tokens, on the by_fold features, and on both (Gate 3 models A/B/C, D15)
 5. Phase 4 reference models (optional but recommended): Kronos-mini (4.1M parameters, 2,048-bar context; github.com/shiyu-coder/Kronos) zero-shot and fine-tuned on TSLA training folds with the repo's fine-tuning scripts; optionally Chronos-2. Run them on exactly the same folds and metrics. Expect weak zero-shot results; the fine-tuned version is the fair comparison.
+6. **Single-feature rule baselines (D16):** d_sma20_dev, one unit position per day entered at the open of the 09:35 bar and closed at the session's last bar; sign_first30 (Gao et al.), entered at the open of the 15:30 bar and closed at the close. Sign from each fold's training IC, nothing else tuned. Every later model must beat them net of costs on the same folds.
 
 ### 10.4 From forecast to position
 
@@ -545,8 +546,8 @@ T = number of return observations, γ3 = skewness, γ4 = raw kurtosis, N = numbe
 | Phase | Work | Gate (must pass, report numbers) |
 | --- | --- | --- |
 | 1. Data and baselines | Sections 4, 5.1–5.2, 10.1, 10.3 (zero/GARCH/LightGBM on simple returns), tests | Leakage and alignment tests pass; data report complete; baselines reproducible |
-| 2. Features | Sections 5.3–5.5, 6 (including 6.9) | Feature report with IC tables and conditional up-probability tables, charts and pair heatmaps; number of cells surviving Benjamini–Hochberg reported; 20–40 features selected, each with a stated reason (stable IC and/or stable extreme lift) |
-| 3. Tokenizer | Section 7 | Tokenizer checks pass; **token-only LightGBM shows out-of-sample IC > 0 (section 10.6) with a stable sign and passes the recency check (D10)** — otherwise stop and discuss with the user |
+| 2. Features | Sections 5.3–5.5, 6 (including 6.9) | Feature report with IC tables and conditional up-probability tables, charts and pair heatmaps; number of cells surviving Benjamini–Hochberg reported; 20–40 features selected per fold (fewer accepted, never padded, D13), each with a stated reason (stable IC and/or stable extreme lift) |
+| 3. Tokenizer | Section 7 | Tokenizer checks pass; **Gate 3 (D15): LightGBM C (tokens + by_fold features) passes the recency check (D10) at h = 12 with the one-bar-delayed outcome**; A (tokens) and B (features) reported, tokens valued as C vs B (share of folds won, Wilcoxon); if A fails and C is not better than B, stop and discuss with the user |
 | 4. Model | Sections 8, 9 (including 9.4), 10.3 | Transformer beats LightGBM and CatBoost on IC and CRPS in **paired fold-level tests** (share of folds won, Wilcoxon on fold ICs, Diebold–Mariano on CRPS with day-clustered errors; report per fold); the Transformer itself passes the recency check (D10); volatility head beats GARCH-t QLIKE on identical rows, fold by fold, with Diebold–Mariano (D11); compared with fine-tuned Kronos-mini; ablations: without continuous features, without market stream, with/without self-supervised pre-training, 2 vs 4 layers, expanding vs rolling 3-year vs recency-weighted training window |
 | 5. Backtest and selection | Section 10.2, 10.4, 10.6, 10.7 | At h = 12: net Sharpe positive at 2× costs and passing the recency check (D10: full period t ≥ 2; 2023–2025 mean > 0 with t ≥ 1); DSR > 0.95; break-even cost reported; then ask the user before evaluating the holdout once (and, later, the forward test once) |
 | 6. Paper trading (only if the user asks) | Live inference script on new bars, logging predictions vs outcomes | Live IC over ≥ 3 months within the backtest range before any real capital |

@@ -1,0 +1,12 @@
+{
+ "n_days": 250,
+ "net_sharpe_ann": 3.1145658091879067,
+ "net_sharpe_ann_without_top5": 2.323820259871698,
+ "net_sharpe_ann_without_top10": 1.6161100140921028,
+ "share_of_net_from_top5_days": 0.3484363479559518,
+ "daily_sd_bp": 266.5474486107634,
+ "gross_sharpe_2018_signal_D": 3.471901989649397,
+ "gross_sharpe_2018_2025_signal_D": 0.4226213142211997,
+ "gross_sharpe_2018_signal_lag1": 2.6594702444432925,
+ "gross_sharpe_2018_2025_signal_lag1": 0.35196924239457683
+}

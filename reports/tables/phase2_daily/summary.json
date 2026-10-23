@@ -1,0 +1,27 @@
+{
+ "b1": {
+  "truncations": 20,
+  "all_identical": true,
+  "max_rel_diff": 0.0,
+  "max_distinct_values_per_session": {
+   "d_prev_ret_atr": 1,
+   "d_atr_c": 1,
+   "d_sma20_dev": 1,
+   "d_mom5": 1,
+   "har_rv1": 1,
+   "har_rv5": 1,
+   "har_rv22": 1,
+   "earn_react": 1,
+   "earn_after": 1,
+   "opex": 1,
+   "half_day": 1,
+   "dow": 1
+  },
+  "independent_recompute_max_rel_diff": {
+   "d_prev_ret_atr": 7.451929351169248e-16,
+   "d_atr_c": 1.1102230246251565e-16,
+   "d_sma20_dev": 4.440892098500626e-16,
+   "d_mom5": 0.0
+  }
+ }
+}

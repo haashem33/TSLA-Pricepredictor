@@ -158,6 +158,11 @@ fold after 2025-05.
 
 ## 4. Single-feature D10 check at h = 12
 
+> **Amended 2026-10-23:** a session-permutation placebo shows that the within-month IC of d_sma20_dev, d_mom5
+> and d_atr_c is a mechanical bias of the monthly-pooled metric for multi-day-persistent features (real IC inside
+> the placebo band); amihud is suspect for the same reason. See `reports/phase2_daily_diagnostics.md`. The D10
+> passes below for these features are not evidence of predictability.
+
 D10: full-period t ≥ 2 **and** 2023–2025 mean IC > 0 with t ≥ 1. Tested on 83 features with h = 12
 out-of-sample IC (`reports/tables/phase2_walkforward_summary.csv`, column `d10_pass`).
 

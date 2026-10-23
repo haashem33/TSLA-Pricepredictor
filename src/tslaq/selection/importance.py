@@ -1,8 +1,11 @@
 """Clustered MDA with LightGBM under purged CV (CLAUDE.md 6.8 step 4; Lopez de Prado ch. 8).
 
 Inside a training window: K contiguous blocks; for each block, train on the other rows after purging
-(label overlap) and a 78-bar embargo, score Spearman IC (z space) on the block, then permute all features
+(label overlap) and a 78-bar embargo, score the IC (z space) on the block, then permute all features
 of one cluster jointly (same row permutation) and re-score. Importance = IC_base - IC_permuted.
+score="anchored" (D17): the model's prediction as is vs clip(z, -5, 5) - m, m = mean clipped z over the
+CV-training rows; not the default, since D17 fails D18 (reports/phase2_metric_fix.md);
+score="spearman" (default): the old pooled Spearman (biased, information only).
 """
 from __future__ import annotations
 
@@ -10,6 +13,7 @@ import lightgbm as lgb
 import numpy as np
 import pandas as pd
 
+from tslaq.backtest.metrics import Z_CLIP, anchored_ic
 from tslaq.cv.purge import purge_embargo_mask
 from tslaq.selection.ic import spearman_cols
 
@@ -32,7 +36,7 @@ def purged_kfold(pos: np.ndarray, label_end: np.ndarray, k: int = 5, embargo: in
 
 
 def clustered_mda(X: pd.DataFrame, y: np.ndarray, label_end: np.ndarray, pos: np.ndarray, clusters: pd.Series,
-                  k: int = 5, seed: int = 0, params: dict | None = None) -> pd.DataFrame:
+                  k: int = 5, seed: int = 0, params: dict | None = None, score: str = "spearman") -> pd.DataFrame:
     """X, y, label_end are full-frame arrays; `pos` = training row positions to use."""
     rng = np.random.default_rng(seed)
     yc = np.clip(y, -6, 6)
@@ -43,13 +47,21 @@ def clustered_mda(X: pd.DataFrame, y: np.ndarray, label_end: np.ndarray, pos: np
     for fold, (tr, te) in enumerate(purged_kfold(pos, label_end, k)):
         m = lgb.LGBMRegressor(**(params or MDA_PARAMS)).fit(Xn[tr], yc[tr])
         Xt = Xn[te]
-        base = spearman_cols(m.predict(Xt)[:, None], y[te], 50)[0]
+        if score == "anchored":
+            yt = np.clip(y[te], -Z_CLIP, Z_CLIP) - np.nanmean(np.clip(y[tr], -Z_CLIP, Z_CLIP))
+
+            def ic(p, yt=yt):
+                return anchored_ic(p, yt, 50)
+        else:
+            def ic(p, yt=y[te]):
+                return spearman_cols(p[:, None], yt, 50)[0]
+        base = ic(m.predict(Xt))
         perm = rng.permutation(len(te))
         for c, feats in groups.items():
             Xp = Xt.copy()
             idx = [col[f] for f in feats]
             Xp[:, idx] = Xt[perm][:, idx]
-            s = spearman_cols(m.predict(Xp)[:, None], y[te], 50)[0]
+            s = ic(m.predict(Xp))
             rows.append({"fold": fold, "cluster": c, "base_ic": base, "perm_ic": s, "mda": base - s})
     R = pd.DataFrame(rows)
     g = R.groupby("cluster")["mda"]

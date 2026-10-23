@@ -158,6 +158,10 @@ fold after 2025-05.
 
 ## 4. Single-feature D10 check at h = 12
 
+> **Metric fix 2026-10-24:** the D17 anchored IC was tested against the D18 null and **failed** (see
+> `reports/phase2_metric_fix.md`). It cuts the bias about 4× but does not remove it for persistent features. The numbers below
+> are the old monthly-pooled Spearman (biased, information only) and have not been re-scored.
+>
 > **Amended 2026-10-23:** a session-permutation placebo shows that the within-month IC of d_sma20_dev, d_mom5
 > and d_atr_c is a mechanical bias of the monthly-pooled metric for multi-day-persistent features (real IC inside
 > the placebo band); amihud is suspect for the same reason. See `reports/phase2_daily_diagnostics.md`. The D10

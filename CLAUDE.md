@@ -42,7 +42,7 @@ Rules for Claude Code (follow these at all times):
 | Context length | 256 bars (~3.3 trading days), option to test 512 |
 | Model | 2–4 layer causal Transformer, d_model = 128, ~0.74–1.5M parameters (tiny fallback: d_model = 64, ~0.2M) |
 | Validation | Expanding-window walk-forward with purging and embargo; inner validation = last 2 months of each training window; final untouched holdout (2026-01-01..2026-10-09) plus a sealed forward test (after 2026-10-09) |
-| Success metrics | Out-of-sample IC (section 10.6 definition: z-space, pooled per monthly fold), ICIR, t-stat, binomial p of IC>0 folds, hit rate, CRPS, net Sharpe after costs, break-even cost, deflated Sharpe ratio — each for the full period, 2023–2025, and the most recent 24 folds (information only; gates use the D10 recency check) |
+| Success metrics | Out-of-sample anchored IC (section 10.6 definition, D17: training-anchored score and target, per monthly fold), ICIR, t-stat, binomial p of IC>0 folds, hit rate, CRPS, net Sharpe after costs, break-even cost, deflated Sharpe ratio — each for the full period, 2023–2025, and the most recent 24 folds (information only; gates use the D10 recency check) |
 | Hardware | GTX 1070 (8 GB): train in **FP32** (no bf16/fp16) |
 | Later experiments (not now) | Dollar bars; training on many stocks. (Self-supervised pre-training and a fine-tuned Kronos-mini comparison are part of Phase 4, sections 9.4 and 10.3.) |
 
@@ -255,10 +255,10 @@ Compute everything multi-scale. Windows are in 5-minute bars (78 = one day).
 
 On training folds only:
 
-1. IC of each feature vs. realized z at h ∈ {1, 3, 12}, using the section 10.6 definition (Spearman pooled within each calendar month of the training period; ICIR = mean/std across months; t-stat; binomial p of IC>0 months), plus per-time-slot IC; report by year, for 2023–2025 and for the last 24 months of the training window.
+1. IC of each feature vs. realized z at h ∈ {1, 3, 12}, using the section 10.6 anchored IC (D17) on each calendar month of the training period, with the fold's training anchors (score = (x − median_train) / IQR_train clipped to ±5, target = clip(z, ±5) − m_train; sign_train = sign of the mean over training months; ICIR = mean/std across months; t-stat; binomial p of IC>0 months), plus per-time-slot IC (same formula); report by year, for 2023–2025 and for the last 24 months of the training window.
 2. IC decay curve per feature (h = 1 … 24).
 3. Cluster features by |Spearman correlation| distance (hierarchical clustering, threshold 0.7).
-4. Clustered MDA with LightGBM under purged CV: permute a whole cluster at once.
+4. Clustered MDA with LightGBM under purged CV: permute a whole cluster at once; score with the anchored IC (D17; m from the CV-training rows).
 5. Run the conditional up-probability analysis (section 6.9).
 6. Keep 20–40 features: the most stable 1–2 per useful cluster by IC, **plus** any feature with weak IC that passes the extreme-bucket rule in 6.9. Save the list to `configs/features.yaml` with the reason each was kept (IC, extreme lift, or both). Selection is per fold (`by_fold`); Phase 4 uses each fold's own list. **D13:** a fold with fewer than 20 features that pass the rules keeps its short list; never pad it.
 
@@ -498,8 +498,11 @@ For every run append one row to `experiments/registry.csv`: timestamp, git hash,
 
 Metrics definitions:
 
-- **IC (primary)** = Spearman correlation between predicted z and realized z (z = forward return / S_{t,h}), **pooled within each monthly test fold**. Report the mean over folds; **ICIR = mean / std across folds**; **t = ICIR · sqrt(n_folds)**; and a **one-sided binomial p-value** for the share of folds with IC > 0 (H0: p = 0.5).
-- **Cross-check:** per-time-slot IC = Spearman across days at each bar_index, averaged over slots (and shown per half-hour slot).
+- **IC (primary) = anchored IC (D17).** Nothing is centred, ranked or demeaned with test-month statistics. Per monthly test fold: score s_t = the model's predicted z as is (zero = no position); for a single feature s_t = sign_train · (x_t − median_train(x)) / IQR_train(x), clipped to ±5 (training sd if IQR = 0; binary flags: x − training mean). Target y_t = clip(z_t, −5, 5) − m, m = mean of clipped z over the fold's training rows (z = forward return / S_{t,h}). **Anchored IC = Σ s·y / √(Σ s² · Σ y²)** over the test month. Report the mean over folds; **ICIR = mean / std across folds**; **t = ICIR · sqrt(n_folds)**; and a **one-sided binomial p-value** for the share of folds with IC > 0 (H0: p = 0.5). Training-side choices (sign_train, stable-IC selection, clustered MDA) use the same formula on months inside the training window.
+- **Cross-check:** per-time-slot IC = the anchored IC within each half-hour slot (same anchors), averaged over folds and slots.
+- The old Spearman pooled within the month is still reported, labelled **"biased, information only"**: demeaning within the test month uses the month's average forecast, known only at month end, and for persistent (multi-day) features it injects the month's own returns with a minus sign (session-permutation placebo, `reports/phase2_daily_diagnostics.md`).
+- **Metric null test (D18):** a metric is used in a gate only after it scores ≈ 0 on data with no predictability by construction, with a D10 false-pass share near the nominal rate (`tests/test_metric_null.py`; random-sign mirror null in `reports/phase2_metric_fix.md`).
+  **Status 2026-10-24:** D17 as defined fails D18 (`reports/phase2_metric_fix.md`); no IC gate may be run until a metric passes D18 (decisions log).
 - **Do not use** Spearman per day averaged over days: for one stock it ranks bars over time within a day, and overlapping forward windows bias it (on a random walk a 78-bar momentum signal scores ≈ −0.31 at h = 12; see `tests/test_baselines.py::test_ic_metric_bias_placebo`). Do not rank E[r] = ẑ·S either: that rewards ranking by volatility (a constant-mean forecast gets a non-zero IC).
 - **Recency:** every metric is reported for the full period, for 2023–2025, and for the most recent 24 folds (the last 24 are for information only).
 - **Recency check (decision D10)** — a gate passes the recency check only if **(a)** the full-period result passes with **t ≥ 2** and **(b)** over **2023–2025 (36 folds)** the mean IC is **> 0 with t ≥ 1**. For Sharpe-based gates, use the same rule on the per-fold net returns (full period t ≥ 2; 2023–2025 mean > 0 with t ≥ 1).
@@ -537,6 +540,7 @@ T = number of return observations, γ3 = skewness, γ4 = raw kurtosis, N = numbe
 - `test_garch_fixed_params`: GARCH σ at t is unchanged when data after t is deleted, given fixed trained parameters.
 - `test_execution_delay`: in the backtest, the fill for a signal at bar t uses bar t+1's price; shifting all prices after t does not change the signal at t.
 - `test_horizon_scale`: S_{t,h} equals level_t · sqrt(Σ seasonal²) over the right slots and never uses bars after t.
+- `test_metric_null` (D18): on a synthetic random walk with seasonal volatility, a persistent level-like feature and a 1/price feature, the old monthly Spearman shows the bias and the anchored IC (D17) does not.
 - `test_condprob`: on synthetic data where P(up) is known by construction per bucket (e.g. 0.45 / 0.50 / 0.55), the estimated p̂_k falls inside its Wilson interval; on pure noise, the Benjamini–Hochberg step flags roughly no cells.
 
 ---
@@ -551,6 +555,8 @@ T = number of return observations, γ3 = skewness, γ4 = raw kurtosis, N = numbe
 | 4. Model | Sections 8, 9 (including 9.4), 10.3 | Transformer beats LightGBM and CatBoost on IC and CRPS in **paired fold-level tests** (share of folds won, Wilcoxon on fold ICs, Diebold–Mariano on CRPS with day-clustered errors; report per fold); the Transformer itself passes the recency check (D10); volatility head beats GARCH-t QLIKE on identical rows, fold by fold, with Diebold–Mariano (D11); compared with fine-tuned Kronos-mini; ablations: without continuous features, without market stream, with/without self-supervised pre-training, 2 vs 4 layers, expanding vs rolling 3-year vs recency-weighted training window |
 | 5. Backtest and selection | Section 10.2, 10.4, 10.6, 10.7 | At h = 12: net Sharpe positive at 2× costs and passing the recency check (D10: full period t ≥ 2; 2023–2025 mean > 0 with t ≥ 1); DSR > 0.95; break-even cost reported; then ask the user before evaluating the holdout once (and, later, the forward test once) |
 | 6. Paper trading (only if the user asks) | Live inference script on new bars, logging predictions vs outcomes | Live IC over ≥ 3 months within the backtest range before any real capital |
+
+All IC-based gates (D10 recency check, Gate 3, Phase 4 comparisons, D16 rule signs) use the anchored IC (D17), and a metric may be used in a gate only after it passes the metric null test (D18).
 
 Each phase ends with `reports/phaseN_*.md`: what was built, the gate numbers, failures, and the proposed next step.
 
@@ -574,7 +580,7 @@ Each phase ends with `reports/phaseN_*.md`: what was built, the gate numbers, fa
 - [ ] Every run logged to the registry
 - [ ] Holdout untouched until the user approves; forward test not downloaded until the end
 - [ ] No choice (early stopping, calibration, hyperparameters, features) used the test month; inner validation = last 2 training months
-- [ ] IC computed per section 10.6 (z-space, pooled per fold), with t-stat, binomial p, 2023–2025 and last-24-fold results, and the one-bar-delay version
+- [ ] IC computed per section 10.6 (anchored IC, D17: training anchors only, no test-month demeaning; old monthly Spearman labelled biased), with t-stat, binomial p, 2023–2025 and last-24-fold results, and the one-bar-delay version
 - [ ] Model comparisons are paired fold-level tests, not raw averages
 - [ ] Neural training in FP32
 - [ ] A suspiciously high Sharpe (e.g. > 3 on 5-minute single-stock data after costs) is treated as a bug until proven otherwise

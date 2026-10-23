@@ -1,0 +1,131 @@
+{
+ "n_draws": 99,
+ "nominal_d10_rate_iid": 0.01667,
+ "d10_passes_per_draw": {
+  "12": {
+   "anch": {
+    "mean": 2.313131313131313,
+    "min": 0,
+    "max": 20
+   },
+   "old": {
+    "mean": 9.8989898989899,
+    "min": 1,
+    "max": 28
+   },
+   "n_features": 85,
+   "nominal_expected": 1.4169500000000002
+  },
+  "d12": {
+   "anch": {
+    "mean": 2.1414141414141414,
+    "min": 0,
+    "max": 19
+   },
+   "old": {
+    "mean": 8.93939393939394,
+    "min": 1,
+    "max": 28
+   },
+   "n_features": 85,
+   "nominal_expected": 1.4169500000000002
+  }
+ },
+ "features_failing_mean_condition": {
+  "12": {
+   "anch_unsigned": [
+    "d_sma20_dev"
+   ],
+   "anch_signed": [],
+   "old_unsigned": [
+    "amihud",
+    "bb_pctb",
+    "d_atr_c",
+    "d_mom5",
+    "d_prev_ret_atr",
+    "d_sma20_dev",
+    "ema12_26",
+    "ema_dev_12",
+    "ema_dev_26",
+    "ema_dev_78",
+    "fracdiff_lnc",
+    "kalman_slope",
+    "linreg_slope_78",
+    "mom_12",
+    "mom_24",
+    "mom_3",
+    "mom_6",
+    "mom_78",
+    "rsi14",
+    "stoch_k14",
+    "vwap_dev"
+   ],
+   "old_signed": [
+    "d_atr_c",
+    "d_mom5",
+    "d_sma20_dev",
+    "ema12_26",
+    "ema_dev_26",
+    "ema_dev_78",
+    "fracdiff_lnc",
+    "kalman_slope",
+    "linreg_slope_78",
+    "mom_78",
+    "rsi14",
+    "vwap_dev"
+   ]
+  },
+  "d12": {
+   "anch_unsigned": [
+    "d_sma20_dev"
+   ],
+   "anch_signed": [],
+   "old_unsigned": [
+    "amihud",
+    "bb_pctb",
+    "d_atr_c",
+    "d_mom5",
+    "d_prev_ret_atr",
+    "d_sma20_dev",
+    "ema12_26",
+    "ema_dev_12",
+    "ema_dev_26",
+    "ema_dev_78",
+    "fracdiff_lnc",
+    "kalman_slope",
+    "linreg_slope_78",
+    "mom_12",
+    "mom_24",
+    "mom_3",
+    "mom_6",
+    "mom_78",
+    "rsi14",
+    "stoch_k14",
+    "vwap_dev"
+   ],
+   "old_signed": [
+    "d_atr_c",
+    "d_mom5",
+    "d_sma20_dev",
+    "ema12_26",
+    "ema_dev_78",
+    "fracdiff_lnc",
+    "kalman_slope",
+    "linreg_slope_78",
+    "mom_78",
+    "rsi14",
+    "vwap_dev"
+   ]
+  }
+ },
+ "not_scoreable": {
+  "12": [
+   "r_12th30",
+   "sign_12th30"
+  ],
+  "d12": [
+   "r_12th30",
+   "sign_12th30"
+  ]
+ }
+}

@@ -39,7 +39,8 @@ def per_slot_ic(pred, realized, slot, min_obs: int = 20) -> float:
 
 
 def fold_ic(pred, realized, fold) -> pd.Series:
-    """Pooled Spearman IC within each fold (one validation month)."""
+    """Pooled Spearman IC within each fold (one validation month). Biased for predictors with multi-day
+    persistence (D17); reported for information only. The primary metric is `fold_anchored_ic`."""
     df = pd.DataFrame({"p": pred, "y": realized, "f": fold}).dropna()
     return pd.Series({f: spearmanr(g["p"], g["y"]).statistic for f, g in df.groupby("f")
                       if g["p"].nunique() > 1}, dtype=float)
@@ -59,6 +60,37 @@ def fold_ic_stats(fic: pd.Series) -> dict:
     icir = v.mean() / v.std()
     return {"ic": v.mean(), "icir": icir, "t": icir * np.sqrt(n), "pos_share": k / n,
             "binom_p": binomtest(k, n, 0.5, alternative="greater").pvalue, "n_folds": n}
+
+
+Z_CLIP = 5.0
+
+
+def anchored_target(z: np.ndarray, z_train: np.ndarray) -> np.ndarray:
+    """D17 target: y = clip(z, -5, 5) - m, with m = mean of clipped z over the fold's training rows."""
+    m = np.nanmean(np.clip(z_train, -Z_CLIP, Z_CLIP))
+    return np.clip(z, -Z_CLIP, Z_CLIP) - m
+
+
+def anchored_ic(s: np.ndarray, y: np.ndarray, min_obs: int = 1) -> float:
+    """D17 anchored IC = sum(s*y) / sqrt(sum(s^2) * sum(y^2)) over rows where both are finite. Nothing is
+    centred or ranked with the scored rows' own statistics (s and y carry training-period anchors)."""
+    ok = np.isfinite(s) & np.isfinite(y)
+    if ok.sum() < min_obs:
+        return np.nan
+    s, y = s[ok], y[ok]
+    den = np.sqrt((s * s).sum() * (y * y).sum())
+    return float((s * y).sum() / den) if den > 0 else np.nan
+
+
+def fold_anchored_ic(pred, z, fold, m_by_fold: dict, min_obs: int = 1) -> pd.Series:
+    """Anchored IC per fold. `pred` = the model's predicted z as is; `m_by_fold[f]` = mean clipped z over
+    fold f's training rows."""
+    pred, z, fold = np.asarray(pred, float), np.asarray(z, float), np.asarray(fold)
+    out = {}
+    for f in pd.unique(fold):
+        i = fold == f
+        out[f] = anchored_ic(pred[i], np.clip(z[i], -Z_CLIP, Z_CLIP) - m_by_fold[f], min_obs)
+    return pd.Series(out, dtype=float).sort_index()
 
 
 def hit_rate(pred: np.ndarray, realized: np.ndarray) -> float:

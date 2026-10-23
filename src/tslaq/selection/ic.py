@@ -78,6 +78,61 @@ def signed_walk_forward(ic: pd.Series, eval_months, min_past: int = 12) -> pd.Se
     return pd.Series(out, dtype=float)
 
 
+SCORE_CLIP = 5.0
+
+
+def score_anchors(X_train: np.ndarray) -> tuple[np.ndarray, np.ndarray]:
+    """D17 single-feature anchors from a fold's training rows, per column: binary flags (<= 2 distinct
+    values) -> centre = training mean, scale = 1; otherwise centre = training median, scale = IQR (training
+    sd if the IQR is 0). A constant column gets scale NaN (no score)."""
+    X_train = np.asarray(X_train, float)
+    k = X_train.shape[1]
+    centre, scale = np.full(k, np.nan), np.full(k, np.nan)
+    for j in range(k):
+        x = X_train[:, j]
+        x = x[np.isfinite(x)]
+        if len(x) < 2:
+            continue
+        mn, mx = x.min(), x.max()
+        if ((x == mn) | (x == mx)).all():  # binary flag (or constant)
+            centre[j], scale[j] = x.mean(), (1.0 if mx > mn else np.nan)
+            continue
+        lo, med, hi = np.quantile(x, [0.25, 0.5, 0.75])
+        centre[j] = med
+        sd = x.std()
+        scale[j] = hi - lo if hi > lo else (sd if sd > 0 else np.nan)
+    return centre, scale
+
+
+def feature_scores(X: np.ndarray, centre: np.ndarray, scale: np.ndarray) -> np.ndarray:
+    """Unsigned D17 score: clip((x - centre) / scale, -5, 5). Multiply by sign_train for a forecast."""
+    with np.errstate(invalid="ignore"):
+        return np.clip((np.asarray(X, float) - centre) / scale, -SCORE_CLIP, SCORE_CLIP)
+
+
+def anchored_group_ic(S: np.ndarray, y: np.ndarray, group: np.ndarray, min_obs: int = 200) -> pd.DataFrame:
+    """D17 anchored IC of each column of S against y within each group (e.g. calendar month):
+    sum(s*y) / sqrt(sum(s^2) * sum(y^2)) on pairwise-finite rows. Rows must be ordered so that each group is
+    contiguous. Returns a (group x column) frame."""
+    g = np.asarray(group)
+    starts = np.r_[0, np.flatnonzero(g[1:] != g[:-1]) + 1]
+    labels = g[starts]
+    if len(set(labels.tolist())) != len(labels):
+        raise ValueError("groups must be contiguous")
+    S = np.asarray(S, float)
+    M = np.isfinite(S) & np.isfinite(y)[:, None]
+    S0 = np.where(M, S, 0.0)
+    Y0 = np.where(M, np.asarray(y, float)[:, None], 0.0)
+    sy = np.add.reduceat(S0 * Y0, starts, axis=0)
+    ss = np.add.reduceat(S0 * S0, starts, axis=0)
+    yy = np.add.reduceat(Y0 * Y0, starts, axis=0)
+    n = np.add.reduceat(M.astype(np.int64), starts, axis=0)
+    den = np.sqrt(ss * yy)
+    with np.errstate(divide="ignore", invalid="ignore"):
+        ic = np.where((den > 0) & (n >= min_obs), sy / den, np.nan)
+    return pd.DataFrame(ic, index=labels)
+
+
 def slot_ic(F: pd.DataFrame, z: np.ndarray, slot: np.ndarray, min_obs: int = 100) -> pd.DataFrame:
     """Spearman across days at each bar_index (cross-check, 10.6). Rows: slot; columns: features."""
     X = F.to_numpy(float)

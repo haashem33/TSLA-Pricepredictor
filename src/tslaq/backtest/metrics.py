@@ -66,13 +66,13 @@ Z_CLIP = 5.0
 
 
 def anchored_target(z: np.ndarray, z_train: np.ndarray) -> np.ndarray:
-    """D17 target: y = clip(z, -5, 5) - m, with m = mean of clipped z over the fold's training rows."""
+    """D17 (superseded by D19) target: y = clip(z, -5, 5) - m, with m = mean of clipped z over the fold's training rows."""
     m = np.nanmean(np.clip(z_train, -Z_CLIP, Z_CLIP))
     return np.clip(z, -Z_CLIP, Z_CLIP) - m
 
 
 def anchored_ic(s: np.ndarray, y: np.ndarray, min_obs: int = 1) -> float:
-    """D17 anchored IC = sum(s*y) / sqrt(sum(s^2) * sum(y^2)) over rows where both are finite. Nothing is
+    """D17 (superseded by D19) anchored IC = sum(s*y) / sqrt(sum(s^2) * sum(y^2)) over rows where both are finite. Nothing is
     centred or ranked with the scored rows' own statistics (s and y carry training-period anchors)."""
     ok = np.isfinite(s) & np.isfinite(y)
     if ok.sum() < min_obs:
@@ -91,6 +91,33 @@ def fold_anchored_ic(pred, z, fold, m_by_fold: dict, min_obs: int = 1) -> pd.Ser
         i = fold == f
         out[f] = anchored_ic(pred[i], np.clip(z[i], -Z_CLIP, Z_CLIP) - m_by_fold[f], min_obs)
     return pd.Series(out, dtype=float).sort_index()
+
+
+def ic_v2(s: np.ndarray, y: np.ndarray, v_s: float, v_y: float, min_obs: int = 1) -> float:
+    """D19 IC = sum(s*y) / (n * sqrt(v_s * v_y)) over rows where s and y are finite; v_s and v_y are
+    moments from data before the scored rows (training rows, or earlier out-of-sample months)."""
+    ok = np.isfinite(s) & np.isfinite(y)
+    n = int(ok.sum())
+    den = n * np.sqrt(v_s * v_y)
+    return float((s[ok] * y[ok]).sum() / den) if n >= min_obs and den > 0 else np.nan
+
+
+def fold_ic_v2_model(pred, z, fold, zbar_by_fold: dict, vy_by_fold: dict, vs_first: float,
+                     min_obs: int = 1) -> pd.Series:
+    """D19 IC of a model per fold (folds in time order). s = pred - zbar_f (fold f's training mean of clipped
+    z), y = clip(z, +-5); v_y = fold f's training mean of y^2; v_s = mean of s^2 over all earlier
+    out-of-sample folds (the first fold uses `vs_first`, from the D6 inner-validation block)."""
+    pred, z, fold = np.asarray(pred, float), np.asarray(z, float), np.asarray(fold)
+    y = np.clip(z, -Z_CLIP, Z_CLIP)
+    out, ss, nn = {}, 0.0, 0
+    for f in sorted(pd.unique(fold)):
+        i = fold == f
+        s = pred[i] - zbar_by_fold[f]
+        v_s = vs_first if nn == 0 else ss / nn
+        out[f] = ic_v2(s, y[i], v_s, vy_by_fold[f], min_obs)
+        ok = np.isfinite(s) & np.isfinite(y[i])
+        ss, nn = ss + float((s[ok] ** 2).sum()), nn + int(ok.sum())
+    return pd.Series(out, dtype=float)
 
 
 def hit_rate(pred: np.ndarray, realized: np.ndarray) -> float:

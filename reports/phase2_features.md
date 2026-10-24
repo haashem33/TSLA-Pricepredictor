@@ -162,6 +162,9 @@ fold after 2025-05.
 > `reports/phase2_metric_fix.md`). It cuts the bias about 4× but does not remove it for persistent features. The numbers below
 > are the old monthly-pooled Spearman (biased, information only) and have not been re-scored.
 >
+> **2026-10-24 (v2):** the corrected metric D19 also failed the pre-registered null criteria D20 (mirror null with drift),
+> see `reports/phase2_metric_fix_v2.md`. Under D19 the h = 12 signed IC of d_sma20_dev is +0.005 (t 0.5). The D20 fallback applies.
+>
 > **Amended 2026-10-23:** a session-permutation placebo shows that the within-month IC of d_sma20_dev, d_mom5
 > and d_atr_c is a mechanical bias of the monthly-pooled metric for multi-day-persistent features (real IC inside
 > the placebo band); amihud is suspect for the same reason. See `reports/phase2_daily_diagnostics.md`. The D10

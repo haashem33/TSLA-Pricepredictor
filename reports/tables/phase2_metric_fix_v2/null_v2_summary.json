@@ -1,0 +1,98 @@
+{
+ "nominal_d10_rate_iid": 0.01667,
+ "tolerance": 0.003,
+ "max_pooled_d10": 0.022,
+ "max_feature_d10": 0.08,
+ "criteria": {
+  "drift_12": {
+   "n_draws": 40,
+   "enough_draws": true,
+   "mean_z12": 0.02822537698680667,
+   "n_features": 83,
+   "features_failing_mean": [
+    "garch_logvar12",
+    "garch_sigma",
+    "gk_78",
+    "hmm_p0",
+    "hmm_p2",
+    "parkinson_78",
+    "range",
+    "rv_today_deseas",
+    "vreg_level_pct",
+    "vreg_sigma_pct"
+   ],
+   "max_abs_unsigned_mean": 0.010758500712280863,
+   "pooled_d10_rate": 0.023493975903614458,
+   "pooled_d10_ok": false,
+   "max_feature_d10_rate": 0.125,
+   "max_feature_d10": "vreg_level_pct",
+   "features_above_8pct": [
+    "fracdiff_lnc",
+    "vreg_level_pct"
+   ],
+   "mean_d10_per_draw": 1.95,
+   "pass": false
+  },
+  "drift_d12": {
+   "n_draws": 40,
+   "enough_draws": true,
+   "mean_z12": 0.02822537698680667,
+   "n_features": 83,
+   "features_failing_mean": [
+    "bar_index",
+    "garch_logvar12",
+    "garch_sigma",
+    "gk_78",
+    "hmm_p0",
+    "hmm_p2",
+    "minutes_to_close",
+    "parkinson_78",
+    "range",
+    "rv_today_deseas",
+    "vreg_level_pct",
+    "vreg_sigma_pct"
+   ],
+   "max_abs_unsigned_mean": 0.010672926581598702,
+   "pooled_d10_rate": 0.024397590361445783,
+   "pooled_d10_ok": false,
+   "max_feature_d10_rate": 0.125,
+   "max_feature_d10": "vreg_level_pct",
+   "features_above_8pct": [
+    "vreg_level_pct"
+   ],
+   "mean_d10_per_draw": 2.025,
+   "pass": false
+  },
+  "nodrift_12": {
+   "n_draws": 60,
+   "enough_draws": true,
+   "mean_z12": -0.0005959109213189642,
+   "n_features": 83,
+   "features_failing_mean": [],
+   "max_abs_unsigned_mean": 0.0033958543913286555,
+   "pooled_d10_rate": 0.016867469879518072,
+   "pooled_d10_ok": true,
+   "max_feature_d10_rate": 0.06666666666666667,
+   "max_feature_d10": "obv_slope_z",
+   "features_above_8pct": [],
+   "mean_d10_per_draw": 1.4,
+   "pass": true
+  },
+  "nodrift_d12": {
+   "n_draws": 60,
+   "enough_draws": true,
+   "mean_z12": -0.0005959109213189642,
+   "n_features": 83,
+   "features_failing_mean": [],
+   "max_abs_unsigned_mean": 0.003416368048026047,
+   "pooled_d10_rate": 0.017670682730923693,
+   "pooled_d10_ok": true,
+   "max_feature_d10_rate": 0.06666666666666667,
+   "max_feature_d10": "earn_react",
+   "features_above_8pct": [],
+   "mean_d10_per_draw": 1.4666666666666666,
+   "pass": true
+  }
+ },
+ "criterion_3_pass": false
+}

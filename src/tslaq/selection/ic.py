@@ -138,3 +138,63 @@ def slot_ic(F: pd.DataFrame, z: np.ndarray, slot: np.ndarray, min_obs: int = 100
     X = F.to_numpy(float)
     rows = {k: spearman_cols(X[slot == k], z[slot == k], min_obs) for k in np.unique(slot)}
     return pd.DataFrame(rows, index=F.columns).T
+
+
+def score_anchors_v2(X_train: np.ndarray) -> dict:
+    """D19 single-feature anchors from a fold's training rows, per column. c(x) = clip((x - median) / IQR,
+    +-5) (training sd if the IQR is 0); binary flags (<= 2 distinct values) as 0/1 (1 = the larger value).
+    mu = training mean of c(x), vs = training mean of (c(x) - mu)^2. A constant column gets scale NaN."""
+    X_train = np.asarray(X_train, float)
+    k = X_train.shape[1]
+    A = {n: np.full(k, np.nan) for n in ("centre", "scale", "hi", "mu", "vs")}
+    A["binary"] = np.zeros(k, bool)
+    for j in range(k):
+        x = X_train[:, j]
+        x = x[np.isfinite(x)]
+        if len(x) < 2:
+            continue
+        mn, mx = x.min(), x.max()
+        if ((x == mn) | (x == mx)).all():
+            A["binary"][j], A["hi"][j], A["scale"][j] = True, mx, (1.0 if mx > mn else np.nan)
+            continue
+        lo, med, hi = np.quantile(x, [0.25, 0.5, 0.75])
+        sd = x.std()
+        A["centre"][j], A["scale"][j] = med, (hi - lo if hi > lo else (sd if sd > 0 else np.nan))
+    C = _clipped(X_train, A)
+    with np.errstate(invalid="ignore"):
+        A["mu"] = np.nanmean(C, axis=0) if len(C) else A["mu"]
+        A["vs"] = np.nanmean((C - A["mu"]) ** 2, axis=0) if len(C) else A["vs"]
+    return A
+
+
+def _clipped(X: np.ndarray, A: dict) -> np.ndarray:
+    X = np.asarray(X, float)
+    with np.errstate(invalid="ignore"):
+        cont = np.clip((X - A["centre"]) / A["scale"], -SCORE_CLIP, SCORE_CLIP)
+        flag = np.where(np.isfinite(X), (X == A["hi"]).astype(float), np.nan)
+        out = np.where(A["binary"], flag, cont)
+    return np.where(np.isfinite(A["scale"]), out, np.nan)
+
+
+def feature_scores_v2(X: np.ndarray, A: dict) -> np.ndarray:
+    """Unsigned D19 score c(x) - mean_train(c(x)). Multiply by sign_train for a forecast."""
+    return _clipped(X, A) - A["mu"]
+
+
+def v2_group_ic(S: np.ndarray, y: np.ndarray, group: np.ndarray, vs: np.ndarray, vy: float,
+                min_obs: int = 200) -> pd.DataFrame:
+    """D19 IC of each column of S against y within each (contiguous) group: sum(s*y) / (n * sqrt(vs * vy)),
+    n = rows with finite s and y; vs (per column) and vy are training moments, never the group's own."""
+    g = np.asarray(group)
+    starts = np.r_[0, np.flatnonzero(g[1:] != g[:-1]) + 1]
+    labels = g[starts]
+    if len(set(labels.tolist())) != len(labels):
+        raise ValueError("groups must be contiguous")
+    S = np.asarray(S, float)
+    M = np.isfinite(S) & np.isfinite(y)[:, None]
+    sy = np.add.reduceat(np.where(M, S * np.asarray(y, float)[:, None], 0.0), starts, axis=0)
+    n = np.add.reduceat(M.astype(np.int64), starts, axis=0)
+    den = n * np.sqrt(np.asarray(vs, float) * vy)
+    with np.errstate(divide="ignore", invalid="ignore"):
+        ic = np.where((den > 0) & (n >= min_obs), sy / den, np.nan)
+    return pd.DataFrame(ic, index=labels)

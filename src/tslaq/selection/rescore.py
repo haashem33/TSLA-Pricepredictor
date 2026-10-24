@@ -20,7 +20,15 @@ from tslaq.features.regime import GaussianHMM
 from tslaq.features.returns import add_returns
 from tslaq.features.volatility import add_sigma, seasonal_profile
 from tslaq.labels.forward_returns import add_labels
-from tslaq.selection.ic import anchored_group_ic, delayed, feature_scores, score_anchors
+from tslaq.selection.ic import (
+    anchored_group_ic,
+    delayed,
+    feature_scores,
+    feature_scores_v2,
+    score_anchors,
+    score_anchors_v2,
+    v2_group_ic,
+)
 from tslaq.utils.io import interim_path, load_config
 
 H = (1, 3, 12)
@@ -113,3 +121,27 @@ def anchored_fold(X: pd.DataFrame, Z: dict, month: np.ndarray, M: str, min_obs: 
         g["h"] = str(key)
         rows.append(g)
     return pd.concat(rows, ignore_index=True), pd.Series(centre, X.columns), pd.Series(scale, X.columns), ms
+
+
+def anchored_fold_v2(X: pd.DataFrame, Z: dict, month: np.ndarray, M: str, min_obs: int = 200):
+    """D19 IC of every feature of fold M, for every month <= M, with fold M's anchors (median / IQR, training
+    mean of the clipped score, V_s, and V_y per target, all from months < M). Returns (long IC table with
+    columns feature, h, month, ic; anchors dict; V_y by key)."""
+    upto = month <= M
+    tr = month < M
+    Xv = X.to_numpy(float)
+    A = score_anchors_v2(Xv[tr])
+    S = feature_scores_v2(Xv[upto], A)
+    mon = month[upto]
+    rows, vys = [], {}
+    for key, z in Z.items():
+        y = np.clip(z, -Z_CLIP, Z_CLIP)
+        vy = float(np.nanmean(y[tr] ** 2))
+        vys[key] = vy
+        G = v2_group_ic(S, y[upto], mon, A["vs"], vy, min_obs)
+        G.columns = X.columns
+        g = G.stack(future_stack=True).rename("ic").reset_index()
+        g.columns = ["month", "feature", "ic"]
+        g["h"] = str(key)
+        rows.append(g)
+    return pd.concat(rows, ignore_index=True), A, vys

@@ -1,0 +1,10 @@
+{
+ "real_mean_z12": 0.00192391473467247,
+ "flagged_1x": [],
+ "max_abs_implied_bias_1x": 0.0005579681194914633,
+ "max_abs_implied_bias_3x": 0.0016739043584743899,
+ "corr_predicted_vs_measured_shift_1x": {
+  "12": 0.9910530322796078,
+  "d12": 0.9935080774956071
+ }
+}

@@ -163,7 +163,10 @@ fold after 2025-05.
 > are the old monthly-pooled Spearman (biased, information only) and have not been re-scored.
 >
 > **2026-10-24 (v2):** the corrected metric D19 also failed the pre-registered null criteria D20 (mirror null with drift),
-> see `reports/phase2_metric_fix_v2.md`. Under D19 the h = 12 signed IC of d_sma20_dev is +0.005 (t 0.5). The D20 fallback applies.
+> see `reports/phase2_metric_fix_v2.md`. Under D19 the h = 12 signed IC of d_sma20_dev is +0.005 (t 0.5).
+>
+> **2026-10-25 (v3):** with the corrected drift (D21) D19 still narrowly fails criterion 3 (`reports/phase2_metric_fix_v3.md`);
+> the D20 fallback applies. The numbers below have not been re-scored.
 >
 > **Amended 2026-10-23:** a session-permutation placebo shows that the within-month IC of d_sma20_dev, d_mom5
 > and d_atr_c is a mechanical bias of the monthly-pooled metric for multi-day-persistent features (real IC inside

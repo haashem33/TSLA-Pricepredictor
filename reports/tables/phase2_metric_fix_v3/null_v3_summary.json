@@ -1,0 +1,75 @@
+{
+ "nominal_d10_rate_iid": 0.01667,
+ "tolerance": 0.003,
+ "max_pooled_d10": 0.022,
+ "max_feature_d10": 0.08,
+ "criteria": {
+  "drift1x_12": {
+   "n_draws": 40,
+   "enough_draws": true,
+   "mean_z12": 0.0019241747077870773,
+   "n_features": 83,
+   "features_failing_mean": [
+    "dow"
+   ],
+   "max_abs_unsigned_mean": 0.0039543807557406805,
+   "pooled_d10_rate": 0.01927710843373494,
+   "pooled_d10_ok": true,
+   "max_feature_d10_rate": 0.075,
+   "max_feature_d10": "earn_react",
+   "features_above_8pct": [],
+   "mean_d10_per_draw": 1.6,
+   "pass": false
+  },
+  "drift1x_d12": {
+   "n_draws": 40,
+   "enough_draws": true,
+   "mean_z12": 0.0019241747077870773,
+   "n_features": 83,
+   "features_failing_mean": [
+    "dow"
+   ],
+   "max_abs_unsigned_mean": 0.004188692306069051,
+   "pooled_d10_rate": 0.020180722891566263,
+   "pooled_d10_ok": true,
+   "max_feature_d10_rate": 0.1,
+   "max_feature_d10": "earn_react",
+   "features_above_8pct": [
+    "earn_react"
+   ],
+   "mean_d10_per_draw": 1.675,
+   "pass": false
+  },
+  "nodrift_12": {
+   "n_draws": 60,
+   "enough_draws": true,
+   "mean_z12": -0.0005959109213189642,
+   "n_features": 83,
+   "features_failing_mean": [],
+   "max_abs_unsigned_mean": 0.0033958543913286555,
+   "pooled_d10_rate": 0.016867469879518072,
+   "pooled_d10_ok": true,
+   "max_feature_d10_rate": 0.06666666666666667,
+   "max_feature_d10": "obv_slope_z",
+   "features_above_8pct": [],
+   "mean_d10_per_draw": 1.4,
+   "pass": true
+  },
+  "nodrift_d12": {
+   "n_draws": 60,
+   "enough_draws": true,
+   "mean_z12": -0.0005959109213189642,
+   "n_features": 83,
+   "features_failing_mean": [],
+   "max_abs_unsigned_mean": 0.003416368048026047,
+   "pooled_d10_rate": 0.017670682730923693,
+   "pooled_d10_ok": true,
+   "max_feature_d10_rate": 0.06666666666666667,
+   "max_feature_d10": "earn_react",
+   "features_above_8pct": [],
+   "mean_d10_per_draw": 1.4666666666666666,
+   "pass": true
+  }
+ },
+ "criterion_3_pass": false
+}

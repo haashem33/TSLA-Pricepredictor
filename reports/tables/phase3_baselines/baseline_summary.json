@@ -1,0 +1,31 @@
+{
+ "passing_models": [
+  "M3"
+ ],
+ "phase4_baseline": "M3",
+ "decision": "Phase 4 may proceed",
+ "best_model_by_t_h12_delayed": "M3",
+ "family_wise": {
+  "n_seeds": 20,
+  "models": [
+   "M1",
+   "M2",
+   "M3",
+   "M4"
+  ],
+  "seeds_any_pass": 1,
+  "share_any_pass": 0.05,
+  "per_model_pass": {
+   "M1": 0,
+   "M2": 0,
+   "M3": 1,
+   "M4": 0
+  }
+ },
+ "null_status": {
+  "M1": "K = 20",
+  "M2": "K = 20",
+  "M3": "K = 20",
+  "M4": "K = 20"
+ }
+}

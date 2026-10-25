@@ -20,6 +20,8 @@ all scoreable features and draws <= 2.2%; no single feature above 8%.
 Usage: python scripts/phase2_metric_null_v2.py --variant nodrift --workers 5 --draws 0 59
        python scripts/phase2_metric_null_v2.py --variant drift --workers 5 --draws 0 39
        python scripts/phase2_metric_null_v2.py --variant drift1x --workers 5 --draws 0 39
+       python scripts/phase2_metric_null_v2.py --calibrate-fallback   (D22: baseline mean z_12 of seeds 2000..2299)
+       python scripts/phase2_metric_null_v2.py --variant fallback --workers 5 --draws 0 299
        python scripts/phase2_metric_null_v2.py --summarize        (D20 as run 2026-10-24: nodrift + drift)
        python scripts/phase2_metric_null_v2.py --summarize-v3     (D21: nodrift + drift1x)
 """
@@ -46,10 +48,14 @@ from tslaq.selection import rescore as rs
 from tslaq.utils.io import ROOT
 
 warnings.filterwarnings("ignore")
-OUT = {v: ROOT / "data" / "processed" / f"phase2_metric_null_v2_{v}" for v in ("nodrift", "drift", "drift1x")}
+OUT = {v: ROOT / "data" / "processed" / f"phase2_metric_null_v2_{v}" for v in ("nodrift", "drift", "drift1x", "fallback")}
 TAB = ROOT / "reports" / "tables" / "phase2_metric_fix_v2"
 MIN_DRAWS = {"nodrift": 60, "drift": 40, "drift1x": 40}
 MU_1X = 1.4885215441940714e-06  # D21 calibration, see module docstring
+REAL_Z12 = 0.00192391473467247  # real 2016-2025 regular-session mean of z_12
+K_INV_S = 1663.537285734853  # 12 * mean(1 / S_12) over the real rows with finite z_12
+CAL = ROOT / "reports" / "tables" / "phase2_rescore" / "null_fallback_calibration.json"
+SEED0 = {"fallback": 2000}  # D22: new independent seeds 2000..2299; all other variants 1000 + i
 TOL, MAX_POOLED, MAX_FEATURE = 0.003, 0.022, 0.08
 G = p1.G
 
@@ -79,11 +85,13 @@ def run_draw(arg) -> float:
     if not G:
         p1.init()
     t0 = time.time()
-    raw = p1.mirror(G["raw"], np.random.default_rng(1000 + i))
+    raw = p1.mirror(G["raw"], np.random.default_rng(SEED0.get(variant, 1000) + i))
     if variant == "drift":
         raw = add_drift(raw, real_mu(G["raw"]))
     elif variant == "drift1x":
         raw = add_drift(raw, MU_1X, raw["bar_index"].to_numpy() > 0)
+    elif variant == "fallback":
+        raw = add_drift(raw, json.loads(CAL.read_text())["mu"], raw["bar_index"].to_numpy() > 0)
     L = rs.base_frame(raw, G["lam"]["TSLA"], (12,))
     F_free, Frz_free = rs.free_features(L, G["mkt"], G["react"])
     prof, pos = rs.profile(L)
@@ -169,6 +177,26 @@ def summarize(variants=("nodrift", "drift"), tab=TAB, prefix="null_v2"):
               .to_string(index=False))
 
 
+def _base_mean_z(i: int) -> float:
+    if not G:
+        p1.init()
+    raw = p1.mirror(G["raw"], np.random.default_rng(SEED0["fallback"] + i))
+    return float(np.nanmean(rs.base_frame(raw, G["lam"]["TSLA"], (12,))["z_12"].to_numpy()))
+
+
+def calibrate_fallback(n: int = 300, workers: int = 5):
+    """D22 / D21 procedure on the new seeds: mu = (real mean z_12 - b) / (12 mean(1/S_12)), b = pooled mean z_12
+    of the mirrored series without drift (no feature is computed or scored)."""
+    with Pool(workers, initializer=p1.init) as pool:
+        b = pool.map(_base_mean_z, range(n), chunksize=4)
+    mu = (REAL_Z12 - float(np.mean(b))) / K_INV_S
+    CAL.parent.mkdir(parents=True, exist_ok=True)
+    CAL.write_text(json.dumps({"seeds": [SEED0["fallback"], SEED0["fallback"] + n - 1], "baseline_mean_z12": float(np.mean(b)),
+                               "baseline_sd_per_draw": float(np.std(b, ddof=1)), "mu_per_intraday_bar": mu, "mu": mu,
+                               "target_mean_z12": REAL_Z12, "k_inv_s": K_INV_S}, indent=1))
+    print(CAL.read_text())
+
+
 if __name__ == "__main__":
     ap = argparse.ArgumentParser()
     ap.add_argument("--variant", choices=list(OUT), default="nodrift")
@@ -176,7 +204,10 @@ if __name__ == "__main__":
     ap.add_argument("--workers", type=int, default=1)
     ap.add_argument("--summarize", action="store_true")
     ap.add_argument("--summarize-v3", action="store_true")
+    ap.add_argument("--calibrate-fallback", action="store_true")
     a = ap.parse_args()
+    if a.calibrate_fallback:
+        calibrate_fallback(workers=a.workers or 5)
     if a.draws:
         idx = [(i, a.variant) for i in range(a.draws[0], a.draws[1] + 1)]
         if a.workers > 1:

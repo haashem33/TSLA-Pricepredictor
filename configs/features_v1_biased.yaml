@@ -1,0 +1,7304 @@
+generated: '2026-10-23'
+data_version: v2
+note: Feature selection is per fold. Phase 4 must use by_fold[<validation month>] for that fold; no single list chosen across folds may be used. 'rz' = rolling z-score over the previous 1560 bars (used
+  when the raw feature failed ADF/KPSS on that fold's training data).
+settings:
+  stable_ic:
+    min_abs_t: 2.0
+    min_year_sign_share: 0.7
+    last24_same_sign: true
+    delayed_min_abs_t: 2.0
+  extreme_rule:
+    bh_fdr: 0.1
+    min_year_sign_share: 0.7
+    mean_fwd_same_sign: true
+    min_year_n_eff: 30
+  cluster_threshold: 0.7
+  max_features: 40
+  min_features: 20
+  max_per_cluster: 2
+  rz_window_bars: 1560
+  condprob_cost_round_trip: null
+  mda_k: 5
+by_fold:
+  2018-01:
+  - feature: spy_z
+    version: raw
+    basis: both
+  - feature: d_sma20_dev
+    version: raw
+    basis: IC
+  - feature: earn_after
+    version: raw
+    basis: IC
+  - feature: close_location
+    version: raw
+    basis: both
+  - feature: body_ratio
+    version: raw
+    basis: both
+  - feature: mom_3
+    version: raw
+    basis: extreme
+  - feature: qqq_z
+    version: raw
+    basis: both
+  - feature: stoch_k14
+    version: raw
+    basis: extreme
+  - feature: macd_hist
+    version: raw
+    basis: extreme
+  - feature: bb_pctb
+    version: raw
+    basis: extreme
+  - feature: dL
+    version: raw
+    basis: both
+  - feature: dH
+    version: raw
+    basis: both
+  2018-02:
+  - feature: d_sma20_dev
+    version: raw
+    basis: IC
+  - feature: earn_after
+    version: raw
+    basis: IC
+  - feature: close_location
+    version: raw
+    basis: extreme
+  - feature: garch_resid
+    version: raw
+    basis: extreme
+  - feature: spy_z
+    version: raw
+    basis: both
+  - feature: mom_3
+    version: raw
+    basis: both
+  - feature: qqq_z
+    version: raw
+    basis: both
+  - feature: stoch_k14
+    version: raw
+    basis: extreme
+  - feature: macd_hist
+    version: raw
+    basis: extreme
+  - feature: bb_pctb
+    version: raw
+    basis: extreme
+  - feature: dL
+    version: raw
+    basis: both
+  - feature: dH
+    version: raw
+    basis: extreme
+  2018-03:
+  - feature: d_sma20_dev
+    version: raw
+    basis: IC
+  - feature: qqq_relvol
+    version: rz
+    basis: IC
+  - feature: spy_relvol
+    version: rz
+    basis: IC
+  - feature: close_location
+    version: raw
+    basis: both
+  - feature: body_ratio
+    version: raw
+    basis: both
+  - feature: spy_z
+    version: raw
+    basis: both
+  - feature: mom_3
+    version: raw
+    basis: extreme
+  - feature: qqq_z
+    version: raw
+    basis: both
+  - feature: stoch_k14
+    version: raw
+    basis: extreme
+  - feature: mom_6
+    version: raw
+    basis: extreme
+  - feature: dL
+    version: raw
+    basis: both
+  - feature: macd_hist
+    version: raw
+    basis: extreme
+  - feature: dH
+    version: raw
+    basis: both
+  2018-04:
+  - feature: spy_z
+    version: raw
+    basis: both
+  - feature: d_sma20_dev
+    version: raw
+    basis: IC
+  - feature: qqq_relvol
+    version: rz
+    basis: IC
+  - feature: spy_relvol
+    version: rz
+    basis: IC
+  - feature: close_location
+    version: raw
+    basis: both
+  - feature: body_ratio
+    version: raw
+    basis: both
+  - feature: mom_3
+    version: raw
+    basis: both
+  - feature: qqq_z
+    version: raw
+    basis: both
+  - feature: stoch_k14
+    version: raw
+    basis: extreme
+  - feature: macd_hist
+    version: raw
+    basis: extreme
+  - feature: mom_6
+    version: raw
+    basis: extreme
+  - feature: dL
+    version: raw
+    basis: both
+  - feature: dH
+    version: raw
+    basis: both
+  2018-05:
+  - feature: spy_z
+    version: raw
+    basis: both
+  - feature: d_sma20_dev
+    version: raw
+    basis: IC
+  - feature: close_location
+    version: raw
+    basis: both
+  - feature: body_ratio
+    version: raw
+    basis: both
+  - feature: mom_3
+    version: raw
+    basis: both
+  - feature: stoch_k14
+    version: raw
+    basis: extreme
+  - feature: qqq_z
+    version: raw
+    basis: both
+  - feature: macd_hist
+    version: raw
+    basis: extreme
+  - feature: mom_6
+    version: raw
+    basis: extreme
+  - feature: dL
+    version: raw
+    basis: both
+  - feature: dH
+    version: raw
+    basis: both
+  - feature: linreg_slope_78
+    version: raw
+    basis: IC
+  - feature: d_mom5
+    version: raw
+    basis: IC
+  2018-06:
+  - feature: spy_z
+    version: raw
+    basis: both
+  - feature: d_sma20_dev
+    version: raw
+    basis: IC
+  - feature: earn_after
+    version: raw
+    basis: IC
+  - feature: close_location
+    version: raw
+    basis: both
+  - feature: body_ratio
+    version: raw
+    basis: both
+  - feature: mom_3
+    version: raw
+    basis: both
+  - feature: stoch_k14
+    version: raw
+    basis: extreme
+  - feature: qqq_z
+    version: raw
+    basis: both
+  - feature: macd_hist
+    version: raw
+    basis: extreme
+  - feature: mom_6
+    version: raw
+    basis: extreme
+  - feature: dL
+    version: raw
+    basis: both
+  - feature: dH
+    version: raw
+    basis: both
+  - feature: linreg_slope_78
+    version: raw
+    basis: IC
+  - feature: d_mom5
+    version: raw
+    basis: IC
+  2018-07:
+  - feature: spy_z
+    version: raw
+    basis: both
+  - feature: d_sma20_dev
+    version: raw
+    basis: IC
+  - feature: earn_after
+    version: raw
+    basis: IC
+  - feature: close_location
+    version: raw
+    basis: both
+  - feature: body_ratio
+    version: raw
+    basis: both
+  - feature: mom_3
+    version: raw
+    basis: both
+  - feature: stoch_k14
+    version: raw
+    basis: extreme
+  - feature: qqq_z
+    version: raw
+    basis: both
+  - feature: macd_hist
+    version: raw
+    basis: extreme
+  - feature: dL
+    version: raw
+    basis: both
+  - feature: mom_6
+    version: raw
+    basis: extreme
+  - feature: dH
+    version: raw
+    basis: both
+  - feature: linreg_slope_78
+    version: raw
+    basis: IC
+  - feature: d_mom5
+    version: raw
+    basis: IC
+  2018-08:
+  - feature: spy_z
+    version: raw
+    basis: both
+  - feature: d_sma20_dev
+    version: raw
+    basis: IC
+  - feature: earn_after
+    version: raw
+    basis: IC
+  - feature: fracdiff_lnc
+    version: rz
+    basis: IC
+  - feature: close_location
+    version: raw
+    basis: both
+  - feature: body_ratio
+    version: raw
+    basis: both
+  - feature: mom_3
+    version: raw
+    basis: both
+  - feature: stoch_k14
+    version: raw
+    basis: extreme
+  - feature: qqq_z
+    version: raw
+    basis: both
+  - feature: macd_hist
+    version: raw
+    basis: extreme
+  - feature: dL
+    version: raw
+    basis: both
+  - feature: dH
+    version: raw
+    basis: both
+  - feature: mom_6
+    version: raw
+    basis: extreme
+  - feature: linreg_slope_78
+    version: raw
+    basis: IC
+  - feature: d_mom5
+    version: raw
+    basis: IC
+  2018-09:
+  - feature: spy_z
+    version: raw
+    basis: both
+  - feature: d_sma20_dev
+    version: raw
+    basis: IC
+  - feature: fracdiff_lnc
+    version: rz
+    basis: IC
+  - feature: earn_after
+    version: raw
+    basis: IC
+  - feature: d_mom5
+    version: raw
+    basis: IC
+  - feature: close_location
+    version: raw
+    basis: both
+  - feature: body_ratio
+    version: raw
+    basis: both
+  - feature: mom_3
+    version: raw
+    basis: both
+  - feature: stoch_k14
+    version: raw
+    basis: extreme
+  - feature: qqq_z
+    version: raw
+    basis: both
+  - feature: macd_hist
+    version: raw
+    basis: extreme
+  - feature: dL
+    version: raw
+    basis: both
+  - feature: dH
+    version: raw
+    basis: both
+  - feature: mom_6
+    version: raw
+    basis: extreme
+  - feature: linreg_slope_78
+    version: raw
+    basis: IC
+  - feature: mom_78
+    version: raw
+    basis: IC
+  2018-10:
+  - feature: spy_z
+    version: raw
+    basis: both
+  - feature: d_sma20_dev
+    version: raw
+    basis: IC
+  - feature: fracdiff_lnc
+    version: rz
+    basis: IC
+  - feature: earn_after
+    version: raw
+    basis: IC
+  - feature: d_mom5
+    version: raw
+    basis: IC
+  - feature: kalman_slope
+    version: rz
+    basis: IC
+  - feature: close_location
+    version: raw
+    basis: both
+  - feature: body_ratio
+    version: raw
+    basis: both
+  - feature: mom_3
+    version: raw
+    basis: both
+  - feature: stoch_k14
+    version: raw
+    basis: extreme
+  - feature: qqq_z
+    version: raw
+    basis: both
+  - feature: macd_hist
+    version: raw
+    basis: extreme
+  - feature: mom_6
+    version: raw
+    basis: extreme
+  - feature: dL
+    version: raw
+    basis: both
+  - feature: dH
+    version: raw
+    basis: both
+  - feature: vr12_256
+    version: raw
+    basis: extreme
+  - feature: linreg_slope_78
+    version: raw
+    basis: IC
+  - feature: mom_78
+    version: raw
+    basis: IC
+  2018-11:
+  - feature: spy_z
+    version: raw
+    basis: both
+  - feature: d_sma20_dev
+    version: raw
+    basis: IC
+  - feature: earn_after
+    version: raw
+    basis: IC
+  - feature: fracdiff_lnc
+    version: rz
+    basis: IC
+  - feature: close_location
+    version: raw
+    basis: both
+  - feature: body_ratio
+    version: raw
+    basis: both
+  - feature: mom_3
+    version: raw
+    basis: both
+  - feature: qqq_z
+    version: raw
+    basis: both
+  - feature: stoch_k14
+    version: raw
+    basis: extreme
+  - feature: macd_hist
+    version: raw
+    basis: extreme
+  - feature: mom_6
+    version: raw
+    basis: extreme
+  - feature: dL
+    version: raw
+    basis: both
+  - feature: dH
+    version: raw
+    basis: both
+  - feature: linreg_slope_78
+    version: raw
+    basis: both
+  - feature: spy_mom12
+    version: raw
+    basis: extreme
+  - feature: mom_78
+    version: raw
+    basis: IC
+  - feature: d_mom5
+    version: raw
+    basis: IC
+  2018-12:
+  - feature: spy_z
+    version: raw
+    basis: both
+  - feature: d_sma20_dev
+    version: raw
+    basis: IC
+  - feature: earn_after
+    version: raw
+    basis: IC
+  - feature: fracdiff_lnc
+    version: rz
+    basis: IC
+  - feature: d_mom5
+    version: raw
+    basis: IC
+  - feature: close_location
+    version: raw
+    basis: both
+  - feature: mom_3
+    version: raw
+    basis: both
+  - feature: body_ratio
+    version: raw
+    basis: both
+  - feature: qqq_z
+    version: raw
+    basis: both
+  - feature: stoch_k14
+    version: raw
+    basis: extreme
+  - feature: macd_hist
+    version: raw
+    basis: extreme
+  - feature: mom_6
+    version: raw
+    basis: extreme
+  - feature: dL
+    version: raw
+    basis: both
+  - feature: dH
+    version: raw
+    basis: both
+  - feature: linreg_slope_78
+    version: raw
+    basis: IC
+  - feature: vr12_256
+    version: raw
+    basis: extreme
+  - feature: mom_78
+    version: raw
+    basis: IC
+  2019-01:
+  - feature: spy_z
+    version: rz
+    basis: both
+  - feature: d_sma20_dev
+    version: raw
+    basis: IC
+  - feature: earn_after
+    version: raw
+    basis: IC
+  - feature: fracdiff_lnc
+    version: rz
+    basis: IC
+  - feature: d_mom5
+    version: raw
+    basis: IC
+  - feature: close_location
+    version: raw
+    basis: both
+  - feature: body_ratio
+    version: raw
+    basis: both
+  - feature: mom_3
+    version: raw
+    basis: both
+  - feature: stoch_k14
+    version: raw
+    basis: extreme
+  - feature: qqq_z
+    version: raw
+    basis: both
+  - feature: macd_hist
+    version: raw
+    basis: extreme
+  - feature: dL
+    version: raw
+    basis: both
+  - feature: mom_6
+    version: raw
+    basis: extreme
+  - feature: dH
+    version: raw
+    basis: both
+  - feature: linreg_slope_78
+    version: raw
+    basis: both
+  - feature: spy_mom12
+    version: raw
+    basis: extreme
+  - feature: vr12_256
+    version: raw
+    basis: extreme
+  - feature: mom_78
+    version: raw
+    basis: IC
+  2019-02:
+  - feature: spy_z
+    version: raw
+    basis: both
+  - feature: d_sma20_dev
+    version: raw
+    basis: IC
+  - feature: earn_after
+    version: raw
+    basis: IC
+  - feature: fracdiff_lnc
+    version: rz
+    basis: IC
+  - feature: d_mom5
+    version: raw
+    basis: IC
+  - feature: kalman_slope
+    version: rz
+    basis: IC
+  - feature: close_location
+    version: raw
+    basis: both
+  - feature: body_ratio
+    version: raw
+    basis: both
+  - feature: mom_3
+    version: raw
+    basis: both
+  - feature: qqq_z
+    version: raw
+    basis: both
+  - feature: stoch_k14
+    version: raw
+    basis: extreme
+  - feature: macd_hist
+    version: raw
+    basis: extreme
+  - feature: dL
+    version: raw
+    basis: both
+  - feature: mom_6
+    version: raw
+    basis: extreme
+  - feature: dH
+    version: raw
+    basis: both
+  - feature: vr12_256
+    version: raw
+    basis: extreme
+  - feature: linreg_slope_78
+    version: raw
+    basis: both
+  - feature: qqq_mom12
+    version: raw
+    basis: extreme
+  - feature: spy_mom12
+    version: raw
+    basis: extreme
+  - feature: mom_78
+    version: raw
+    basis: both
+  - feature: r_first30
+    version: raw
+    basis: IC
+  2019-03:
+  - feature: spy_z
+    version: raw
+    basis: both
+  - feature: d_sma20_dev
+    version: raw
+    basis: IC
+  - feature: fracdiff_lnc
+    version: rz
+    basis: IC
+  - feature: earn_after
+    version: raw
+    basis: IC
+  - feature: d_mom5
+    version: raw
+    basis: IC
+  - feature: amihud
+    version: rz
+    basis: IC
+  - feature: close_location
+    version: raw
+    basis: both
+  - feature: body_ratio
+    version: raw
+    basis: both
+  - feature: mom_3
+    version: raw
+    basis: both
+  - feature: stoch_k14
+    version: raw
+    basis: extreme
+  - feature: qqq_z
+    version: raw
+    basis: both
+  - feature: macd_hist
+    version: raw
+    basis: extreme
+  - feature: dL
+    version: raw
+    basis: both
+  - feature: dH
+    version: raw
+    basis: both
+  - feature: mom_6
+    version: raw
+    basis: extreme
+  - feature: linreg_slope_78
+    version: raw
+    basis: both
+  - feature: spy_mom12
+    version: raw
+    basis: extreme
+  - feature: vol_ratio
+    version: raw
+    basis: extreme
+  - feature: vr12_256
+    version: raw
+    basis: extreme
+  - feature: mom_78
+    version: raw
+    basis: both
+  2019-04:
+  - feature: spy_z
+    version: raw
+    basis: both
+  - feature: d_sma20_dev
+    version: raw
+    basis: IC
+  - feature: fracdiff_lnc
+    version: rz
+    basis: IC
+  - feature: earn_after
+    version: raw
+    basis: IC
+  - feature: kalman_slope
+    version: rz
+    basis: IC
+  - feature: d_mom5
+    version: raw
+    basis: IC
+  - feature: amihud
+    version: rz
+    basis: IC
+  - feature: close_location
+    version: raw
+    basis: both
+  - feature: body_ratio
+    version: raw
+    basis: both
+  - feature: mom_3
+    version: raw
+    basis: extreme
+  - feature: stoch_k14
+    version: raw
+    basis: extreme
+  - feature: qqq_z
+    version: raw
+    basis: both
+  - feature: dL
+    version: raw
+    basis: both
+  - feature: macd_hist
+    version: raw
+    basis: extreme
+  - feature: dH
+    version: raw
+    basis: both
+  - feature: linreg_slope_78
+    version: raw
+    basis: both
+  - feature: mom_6
+    version: raw
+    basis: extreme
+  - feature: vr12_256
+    version: raw
+    basis: extreme
+  - feature: spy_mom12
+    version: raw
+    basis: extreme
+  - feature: mom_78
+    version: raw
+    basis: IC
+  - feature: r_first30
+    version: raw
+    basis: IC
+  2019-05:
+  - feature: spy_z
+    version: raw
+    basis: both
+  - feature: d_sma20_dev
+    version: raw
+    basis: IC
+  - feature: fracdiff_lnc
+    version: rz
+    basis: IC
+  - feature: d_mom5
+    version: raw
+    basis: IC
+  - feature: amihud
+    version: rz
+    basis: IC
+  - feature: close_location
+    version: raw
+    basis: both
+  - feature: body_ratio
+    version: raw
+    basis: both
+  - feature: mom_3
+    version: raw
+    basis: extreme
+  - feature: qqq_z
+    version: raw
+    basis: both
+  - feature: stoch_k14
+    version: raw
+    basis: extreme
+  - feature: dL
+    version: raw
+    basis: both
+  - feature: dH
+    version: raw
+    basis: both
+  - feature: macd_hist
+    version: rz
+    basis: extreme
+  - feature: linreg_slope_78
+    version: raw
+    basis: both
+  - feature: mom_6
+    version: raw
+    basis: extreme
+  - feature: vol_ratio
+    version: raw
+    basis: extreme
+  - feature: mom_78
+    version: raw
+    basis: both
+  - feature: spy_mom12
+    version: raw
+    basis: extreme
+  - feature: r_first30
+    version: raw
+    basis: IC
+  2019-06:
+  - feature: d_sma20_dev
+    version: rz
+    basis: IC
+  - feature: d_mom5
+    version: raw
+    basis: IC
+  - feature: amihud
+    version: rz
+    basis: IC
+  - feature: close_location
+    version: raw
+    basis: both
+  - feature: body_ratio
+    version: raw
+    basis: both
+  - feature: mom_3
+    version: raw
+    basis: both
+  - feature: qqq_z
+    version: raw
+    basis: both
+  - feature: stoch_k14
+    version: raw
+    basis: extreme
+  - feature: dL
+    version: raw
+    basis: both
+  - feature: dH
+    version: raw
+    basis: both
+  - feature: macd_hist
+    version: rz
+    basis: extreme
+  - feature: mom_6
+    version: raw
+    basis: extreme
+  - feature: linreg_slope_78
+    version: raw
+    basis: both
+  - feature: mom_78
+    version: raw
+    basis: both
+  - feature: spy_mom12
+    version: raw
+    basis: extreme
+  - feature: r_first30
+    version: raw
+    basis: IC
+  2019-07:
+  - feature: spy_z
+    version: raw
+    basis: both
+  - feature: d_sma20_dev
+    version: rz
+    basis: IC
+  - feature: d_mom5
+    version: raw
+    basis: IC
+  - feature: amihud
+    version: rz
+    basis: IC
+  - feature: close_location
+    version: raw
+    basis: both
+  - feature: body_ratio
+    version: raw
+    basis: both
+  - feature: mom_3
+    version: raw
+    basis: both
+  - feature: qqq_z
+    version: rz
+    basis: both
+  - feature: stoch_k14
+    version: raw
+    basis: extreme
+  - feature: dL
+    version: raw
+    basis: both
+  - feature: dH
+    version: raw
+    basis: both
+  - feature: macd_hist
+    version: raw
+    basis: extreme
+  - feature: mom_6
+    version: raw
+    basis: extreme
+  - feature: linreg_slope_78
+    version: raw
+    basis: both
+  - feature: mom_78
+    version: raw
+    basis: both
+  - feature: r_first30
+    version: raw
+    basis: IC
+  2019-08:
+  - feature: spy_z
+    version: raw
+    basis: both
+  - feature: kalman_innov
+    version: raw
+    basis: both
+  - feature: d_sma20_dev
+    version: raw
+    basis: IC
+  - feature: fracdiff_lnc
+    version: rz
+    basis: IC
+  - feature: amihud
+    version: rz
+    basis: IC
+  - feature: kalman_slope
+    version: rz
+    basis: IC
+  - feature: close_location
+    version: raw
+    basis: both
+  - feature: mom_3
+    version: raw
+    basis: both
+  - feature: stoch_k14
+    version: raw
+    basis: extreme
+  - feature: dL
+    version: raw
+    basis: both
+  - feature: dH
+    version: raw
+    basis: both
+  - feature: macd_hist
+    version: rz
+    basis: extreme
+  - feature: mom_6
+    version: raw
+    basis: extreme
+  - feature: linreg_slope_78
+    version: raw
+    basis: both
+  - feature: mom_78
+    version: raw
+    basis: IC
+  - feature: r_first30
+    version: raw
+    basis: IC
+  - feature: earn_after
+    version: raw
+    basis: IC
+  2019-09:
+  - feature: spy_z
+    version: raw
+    basis: both
+  - feature: d_sma20_dev
+    version: rz
+    basis: IC
+  - feature: fracdiff_lnc
+    version: rz
+    basis: IC
+  - feature: d_mom5
+    version: raw
+    basis: IC
+  - feature: amihud
+    version: rz
+    basis: IC
+  - feature: d_atr_c
+    version: rz
+    basis: IC
+  - feature: close_location
+    version: raw
+    basis: both
+  - feature: mom_3
+    version: raw
+    basis: both
+  - feature: body_ratio
+    version: raw
+    basis: both
+  - feature: stoch_k14
+    version: raw
+    basis: extreme
+  - feature: dL
+    version: raw
+    basis: both
+  - feature: dH
+    version: raw
+    basis: both
+  - feature: macd_hist
+    version: raw
+    basis: extreme
+  - feature: mom_6
+    version: raw
+    basis: extreme
+  - feature: linreg_slope_78
+    version: raw
+    basis: both
+  - feature: mom_78
+    version: raw
+    basis: both
+  - feature: r_first30
+    version: raw
+    basis: IC
+  - feature: sign_first30
+    version: raw
+    basis: IC
+  - feature: earn_after
+    version: raw
+    basis: IC
+  2019-10:
+  - feature: spy_z
+    version: raw
+    basis: both
+  - feature: d_sma20_dev
+    version: raw
+    basis: IC
+  - feature: fracdiff_lnc
+    version: rz
+    basis: IC
+  - feature: amihud
+    version: rz
+    basis: IC
+  - feature: kalman_slope
+    version: rz
+    basis: IC
+  - feature: d_atr_c
+    version: rz
+    basis: IC
+  - feature: close_location
+    version: raw
+    basis: both
+  - feature: body_ratio
+    version: raw
+    basis: both
+  - feature: mom_3
+    version: raw
+    basis: extreme
+  - feature: stoch_k14
+    version: raw
+    basis: extreme
+  - feature: dL
+    version: raw
+    basis: both
+  - feature: dH
+    version: raw
+    basis: both
+  - feature: mom_6
+    version: raw
+    basis: extreme
+  - feature: macd_hist
+    version: raw
+    basis: extreme
+  - feature: linreg_slope_78
+    version: raw
+    basis: both
+  - feature: mom_78
+    version: raw
+    basis: both
+  - feature: r_first30
+    version: raw
+    basis: IC
+  - feature: earn_after
+    version: raw
+    basis: IC
+  2019-11:
+  - feature: spy_z
+    version: raw
+    basis: both
+  - feature: d_sma20_dev
+    version: raw
+    basis: IC
+  - feature: fracdiff_lnc
+    version: rz
+    basis: IC
+  - feature: amihud
+    version: rz
+    basis: IC
+  - feature: earn_after
+    version: raw
+    basis: IC
+  - feature: d_atr_c
+    version: rz
+    basis: IC
+  - feature: kalman_slope
+    version: rz
+    basis: IC
+  - feature: close_location
+    version: raw
+    basis: both
+  - feature: body_ratio
+    version: raw
+    basis: both
+  - feature: mom_3
+    version: raw
+    basis: both
+  - feature: stoch_k14
+    version: raw
+    basis: extreme
+  - feature: dL
+    version: raw
+    basis: both
+  - feature: dH
+    version: raw
+    basis: both
+  - feature: macd_hist
+    version: raw
+    basis: extreme
+  - feature: mom_6
+    version: raw
+    basis: extreme
+  - feature: linreg_slope_78
+    version: raw
+    basis: both
+  - feature: mom_78
+    version: raw
+    basis: both
+  - feature: bar_index
+    version: raw
+    basis: extreme
+  - feature: r_first30
+    version: raw
+    basis: IC
+  - feature: sign_first30
+    version: raw
+    basis: IC
+  2019-12:
+  - feature: spy_z
+    version: raw
+    basis: both
+  - feature: kalman_innov
+    version: raw
+    basis: both
+  - feature: d_sma20_dev
+    version: raw
+    basis: IC
+  - feature: fracdiff_lnc
+    version: rz
+    basis: IC
+  - feature: d_mom5
+    version: raw
+    basis: IC
+  - feature: amihud
+    version: rz
+    basis: IC
+  - feature: earn_after
+    version: raw
+    basis: IC
+  - feature: d_atr_c
+    version: rz
+    basis: IC
+  - feature: kalman_slope
+    version: rz
+    basis: IC
+  - feature: close_location
+    version: raw
+    basis: both
+  - feature: mom_3
+    version: raw
+    basis: both
+  - feature: qqq_z
+    version: raw
+    basis: both
+  - feature: stoch_k14
+    version: raw
+    basis: extreme
+  - feature: dL
+    version: raw
+    basis: both
+  - feature: dH
+    version: raw
+    basis: both
+  - feature: macd_hist
+    version: raw
+    basis: extreme
+  - feature: mom_6
+    version: raw
+    basis: extreme
+  - feature: linreg_slope_78
+    version: raw
+    basis: both
+  - feature: mom_78
+    version: raw
+    basis: both
+  - feature: bar_index
+    version: raw
+    basis: extreme
+  - feature: r_first30
+    version: raw
+    basis: IC
+  2020-01:
+  - feature: spy_z
+    version: raw
+    basis: both
+  - feature: kalman_innov
+    version: raw
+    basis: both
+  - feature: d_sma20_dev
+    version: raw
+    basis: IC
+  - feature: fracdiff_lnc
+    version: rz
+    basis: IC
+  - feature: kalman_slope
+    version: rz
+    basis: IC
+  - feature: amihud
+    version: rz
+    basis: IC
+  - feature: earn_after
+    version: raw
+    basis: IC
+  - feature: d_atr_c
+    version: rz
+    basis: IC
+  - feature: close_location
+    version: raw
+    basis: both
+  - feature: mom_3
+    version: raw
+    basis: both
+  - feature: qqq_z
+    version: raw
+    basis: both
+  - feature: stoch_k14
+    version: raw
+    basis: extreme
+  - feature: dL
+    version: raw
+    basis: both
+  - feature: dH
+    version: raw
+    basis: both
+  - feature: macd_hist
+    version: raw
+    basis: extreme
+  - feature: mom_6
+    version: raw
+    basis: extreme
+  - feature: linreg_slope_78
+    version: raw
+    basis: both
+  - feature: mom_78
+    version: raw
+    basis: both
+  - feature: r_first30
+    version: raw
+    basis: IC
+  2020-02:
+  - feature: body
+    version: raw
+    basis: both
+  - feature: kalman_innov
+    version: raw
+    basis: both
+  - feature: spy_z
+    version: raw
+    basis: both
+  - feature: d_sma20_dev
+    version: raw
+    basis: IC
+  - feature: fracdiff_lnc
+    version: rz
+    basis: IC
+  - feature: d_mom5
+    version: raw
+    basis: IC
+  - feature: amihud
+    version: rz
+    basis: IC
+  - feature: kalman_slope
+    version: rz
+    basis: IC
+  - feature: earn_after
+    version: raw
+    basis: IC
+  - feature: mom_3
+    version: raw
+    basis: both
+  - feature: qqq_z
+    version: raw
+    basis: both
+  - feature: stoch_k14
+    version: raw
+    basis: extreme
+  - feature: dL
+    version: raw
+    basis: both
+  - feature: dH
+    version: raw
+    basis: both
+  - feature: macd_hist
+    version: raw
+    basis: extreme
+  - feature: mom_6
+    version: raw
+    basis: extreme
+  - feature: linreg_slope_78
+    version: raw
+    basis: both
+  - feature: mom_78
+    version: raw
+    basis: both
+  - feature: spy_mom12
+    version: raw
+    basis: extreme
+  - feature: r_first30
+    version: raw
+    basis: IC
+  2020-03:
+  - feature: body
+    version: raw
+    basis: both
+  - feature: kalman_innov
+    version: raw
+    basis: both
+  - feature: spy_z
+    version: raw
+    basis: both
+  - feature: d_sma20_dev
+    version: rz
+    basis: IC
+  - feature: fracdiff_lnc
+    version: rz
+    basis: IC
+  - feature: d_mom5
+    version: raw
+    basis: IC
+  - feature: kalman_slope
+    version: rz
+    basis: IC
+  - feature: earn_after
+    version: raw
+    basis: IC
+  - feature: mom_3
+    version: raw
+    basis: both
+  - feature: qqq_z
+    version: raw
+    basis: both
+  - feature: stoch_k14
+    version: raw
+    basis: extreme
+  - feature: dL
+    version: rz
+    basis: both
+  - feature: dH
+    version: raw
+    basis: both
+  - feature: macd_hist
+    version: raw
+    basis: extreme
+  - feature: mom_6
+    version: raw
+    basis: extreme
+  - feature: linreg_slope_78
+    version: raw
+    basis: IC
+  - feature: mom_78
+    version: raw
+    basis: both
+  - feature: spy_mom12
+    version: raw
+    basis: extreme
+  - feature: bar_index
+    version: raw
+    basis: extreme
+  - feature: r_first30
+    version: raw
+    basis: IC
+  2020-04:
+  - feature: body
+    version: raw
+    basis: both
+  - feature: kalman_innov
+    version: raw
+    basis: both
+  - feature: spy_z
+    version: raw
+    basis: both
+  - feature: d_sma20_dev
+    version: raw
+    basis: IC
+  - feature: fracdiff_lnc
+    version: rz
+    basis: IC
+  - feature: d_mom5
+    version: raw
+    basis: IC
+  - feature: earn_after
+    version: raw
+    basis: IC
+  - feature: mom_3
+    version: raw
+    basis: extreme
+  - feature: stoch_k14
+    version: raw
+    basis: extreme
+  - feature: dL
+    version: raw
+    basis: both
+  - feature: dH
+    version: raw
+    basis: both
+  - feature: macd_hist
+    version: raw
+    basis: extreme
+  - feature: mom_6
+    version: raw
+    basis: extreme
+  - feature: linreg_slope_78
+    version: raw
+    basis: IC
+  - feature: mom_78
+    version: raw
+    basis: both
+  - feature: spy_mom12
+    version: raw
+    basis: extreme
+  - feature: r_first30
+    version: raw
+    basis: both
+  - feature: bar_index
+    version: raw
+    basis: extreme
+  - feature: kalman_slope
+    version: rz
+    basis: IC
+  2020-05:
+  - feature: body_ratio
+    version: raw
+    basis: both
+  - feature: body
+    version: raw
+    basis: both
+  - feature: spy_z
+    version: raw
+    basis: both
+  - feature: d_sma20_dev
+    version: raw
+    basis: IC
+  - feature: fracdiff_lnc
+    version: rz
+    basis: IC
+  - feature: d_mom5
+    version: raw
+    basis: IC
+  - feature: earn_after
+    version: raw
+    basis: IC
+  - feature: kalman_slope
+    version: rz
+    basis: IC
+  - feature: dow
+    version: raw
+    basis: IC
+  - feature: mom_3
+    version: raw
+    basis: both
+  - feature: qqq_z
+    version: raw
+    basis: both
+  - feature: dL
+    version: raw
+    basis: both
+  - feature: stoch_k14
+    version: raw
+    basis: extreme
+  - feature: dH
+    version: raw
+    basis: both
+  - feature: macd_hist
+    version: raw
+    basis: extreme
+  - feature: mom_6
+    version: raw
+    basis: extreme
+  - feature: linreg_slope_78
+    version: raw
+    basis: IC
+  - feature: r_first30
+    version: raw
+    basis: both
+  - feature: mom_78
+    version: raw
+    basis: both
+  - feature: spy_mom12
+    version: raw
+    basis: extreme
+  - feature: bar_index
+    version: raw
+    basis: extreme
+  - feature: qqq_mom12
+    version: raw
+    basis: extreme
+  - feature: minutes_to_close
+    version: raw
+    basis: extreme
+  - feature: sign_first30
+    version: raw
+    basis: IC
+  2020-06:
+  - feature: body_ratio
+    version: raw
+    basis: both
+  - feature: body
+    version: raw
+    basis: both
+  - feature: spy_z
+    version: raw
+    basis: both
+  - feature: fracdiff_lnc
+    version: rz
+    basis: IC
+  - feature: d_sma20_dev
+    version: rz
+    basis: IC
+  - feature: spy_mom12
+    version: raw
+    basis: both
+  - feature: d_mom5
+    version: raw
+    basis: IC
+  - feature: amihud
+    version: rz
+    basis: IC
+  - feature: earn_after
+    version: raw
+    basis: IC
+  - feature: mom_3
+    version: raw
+    basis: both
+  - feature: dL
+    version: raw
+    basis: both
+  - feature: stoch_k14
+    version: raw
+    basis: extreme
+  - feature: dH
+    version: raw
+    basis: both
+  - feature: macd_hist
+    version: raw
+    basis: both
+  - feature: mom_6
+    version: raw
+    basis: extreme
+  - feature: linreg_slope_78
+    version: raw
+    basis: both
+  - feature: r_first30
+    version: raw
+    basis: both
+  - feature: mom_78
+    version: raw
+    basis: both
+  - feature: qqq_mom12
+    version: raw
+    basis: extreme
+  - feature: bar_index
+    version: raw
+    basis: extreme
+  - feature: minutes_to_close
+    version: raw
+    basis: extreme
+  2020-07:
+  - feature: body_ratio
+    version: raw
+    basis: both
+  - feature: body
+    version: raw
+    basis: both
+  - feature: spy_z
+    version: raw
+    basis: both
+  - feature: fracdiff_lnc
+    version: rz
+    basis: IC
+  - feature: d_sma20_dev
+    version: rz
+    basis: IC
+  - feature: d_mom5
+    version: raw
+    basis: IC
+  - feature: spy_mom12
+    version: raw
+    basis: both
+  - feature: amihud
+    version: rz
+    basis: IC
+  - feature: kalman_slope
+    version: rz
+    basis: IC
+  - feature: earn_after
+    version: raw
+    basis: IC
+  - feature: dow
+    version: raw
+    basis: IC
+  - feature: mom_3
+    version: raw
+    basis: both
+  - feature: dL
+    version: raw
+    basis: both
+  - feature: stoch_k14
+    version: raw
+    basis: extreme
+  - feature: dH
+    version: raw
+    basis: both
+  - feature: mom_6
+    version: raw
+    basis: extreme
+  - feature: macd_hist
+    version: raw
+    basis: both
+  - feature: linreg_slope_78
+    version: raw
+    basis: both
+  - feature: qqq_mom12
+    version: raw
+    basis: extreme
+  - feature: mom_78
+    version: raw
+    basis: both
+  - feature: r_first30
+    version: raw
+    basis: both
+  - feature: bar_index
+    version: raw
+    basis: extreme
+  - feature: minutes_to_close
+    version: raw
+    basis: extreme
+  2020-08:
+  - feature: body_ratio
+    version: raw
+    basis: both
+  - feature: body
+    version: raw
+    basis: both
+  - feature: spy_z
+    version: raw
+    basis: both
+  - feature: d_sma20_dev
+    version: rz
+    basis: IC
+  - feature: mom_78
+    version: rz
+    basis: both
+  - feature: spy_mom12
+    version: raw
+    basis: both
+  - feature: amihud
+    version: rz
+    basis: IC
+  - feature: kalman_slope
+    version: rz
+    basis: IC
+  - feature: d_atr_c
+    version: rz
+    basis: IC
+  - feature: dow
+    version: raw
+    basis: IC
+  - feature: earn_after
+    version: raw
+    basis: IC
+  - feature: mom_3
+    version: raw
+    basis: both
+  - feature: stoch_k14
+    version: rz
+    basis: extreme
+  - feature: dL
+    version: raw
+    basis: both
+  - feature: dH
+    version: raw
+    basis: both
+  - feature: mom_6
+    version: raw
+    basis: extreme
+  - feature: macd_hist
+    version: raw
+    basis: both
+  - feature: linreg_slope_78
+    version: raw
+    basis: both
+  - feature: qqq_mom12
+    version: raw
+    basis: extreme
+  - feature: r_first30
+    version: rz
+    basis: both
+  2020-09:
+  - feature: body_ratio
+    version: raw
+    basis: both
+  - feature: body
+    version: raw
+    basis: both
+  - feature: spy_z
+    version: raw
+    basis: both
+  - feature: linreg_slope_78
+    version: rz
+    basis: both
+  - feature: d_sma20_dev
+    version: rz
+    basis: IC
+  - feature: mom_78
+    version: rz
+    basis: IC
+  - feature: spy_mom12
+    version: raw
+    basis: both
+  - feature: kalman_slope
+    version: rz
+    basis: IC
+  - feature: amihud
+    version: rz
+    basis: IC
+  - feature: dow
+    version: raw
+    basis: IC
+  - feature: earn_after
+    version: raw
+    basis: IC
+  - feature: mom_3
+    version: raw
+    basis: both
+  - feature: stoch_k14
+    version: rz
+    basis: extreme
+  - feature: dL
+    version: raw
+    basis: both
+  - feature: dH
+    version: raw
+    basis: both
+  - feature: mom_6
+    version: raw
+    basis: extreme
+  - feature: macd_hist
+    version: raw
+    basis: both
+  - feature: qqq_mom12
+    version: raw
+    basis: extreme
+  - feature: r_first30
+    version: rz
+    basis: both
+  - feature: beta_qqq
+    version: rz
+    basis: extreme
+  - feature: linreg_r2_24
+    version: rz
+    basis: extreme
+  2020-10:
+  - feature: body_ratio
+    version: raw
+    basis: both
+  - feature: kalman_innov
+    version: raw
+    basis: both
+  - feature: spy_z
+    version: raw
+    basis: both
+  - feature: linreg_slope_78
+    version: rz
+    basis: both
+  - feature: d_sma20_dev
+    version: rz
+    basis: IC
+  - feature: mom_78
+    version: rz
+    basis: both
+  - feature: spy_mom12
+    version: raw
+    basis: both
+  - feature: kalman_slope
+    version: rz
+    basis: IC
+  - feature: amihud
+    version: rz
+    basis: IC
+  - feature: dow
+    version: raw
+    basis: IC
+  - feature: earn_after
+    version: raw
+    basis: IC
+  - feature: mom_3
+    version: raw
+    basis: both
+  - feature: stoch_k14
+    version: rz
+    basis: extreme
+  - feature: dL
+    version: raw
+    basis: both
+  - feature: dH
+    version: raw
+    basis: both
+  - feature: mom_6
+    version: raw
+    basis: extreme
+  - feature: macd_hist
+    version: raw
+    basis: both
+  - feature: qqq_mom12
+    version: raw
+    basis: extreme
+  - feature: r_first30
+    version: raw
+    basis: both
+  - feature: beta_qqq
+    version: rz
+    basis: extreme
+  2020-11:
+  - feature: body_ratio
+    version: raw
+    basis: both
+  - feature: kalman_innov
+    version: raw
+    basis: both
+  - feature: spy_z
+    version: raw
+    basis: both
+  - feature: macd_hist
+    version: raw
+    basis: both
+  - feature: d_sma20_dev
+    version: rz
+    basis: IC
+  - feature: linreg_slope_78
+    version: raw
+    basis: both
+  - feature: mom_78
+    version: rz
+    basis: both
+  - feature: spy_mom12
+    version: raw
+    basis: both
+  - feature: r_first30
+    version: raw
+    basis: both
+  - feature: amihud
+    version: rz
+    basis: IC
+  - feature: kalman_slope
+    version: rz
+    basis: IC
+  - feature: dow
+    version: raw
+    basis: IC
+  - feature: earn_after
+    version: raw
+    basis: IC
+  - feature: d_atr_c
+    version: rz
+    basis: IC
+  - feature: mom_3
+    version: raw
+    basis: both
+  - feature: stoch_k14
+    version: rz
+    basis: extreme
+  - feature: dL
+    version: raw
+    basis: both
+  - feature: ema_dev_12
+    version: raw
+    basis: both
+  - feature: dH
+    version: raw
+    basis: both
+  - feature: qqq_mom12
+    version: raw
+    basis: extreme
+  - feature: beta_qqq
+    version: rz
+    basis: extreme
+  - feature: linreg_r2_24
+    version: rz
+    basis: extreme
+  - feature: first30_x_rv
+    version: raw
+    basis: extreme
+  2020-12:
+  - feature: body_ratio
+    version: raw
+    basis: both
+  - feature: kalman_innov
+    version: raw
+    basis: both
+  - feature: spy_z
+    version: raw
+    basis: both
+  - feature: macd_hist
+    version: raw
+    basis: both
+  - feature: linreg_slope_78
+    version: rz
+    basis: both
+  - feature: d_sma20_dev
+    version: rz
+    basis: IC
+  - feature: mom_78
+    version: rz
+    basis: IC
+  - feature: spy_mom12
+    version: raw
+    basis: both
+  - feature: kalman_slope
+    version: rz
+    basis: IC
+  - feature: dow
+    version: raw
+    basis: IC
+  - feature: earn_after
+    version: raw
+    basis: IC
+  - feature: d_atr_c
+    version: rz
+    basis: IC
+  - feature: mom_3
+    version: raw
+    basis: both
+  - feature: stoch_k14
+    version: rz
+    basis: extreme
+  - feature: dL
+    version: raw
+    basis: both
+  - feature: dH
+    version: raw
+    basis: both
+  - feature: mom_6
+    version: raw
+    basis: extreme
+  - feature: qqq_mom12
+    version: raw
+    basis: extreme
+  - feature: r_first30
+    version: rz
+    basis: both
+  - feature: beta_qqq
+    version: rz
+    basis: extreme
+  - feature: linreg_r2_24
+    version: rz
+    basis: extreme
+  2021-01:
+  - feature: body_ratio
+    version: raw
+    basis: both
+  - feature: kalman_innov
+    version: raw
+    basis: both
+  - feature: spy_z
+    version: raw
+    basis: both
+  - feature: macd_hist
+    version: raw
+    basis: both
+  - feature: linreg_slope_78
+    version: rz
+    basis: both
+  - feature: d_sma20_dev
+    version: rz
+    basis: IC
+  - feature: mom_78
+    version: rz
+    basis: IC
+  - feature: spy_mom12
+    version: raw
+    basis: both
+  - feature: amihud
+    version: rz
+    basis: IC
+  - feature: dow
+    version: raw
+    basis: IC
+  - feature: kalman_slope
+    version: rz
+    basis: IC
+  - feature: earn_after
+    version: raw
+    basis: IC
+  - feature: d_atr_c
+    version: rz
+    basis: IC
+  - feature: opex
+    version: raw
+    basis: IC
+  - feature: mom_3
+    version: raw
+    basis: both
+  - feature: stoch_k14
+    version: rz
+    basis: extreme
+  - feature: dL
+    version: raw
+    basis: both
+  - feature: ema_dev_12
+    version: rz
+    basis: both
+  - feature: dH
+    version: raw
+    basis: both
+  - feature: qqq_mom12
+    version: raw
+    basis: extreme
+  - feature: r_first30
+    version: rz
+    basis: both
+  - feature: beta_qqq
+    version: rz
+    basis: extreme
+  - feature: linreg_r2_24
+    version: rz
+    basis: extreme
+  2021-02:
+  - feature: body_ratio
+    version: raw
+    basis: both
+  - feature: kalman_innov
+    version: raw
+    basis: both
+  - feature: macd_hist
+    version: raw
+    basis: both
+  - feature: linreg_slope_78
+    version: rz
+    basis: both
+  - feature: d_sma20_dev
+    version: rz
+    basis: IC
+  - feature: spy_mom12
+    version: raw
+    basis: both
+  - feature: amihud
+    version: rz
+    basis: IC
+  - feature: kalman_slope
+    version: rz
+    basis: IC
+  - feature: opex
+    version: raw
+    basis: IC
+  - feature: mom_3
+    version: raw
+    basis: both
+  - feature: stoch_k14
+    version: rz
+    basis: extreme
+  - feature: dL
+    version: raw
+    basis: both
+  - feature: ema_dev_12
+    version: rz
+    basis: both
+  - feature: dH
+    version: raw
+    basis: both
+  - feature: mom_78
+    version: rz
+    basis: IC
+  - feature: r_first30
+    version: rz
+    basis: both
+  - feature: qqq_mom12
+    version: raw
+    basis: extreme
+  - feature: beta_qqq
+    version: rz
+    basis: extreme
+  - feature: linreg_r2_24
+    version: rz
+    basis: extreme
+  - feature: gap_z
+    version: rz
+    basis: extreme
+  - feature: first30_x_rv
+    version: raw
+    basis: extreme
+  - feature: sign_first30
+    version: raw
+    basis: IC
+  2021-03:
+  - feature: body_ratio
+    version: raw
+    basis: both
+  - feature: kalman_innov
+    version: raw
+    basis: both
+  - feature: macd_hist
+    version: raw
+    basis: both
+  - feature: d_sma20_dev
+    version: rz
+    basis: IC
+  - feature: spy_mom12
+    version: raw
+    basis: both
+  - feature: amihud
+    version: rz
+    basis: IC
+  - feature: kalman_slope
+    version: rz
+    basis: IC
+  - feature: opex
+    version: raw
+    basis: IC
+  - feature: sign_first30
+    version: raw
+    basis: IC
+  - feature: d_atr_c
+    version: rz
+    basis: IC
+  - feature: mom_3
+    version: raw
+    basis: both
+  - feature: stoch_k14
+    version: rz
+    basis: extreme
+  - feature: dL
+    version: raw
+    basis: both
+  - feature: ema_dev_12
+    version: rz
+    basis: both
+  - feature: dH
+    version: raw
+    basis: both
+  - feature: linreg_slope_78
+    version: rz
+    basis: both
+  - feature: mom_78
+    version: rz
+    basis: both
+  - feature: r_first30
+    version: rz
+    basis: both
+  - feature: beta_qqq
+    version: rz
+    basis: extreme
+  - feature: linreg_r2_24
+    version: rz
+    basis: both
+  - feature: first30_x_rv
+    version: raw
+    basis: extreme
+  - feature: vwap_dev
+    version: raw
+    basis: extreme
+  2021-04:
+  - feature: body_ratio
+    version: raw
+    basis: both
+  - feature: kalman_innov
+    version: raw
+    basis: both
+  - feature: macd_hist
+    version: raw
+    basis: both
+  - feature: linreg_slope_78
+    version: rz
+    basis: both
+  - feature: d_sma20_dev
+    version: rz
+    basis: IC
+  - feature: mom_78
+    version: rz
+    basis: IC
+  - feature: spy_mom12
+    version: raw
+    basis: both
+  - feature: amihud
+    version: rz
+    basis: IC
+  - feature: kalman_slope
+    version: rz
+    basis: IC
+  - feature: sign_first30
+    version: raw
+    basis: IC
+  - feature: opex
+    version: raw
+    basis: IC
+  - feature: d_atr_c
+    version: rz
+    basis: IC
+  - feature: mom_3
+    version: raw
+    basis: both
+  - feature: stoch_k14
+    version: rz
+    basis: extreme
+  - feature: dL
+    version: raw
+    basis: both
+  - feature: ema_dev_12
+    version: rz
+    basis: both
+  - feature: dH
+    version: raw
+    basis: both
+  - feature: resid_qqq_z
+    version: raw
+    basis: both
+  - feature: qqq_mom12
+    version: raw
+    basis: extreme
+  - feature: r_first30
+    version: rz
+    basis: both
+  - feature: beta_qqq
+    version: rz
+    basis: extreme
+  - feature: linreg_r2_24
+    version: rz
+    basis: both
+  - feature: first30_x_rv
+    version: raw
+    basis: extreme
+  2021-05:
+  - feature: body_ratio
+    version: raw
+    basis: both
+  - feature: kalman_innov
+    version: raw
+    basis: both
+  - feature: macd_hist
+    version: raw
+    basis: both
+  - feature: linreg_slope_78
+    version: rz
+    basis: both
+  - feature: d_sma20_dev
+    version: rz
+    basis: IC
+  - feature: mom_78
+    version: rz
+    basis: IC
+  - feature: spy_mom12
+    version: raw
+    basis: both
+  - feature: qqq_mom12
+    version: raw
+    basis: both
+  - feature: amihud
+    version: rz
+    basis: IC
+  - feature: sign_first30
+    version: raw
+    basis: IC
+  - feature: d_atr_c
+    version: rz
+    basis: IC
+  - feature: opex
+    version: raw
+    basis: IC
+  - feature: mom_3
+    version: raw
+    basis: both
+  - feature: stoch_k14
+    version: rz
+    basis: extreme
+  - feature: dL
+    version: raw
+    basis: both
+  - feature: ema_dev_12
+    version: rz
+    basis: both
+  - feature: dH
+    version: raw
+    basis: both
+  - feature: resid_qqq_z
+    version: raw
+    basis: both
+  - feature: r_first30
+    version: rz
+    basis: both
+  - feature: linreg_r2_24
+    version: rz
+    basis: both
+  - feature: first30_x_rv
+    version: raw
+    basis: extreme
+  - feature: bar_index
+    version: raw
+    basis: extreme
+  - feature: minutes_to_close
+    version: raw
+    basis: extreme
+  2021-06:
+  - feature: body_ratio
+    version: raw
+    basis: both
+  - feature: kalman_innov
+    version: raw
+    basis: both
+  - feature: macd_hist
+    version: raw
+    basis: both
+  - feature: linreg_slope_78
+    version: raw
+    basis: both
+  - feature: d_sma20_dev
+    version: rz
+    basis: IC
+  - feature: spy_mom12
+    version: raw
+    basis: both
+  - feature: mom_78
+    version: rz
+    basis: both
+  - feature: r_first30
+    version: raw
+    basis: both
+  - feature: amihud
+    version: rz
+    basis: IC
+  - feature: kalman_slope
+    version: rz
+    basis: IC
+  - feature: sign_first30
+    version: raw
+    basis: IC
+  - feature: d_atr_c
+    version: rz
+    basis: IC
+  - feature: opex
+    version: raw
+    basis: IC
+  - feature: mom_3
+    version: raw
+    basis: both
+  - feature: stoch_k14
+    version: rz
+    basis: extreme
+  - feature: ema_dev_12
+    version: raw
+    basis: both
+  - feature: dL
+    version: raw
+    basis: both
+  - feature: dH
+    version: raw
+    basis: both
+  - feature: resid_qqq_z
+    version: raw
+    basis: both
+  - feature: qqq_mom12
+    version: raw
+    basis: extreme
+  - feature: beta_qqq
+    version: rz
+    basis: extreme
+  - feature: bar_index
+    version: raw
+    basis: extreme
+  - feature: minutes_to_close
+    version: raw
+    basis: extreme
+  - feature: first30_x_rv
+    version: raw
+    basis: extreme
+  - feature: mom_24
+    version: raw
+    basis: extreme
+  - feature: linreg_r2_24
+    version: raw
+    basis: IC
+  - feature: d_prev_ret_atr
+    version: raw
+    basis: IC
+  2021-07:
+  - feature: body_ratio
+    version: raw
+    basis: both
+  - feature: kalman_innov
+    version: raw
+    basis: both
+  - feature: macd_hist
+    version: raw
+    basis: both
+  - feature: linreg_slope_78
+    version: raw
+    basis: both
+  - feature: d_sma20_dev
+    version: rz
+    basis: IC
+  - feature: spy_mom12
+    version: raw
+    basis: both
+  - feature: qqq_mom12
+    version: raw
+    basis: both
+  - feature: mom_78
+    version: rz
+    basis: IC
+  - feature: amihud
+    version: rz
+    basis: IC
+  - feature: dow
+    version: raw
+    basis: IC
+  - feature: sign_first30
+    version: raw
+    basis: IC
+  - feature: d_atr_c
+    version: rz
+    basis: IC
+  - feature: opex
+    version: raw
+    basis: IC
+  - feature: mom_3
+    version: raw
+    basis: both
+  - feature: stoch_k14
+    version: rz
+    basis: extreme
+  - feature: ema_dev_12
+    version: raw
+    basis: both
+  - feature: dL
+    version: raw
+    basis: both
+  - feature: dH
+    version: raw
+    basis: both
+  - feature: resid_qqq_z
+    version: raw
+    basis: both
+  - feature: r_first30
+    version: rz
+    basis: both
+  - feature: bar_index
+    version: raw
+    basis: extreme
+  - feature: minutes_to_close
+    version: raw
+    basis: extreme
+  - feature: first30_x_rv
+    version: raw
+    basis: extreme
+  - feature: mom_24
+    version: raw
+    basis: extreme
+  - feature: linreg_r2_24
+    version: raw
+    basis: IC
+  - feature: d_prev_ret_atr
+    version: raw
+    basis: IC
+  2021-08:
+  - feature: body_ratio
+    version: raw
+    basis: both
+  - feature: kalman_innov
+    version: raw
+    basis: both
+  - feature: spy_z
+    version: raw
+    basis: both
+  - feature: macd_hist
+    version: raw
+    basis: both
+  - feature: linreg_slope_78
+    version: raw
+    basis: both
+  - feature: d_sma20_dev
+    version: rz
+    basis: IC
+  - feature: spy_mom12
+    version: raw
+    basis: both
+  - feature: qqq_mom12
+    version: raw
+    basis: both
+  - feature: r_first30
+    version: raw
+    basis: both
+  - feature: mom_78
+    version: raw
+    basis: both
+  - feature: amihud
+    version: rz
+    basis: IC
+  - feature: kalman_slope
+    version: rz
+    basis: IC
+  - feature: dow
+    version: raw
+    basis: IC
+  - feature: d_atr_c
+    version: rz
+    basis: IC
+  - feature: sign_first30
+    version: raw
+    basis: IC
+  - feature: opex
+    version: raw
+    basis: IC
+  - feature: mom_3
+    version: raw
+    basis: both
+  - feature: stoch_k14
+    version: rz
+    basis: extreme
+  - feature: ema_dev_12
+    version: raw
+    basis: both
+  - feature: dL
+    version: raw
+    basis: both
+  - feature: dH
+    version: raw
+    basis: both
+  - feature: resid_qqq_z
+    version: raw
+    basis: both
+  - feature: mom_24
+    version: raw
+    basis: extreme
+  - feature: bar_index
+    version: raw
+    basis: extreme
+  - feature: minutes_to_close
+    version: raw
+    basis: extreme
+  - feature: first30_x_rv
+    version: raw
+    basis: extreme
+  - feature: beta_qqq
+    version: rz
+    basis: extreme
+  - feature: vwap_dev
+    version: raw
+    basis: extreme
+  - feature: linreg_r2_24
+    version: raw
+    basis: IC
+  - feature: d_prev_ret_atr
+    version: raw
+    basis: IC
+  2021-09:
+  - feature: body_ratio
+    version: raw
+    basis: both
+  - feature: kalman_innov
+    version: raw
+    basis: both
+  - feature: spy_z
+    version: raw
+    basis: both
+  - feature: macd_hist
+    version: raw
+    basis: both
+  - feature: linreg_slope_78
+    version: raw
+    basis: both
+  - feature: d_sma20_dev
+    version: rz
+    basis: IC
+  - feature: spy_mom12
+    version: raw
+    basis: both
+  - feature: qqq_mom12
+    version: raw
+    basis: both
+  - feature: r_first30
+    version: raw
+    basis: both
+  - feature: amihud
+    version: rz
+    basis: IC
+  - feature: mom_78
+    version: raw
+    basis: IC
+  - feature: kalman_slope
+    version: rz
+    basis: IC
+  - feature: dow
+    version: raw
+    basis: IC
+  - feature: d_atr_c
+    version: rz
+    basis: IC
+  - feature: opex
+    version: raw
+    basis: IC
+  - feature: mom_3
+    version: raw
+    basis: both
+  - feature: ema_dev_12
+    version: raw
+    basis: both
+  - feature: dL
+    version: raw
+    basis: both
+  - feature: stoch_k14
+    version: raw
+    basis: extreme
+  - feature: dH
+    version: raw
+    basis: both
+  - feature: resid_qqq_z
+    version: raw
+    basis: both
+  - feature: mom_24
+    version: raw
+    basis: extreme
+  - feature: linreg_r2_24
+    version: rz
+    basis: both
+  - feature: bar_index
+    version: raw
+    basis: extreme
+  - feature: minutes_to_close
+    version: raw
+    basis: extreme
+  - feature: vwap_dev
+    version: raw
+    basis: extreme
+  - feature: first30_x_rv
+    version: raw
+    basis: extreme
+  - feature: beta_qqq
+    version: rz
+    basis: extreme
+  - feature: sign_first30
+    version: raw
+    basis: IC
+  - feature: d_prev_ret_atr
+    version: raw
+    basis: IC
+  2021-10:
+  - feature: body_ratio
+    version: raw
+    basis: both
+  - feature: body
+    version: raw
+    basis: both
+  - feature: macd_hist
+    version: raw
+    basis: both
+  - feature: d_sma20_dev
+    version: rz
+    basis: IC
+  - feature: linreg_slope_78
+    version: raw
+    basis: both
+  - feature: mom_78
+    version: rz
+    basis: IC
+  - feature: amihud
+    version: rz
+    basis: IC
+  - feature: dow
+    version: raw
+    basis: IC
+  - feature: d_atr_c
+    version: rz
+    basis: IC
+  - feature: opex
+    version: raw
+    basis: IC
+  - feature: mom_3
+    version: raw
+    basis: both
+  - feature: ema_dev_12
+    version: raw
+    basis: both
+  - feature: dL
+    version: raw
+    basis: both
+  - feature: stoch_k14
+    version: raw
+    basis: extreme
+  - feature: dH
+    version: raw
+    basis: both
+  - feature: resid_qqq_z
+    version: raw
+    basis: both
+  - feature: qqq_mom12
+    version: raw
+    basis: extreme
+  - feature: spy_mom12
+    version: raw
+    basis: extreme
+  - feature: mom_24
+    version: raw
+    basis: extreme
+  - feature: r_first30
+    version: raw
+    basis: extreme
+  - feature: bar_index
+    version: raw
+    basis: extreme
+  - feature: minutes_to_close
+    version: raw
+    basis: extreme
+  - feature: beta_qqq
+    version: rz
+    basis: extreme
+  - feature: vwap_dev
+    version: raw
+    basis: extreme
+  - feature: linreg_r2_24
+    version: raw
+    basis: IC
+  - feature: kalman_slope
+    version: rz
+    basis: IC
+  - feature: d_prev_ret_atr
+    version: raw
+    basis: IC
+  2021-11:
+  - feature: body_ratio
+    version: raw
+    basis: both
+  - feature: body
+    version: raw
+    basis: both
+  - feature: macd_hist
+    version: raw
+    basis: both
+  - feature: linreg_slope_78
+    version: rz
+    basis: both
+  - feature: d_sma20_dev
+    version: rz
+    basis: IC
+  - feature: qqq_mom12
+    version: raw
+    basis: both
+  - feature: mom_78
+    version: rz
+    basis: IC
+  - feature: amihud
+    version: rz
+    basis: IC
+  - feature: dow
+    version: raw
+    basis: IC
+  - feature: d_atr_c
+    version: rz
+    basis: IC
+  - feature: opex
+    version: raw
+    basis: IC
+  - feature: mom_3
+    version: raw
+    basis: both
+  - feature: stoch_k14
+    version: rz
+    basis: extreme
+  - feature: dL
+    version: raw
+    basis: both
+  - feature: ema_dev_12
+    version: rz
+    basis: both
+  - feature: dH
+    version: raw
+    basis: both
+  - feature: resid_qqq_z
+    version: raw
+    basis: both
+  - feature: spy_mom12
+    version: raw
+    basis: extreme
+  - feature: mom_24
+    version: raw
+    basis: extreme
+  - feature: r_first30
+    version: rz
+    basis: extreme
+  - feature: linreg_r2_24
+    version: rz
+    basis: both
+  - feature: bar_index
+    version: raw
+    basis: extreme
+  - feature: minutes_to_close
+    version: raw
+    basis: extreme
+  - feature: vwap_dev
+    version: raw
+    basis: extreme
+  - feature: beta_qqq
+    version: rz
+    basis: extreme
+  - feature: kalman_slope
+    version: rz
+    basis: IC
+  2021-12:
+  - feature: body_ratio
+    version: raw
+    basis: both
+  - feature: body
+    version: raw
+    basis: both
+  - feature: macd_hist
+    version: raw
+    basis: both
+  - feature: linreg_slope_78
+    version: raw
+    basis: both
+  - feature: d_sma20_dev
+    version: rz
+    basis: IC
+  - feature: spy_mom12
+    version: raw
+    basis: both
+  - feature: qqq_mom12
+    version: raw
+    basis: both
+  - feature: mom_78
+    version: rz
+    basis: IC
+  - feature: amihud
+    version: rz
+    basis: IC
+  - feature: dow
+    version: raw
+    basis: IC
+  - feature: d_atr_c
+    version: rz
+    basis: IC
+  - feature: mom_3
+    version: raw
+    basis: both
+  - feature: stoch_k14
+    version: rz
+    basis: extreme
+  - feature: dL
+    version: raw
+    basis: both
+  - feature: ema_dev_12
+    version: rz
+    basis: both
+  - feature: dH
+    version: raw
+    basis: both
+  - feature: resid_qqq_z
+    version: raw
+    basis: both
+  - feature: mom_24
+    version: raw
+    basis: extreme
+  - feature: linreg_r2_24
+    version: rz
+    basis: both
+  - feature: r_first30
+    version: rz
+    basis: extreme
+  - feature: bar_index
+    version: raw
+    basis: extreme
+  - feature: minutes_to_close
+    version: raw
+    basis: extreme
+  - feature: beta_qqq
+    version: rz
+    basis: extreme
+  - feature: first30_x_rv
+    version: raw
+    basis: extreme
+  - feature: kalman_slope
+    version: rz
+    basis: IC
+  2022-01:
+  - feature: body
+    version: raw
+    basis: both
+  - feature: body_ratio
+    version: raw
+    basis: both
+  - feature: macd_hist
+    version: raw
+    basis: both
+  - feature: linreg_slope_78
+    version: raw
+    basis: both
+  - feature: d_sma20_dev
+    version: rz
+    basis: IC
+  - feature: mom_78
+    version: rz
+    basis: IC
+  - feature: amihud
+    version: rz
+    basis: IC
+  - feature: dow
+    version: raw
+    basis: IC
+  - feature: d_atr_c
+    version: rz
+    basis: IC
+  - feature: mom_3
+    version: raw
+    basis: both
+  - feature: dL
+    version: raw
+    basis: both
+  - feature: ema_dev_12
+    version: rz
+    basis: both
+  - feature: stoch_k14
+    version: raw
+    basis: extreme
+  - feature: dH
+    version: raw
+    basis: both
+  - feature: resid_qqq_z
+    version: raw
+    basis: both
+  - feature: spy_mom12
+    version: raw
+    basis: extreme
+  - feature: qqq_mom12
+    version: raw
+    basis: extreme
+  - feature: r_first30
+    version: raw
+    basis: both
+  - feature: mom_24
+    version: raw
+    basis: extreme
+  - feature: bar_index
+    version: raw
+    basis: extreme
+  - feature: minutes_to_close
+    version: raw
+    basis: extreme
+  - feature: linreg_r2_24
+    version: raw
+    basis: IC
+  2022-02:
+  - feature: body
+    version: raw
+    basis: both
+  - feature: kalman_innov
+    version: raw
+    basis: both
+  - feature: macd_hist
+    version: raw
+    basis: both
+  - feature: linreg_slope_78
+    version: raw
+    basis: both
+  - feature: d_sma20_dev
+    version: rz
+    basis: IC
+  - feature: mom_78
+    version: rz
+    basis: IC
+  - feature: spy_mom12
+    version: raw
+    basis: both
+  - feature: d_mom5
+    version: raw
+    basis: IC
+  - feature: dow
+    version: raw
+    basis: IC
+  - feature: amihud
+    version: rz
+    basis: IC
+  - feature: kalman_slope
+    version: rz
+    basis: IC
+  - feature: d_atr_c
+    version: rz
+    basis: IC
+  - feature: mom_3
+    version: raw
+    basis: both
+  - feature: ema_dev_12
+    version: raw
+    basis: both
+  - feature: dL
+    version: raw
+    basis: both
+  - feature: stoch_k14
+    version: raw
+    basis: extreme
+  - feature: dH
+    version: raw
+    basis: both
+  - feature: resid_qqq_z
+    version: raw
+    basis: both
+  - feature: qqq_mom12
+    version: raw
+    basis: extreme
+  - feature: r_first30
+    version: raw
+    basis: both
+  - feature: mom_24
+    version: raw
+    basis: extreme
+  - feature: bar_index
+    version: raw
+    basis: extreme
+  - feature: minutes_to_close
+    version: raw
+    basis: extreme
+  - feature: linreg_r2_24
+    version: raw
+    basis: both
+  - feature: first30_x_rv
+    version: raw
+    basis: extreme
+  - feature: beta_qqq
+    version: rz
+    basis: extreme
+  - feature: earn_after
+    version: raw
+    basis: IC
+  2022-03:
+  - feature: body
+    version: raw
+    basis: both
+  - feature: kalman_innov
+    version: raw
+    basis: both
+  - feature: macd_hist
+    version: raw
+    basis: both
+  - feature: linreg_slope_78
+    version: raw
+    basis: both
+  - feature: d_sma20_dev
+    version: rz
+    basis: IC
+  - feature: spy_mom12
+    version: raw
+    basis: both
+  - feature: d_mom5
+    version: raw
+    basis: IC
+  - feature: mom_78
+    version: raw
+    basis: both
+  - feature: dow
+    version: raw
+    basis: IC
+  - feature: amihud
+    version: rz
+    basis: IC
+  - feature: d_atr_c
+    version: rz
+    basis: IC
+  - feature: kalman_slope
+    version: rz
+    basis: IC
+  - feature: mom_3
+    version: raw
+    basis: both
+  - feature: ema_dev_12
+    version: raw
+    basis: both
+  - feature: dL
+    version: raw
+    basis: both
+  - feature: stoch_k14
+    version: raw
+    basis: extreme
+  - feature: dH
+    version: raw
+    basis: both
+  - feature: resid_qqq_z
+    version: raw
+    basis: both
+  - feature: qqq_mom12
+    version: raw
+    basis: extreme
+  - feature: r_first30
+    version: raw
+    basis: both
+  - feature: mom_24
+    version: raw
+    basis: extreme
+  - feature: bar_index
+    version: raw
+    basis: extreme
+  - feature: minutes_to_close
+    version: raw
+    basis: extreme
+  - feature: linreg_r2_24
+    version: raw
+    basis: IC
+  - feature: first30_x_rv
+    version: raw
+    basis: extreme
+  - feature: beta_qqq
+    version: rz
+    basis: extreme
+  - feature: har_rv22
+    version: rz
+    basis: extreme
+  - feature: earn_after
+    version: raw
+    basis: IC
+  2022-04:
+  - feature: body
+    version: raw
+    basis: both
+  - feature: kalman_innov
+    version: raw
+    basis: both
+  - feature: macd_hist
+    version: raw
+    basis: both
+  - feature: linreg_slope_78
+    version: raw
+    basis: both
+  - feature: d_sma20_dev
+    version: rz
+    basis: IC
+  - feature: spy_mom12
+    version: raw
+    basis: both
+  - feature: d_mom5
+    version: raw
+    basis: IC
+  - feature: r_first30
+    version: raw
+    basis: both
+  - feature: mom_78
+    version: raw
+    basis: both
+  - feature: dow
+    version: raw
+    basis: IC
+  - feature: amihud
+    version: rz
+    basis: IC
+  - feature: kalman_slope
+    version: rz
+    basis: IC
+  - feature: d_atr_c
+    version: rz
+    basis: IC
+  - feature: mom_3
+    version: raw
+    basis: both
+  - feature: ema_dev_12
+    version: raw
+    basis: both
+  - feature: dL
+    version: raw
+    basis: both
+  - feature: stoch_k14
+    version: raw
+    basis: extreme
+  - feature: resid_qqq_z
+    version: raw
+    basis: both
+  - feature: qqq_mom12
+    version: raw
+    basis: extreme
+  - feature: bar_index
+    version: raw
+    basis: extreme
+  - feature: mom_24
+    version: raw
+    basis: extreme
+  - feature: minutes_to_close
+    version: raw
+    basis: extreme
+  - feature: linreg_r2_24
+    version: raw
+    basis: both
+  - feature: first30_x_rv
+    version: raw
+    basis: extreme
+  - feature: beta_qqq
+    version: rz
+    basis: extreme
+  - feature: sign_first30
+    version: raw
+    basis: IC
+  - feature: earn_after
+    version: raw
+    basis: IC
+  2022-05:
+  - feature: body
+    version: raw
+    basis: both
+  - feature: kalman_innov
+    version: raw
+    basis: both
+  - feature: macd_hist
+    version: raw
+    basis: both
+  - feature: d_sma20_dev
+    version: rz
+    basis: IC
+  - feature: linreg_slope_78
+    version: raw
+    basis: both
+  - feature: d_mom5
+    version: raw
+    basis: IC
+  - feature: mom_78
+    version: raw
+    basis: both
+  - feature: linreg_r2_24
+    version: raw
+    basis: both
+  - feature: dow
+    version: raw
+    basis: IC
+  - feature: amihud
+    version: rz
+    basis: IC
+  - feature: d_atr_c
+    version: rz
+    basis: IC
+  - feature: mom_3
+    version: raw
+    basis: both
+  - feature: ema_dev_12
+    version: raw
+    basis: both
+  - feature: dL
+    version: raw
+    basis: both
+  - feature: stoch_k14
+    version: raw
+    basis: extreme
+  - feature: resid_qqq_z
+    version: raw
+    basis: both
+  - feature: spy_mom12
+    version: raw
+    basis: extreme
+  - feature: qqq_mom12
+    version: raw
+    basis: extreme
+  - feature: r_first30
+    version: raw
+    basis: both
+  - feature: mom_24
+    version: raw
+    basis: extreme
+  - feature: bar_index
+    version: raw
+    basis: extreme
+  - feature: minutes_to_close
+    version: raw
+    basis: extreme
+  - feature: beta_qqq
+    version: rz
+    basis: extreme
+  2022-06:
+  - feature: kalman_innov
+    version: raw
+    basis: both
+  - feature: body
+    version: raw
+    basis: both
+  - feature: macd_hist
+    version: raw
+    basis: both
+  - feature: linreg_slope_78
+    version: raw
+    basis: both
+  - feature: d_sma20_dev
+    version: rz
+    basis: IC
+  - feature: spy_mom12
+    version: raw
+    basis: both
+  - feature: d_mom5
+    version: raw
+    basis: IC
+  - feature: mom_78
+    version: raw
+    basis: both
+  - feature: r_first30
+    version: raw
+    basis: both
+  - feature: dow
+    version: raw
+    basis: IC
+  - feature: linreg_r2_24
+    version: raw
+    basis: both
+  - feature: amihud
+    version: rz
+    basis: IC
+  - feature: d_atr_c
+    version: rz
+    basis: IC
+  - feature: mom_3
+    version: raw
+    basis: both
+  - feature: ema_dev_12
+    version: raw
+    basis: both
+  - feature: dL
+    version: raw
+    basis: both
+  - feature: stoch_k14
+    version: raw
+    basis: extreme
+  - feature: resid_qqq_z
+    version: raw
+    basis: both
+  - feature: qqq_mom12
+    version: raw
+    basis: extreme
+  - feature: bar_index
+    version: raw
+    basis: extreme
+  - feature: minutes_to_close
+    version: raw
+    basis: extreme
+  - feature: mom_24
+    version: raw
+    basis: extreme
+  - feature: vol_ratio
+    version: raw
+    basis: extreme
+  2022-07:
+  - feature: kalman_innov
+    version: raw
+    basis: both
+  - feature: body
+    version: raw
+    basis: both
+  - feature: macd_hist
+    version: raw
+    basis: both
+  - feature: linreg_slope_78
+    version: raw
+    basis: both
+  - feature: d_sma20_dev
+    version: rz
+    basis: IC
+  - feature: spy_mom12
+    version: raw
+    basis: both
+  - feature: d_mom5
+    version: raw
+    basis: IC
+  - feature: mom_78
+    version: raw
+    basis: both
+  - feature: dow
+    version: raw
+    basis: IC
+  - feature: d_atr_c
+    version: rz
+    basis: IC
+  - feature: amihud
+    version: rz
+    basis: IC
+  - feature: kalman_slope
+    version: rz
+    basis: IC
+  - feature: mom_3
+    version: raw
+    basis: both
+  - feature: ema_dev_12
+    version: raw
+    basis: both
+  - feature: dL
+    version: raw
+    basis: both
+  - feature: stoch_k14
+    version: raw
+    basis: extreme
+  - feature: resid_qqq_z
+    version: raw
+    basis: both
+  - feature: qqq_mom12
+    version: raw
+    basis: extreme
+  - feature: r_first30
+    version: raw
+    basis: both
+  - feature: bar_index
+    version: raw
+    basis: extreme
+  - feature: minutes_to_close
+    version: raw
+    basis: extreme
+  - feature: mom_24
+    version: raw
+    basis: extreme
+  - feature: beta_qqq
+    version: rz
+    basis: extreme
+  - feature: linreg_r2_24
+    version: raw
+    basis: both
+  - feature: vol_ratio
+    version: raw
+    basis: extreme
+  2022-08:
+  - feature: kalman_innov
+    version: raw
+    basis: both
+  - feature: macd_hist
+    version: raw
+    basis: both
+  - feature: d_sma20_dev
+    version: rz
+    basis: IC
+  - feature: linreg_slope_78
+    version: raw
+    basis: both
+  - feature: d_mom5
+    version: raw
+    basis: IC
+  - feature: mom_78
+    version: raw
+    basis: both
+  - feature: r_first30
+    version: raw
+    basis: both
+  - feature: amihud
+    version: rz
+    basis: IC
+  - feature: d_atr_c
+    version: rz
+    basis: IC
+  - feature: dow
+    version: raw
+    basis: IC
+  - feature: kalman_slope
+    version: rz
+    basis: IC
+  - feature: mom_3
+    version: raw
+    basis: both
+  - feature: fracdiff_lnc
+    version: rz
+    basis: both
+  - feature: ema_dev_12
+    version: raw
+    basis: both
+  - feature: dL
+    version: raw
+    basis: both
+  - feature: stoch_k14
+    version: raw
+    basis: extreme
+  - feature: resid_qqq_z
+    version: raw
+    basis: both
+  - feature: spy_mom12
+    version: raw
+    basis: extreme
+  - feature: qqq_mom12
+    version: raw
+    basis: extreme
+  - feature: bar_index
+    version: raw
+    basis: extreme
+  - feature: mom_24
+    version: raw
+    basis: extreme
+  - feature: minutes_to_close
+    version: raw
+    basis: extreme
+  - feature: beta_qqq
+    version: rz
+    basis: extreme
+  - feature: linreg_r2_24
+    version: raw
+    basis: both
+  - feature: vol_ratio
+    version: raw
+    basis: extreme
+  - feature: bb_width
+    version: rz
+    basis: IC
+  2022-09:
+  - feature: kalman_innov
+    version: raw
+    basis: both
+  - feature: macd_hist
+    version: raw
+    basis: both
+  - feature: d_sma20_dev
+    version: rz
+    basis: IC
+  - feature: linreg_slope_78
+    version: raw
+    basis: both
+  - feature: d_mom5
+    version: raw
+    basis: IC
+  - feature: spy_mom12
+    version: raw
+    basis: both
+  - feature: mom_78
+    version: raw
+    basis: both
+  - feature: d_atr_c
+    version: rz
+    basis: IC
+  - feature: amihud
+    version: rz
+    basis: IC
+  - feature: dow
+    version: raw
+    basis: IC
+  - feature: sign_first30
+    version: raw
+    basis: IC
+  - feature: mom_3
+    version: raw
+    basis: both
+  - feature: fracdiff_lnc
+    version: rz
+    basis: both
+  - feature: ema_dev_12
+    version: raw
+    basis: both
+  - feature: dL
+    version: raw
+    basis: both
+  - feature: stoch_k14
+    version: raw
+    basis: extreme
+  - feature: resid_qqq_z
+    version: raw
+    basis: both
+  - feature: qqq_mom12
+    version: raw
+    basis: extreme
+  - feature: mom_24
+    version: raw
+    basis: extreme
+  - feature: r_first30
+    version: raw
+    basis: both
+  - feature: bar_index
+    version: raw
+    basis: extreme
+  - feature: minutes_to_close
+    version: raw
+    basis: extreme
+  - feature: linreg_r2_24
+    version: raw
+    basis: both
+  - feature: beta_qqq
+    version: rz
+    basis: extreme
+  2022-10:
+  - feature: kalman_innov
+    version: raw
+    basis: both
+  - feature: macd_hist
+    version: raw
+    basis: both
+  - feature: d_sma20_dev
+    version: rz
+    basis: IC
+  - feature: linreg_slope_78
+    version: raw
+    basis: both
+  - feature: spy_mom12
+    version: raw
+    basis: both
+  - feature: d_mom5
+    version: raw
+    basis: IC
+  - feature: mom_78
+    version: raw
+    basis: both
+  - feature: amihud
+    version: rz
+    basis: IC
+  - feature: d_atr_c
+    version: rz
+    basis: IC
+  - feature: dow
+    version: raw
+    basis: IC
+  - feature: kalman_slope
+    version: rz
+    basis: IC
+  - feature: sign_first30
+    version: raw
+    basis: IC
+  - feature: close_location
+    version: raw
+    basis: both
+  - feature: mom_3
+    version: raw
+    basis: both
+  - feature: ema_dev_12
+    version: raw
+    basis: both
+  - feature: dL
+    version: raw
+    basis: both
+  - feature: stoch_k14
+    version: raw
+    basis: extreme
+  - feature: resid_qqq_z
+    version: raw
+    basis: both
+  - feature: qqq_mom12
+    version: raw
+    basis: extreme
+  - feature: r_first30
+    version: raw
+    basis: both
+  - feature: beta_qqq
+    version: rz
+    basis: extreme
+  - feature: mom_24
+    version: raw
+    basis: extreme
+  - feature: bar_index
+    version: raw
+    basis: extreme
+  - feature: minutes_to_close
+    version: raw
+    basis: extreme
+  - feature: linreg_r2_24
+    version: raw
+    basis: both
+  - feature: har_rv22
+    version: rz
+    basis: extreme
+  - feature: entropy_78
+    version: raw
+    basis: IC
+  2022-11:
+  - feature: kalman_innov
+    version: raw
+    basis: both
+  - feature: d_sma20_dev
+    version: raw
+    basis: IC
+  - feature: macd_hist
+    version: raw
+    basis: both
+  - feature: linreg_slope_78
+    version: raw
+    basis: IC
+  - feature: d_mom5
+    version: raw
+    basis: IC
+  - feature: mom_78
+    version: raw
+    basis: both
+  - feature: dow
+    version: raw
+    basis: IC
+  - feature: amihud
+    version: rz
+    basis: IC
+  - feature: d_atr_c
+    version: rz
+    basis: IC
+  - feature: kalman_slope
+    version: rz
+    basis: IC
+  - feature: sign_first30
+    version: raw
+    basis: IC
+  - feature: close_location
+    version: raw
+    basis: both
+  - feature: mom_3
+    version: raw
+    basis: both
+  - feature: ema_dev_12
+    version: raw
+    basis: both
+  - feature: dL
+    version: raw
+    basis: both
+  - feature: stoch_k14
+    version: raw
+    basis: extreme
+  - feature: resid_qqq_z
+    version: raw
+    basis: both
+  - feature: spy_mom12
+    version: raw
+    basis: extreme
+  - feature: qqq_mom12
+    version: raw
+    basis: extreme
+  - feature: beta_qqq
+    version: rz
+    basis: extreme
+  - feature: mom_24
+    version: raw
+    basis: extreme
+  - feature: r_first30
+    version: raw
+    basis: both
+  - feature: bar_index
+    version: raw
+    basis: extreme
+  - feature: minutes_to_close
+    version: raw
+    basis: extreme
+  - feature: linreg_r2_24
+    version: raw
+    basis: both
+  2022-12:
+  - feature: d_sma20_dev
+    version: raw
+    basis: IC
+  - feature: macd_hist
+    version: raw
+    basis: both
+  - feature: linreg_slope_78
+    version: raw
+    basis: both
+  - feature: d_mom5
+    version: raw
+    basis: IC
+  - feature: mom_78
+    version: raw
+    basis: both
+  - feature: d_atr_c
+    version: rz
+    basis: IC
+  - feature: dow
+    version: raw
+    basis: IC
+  - feature: amihud
+    version: rz
+    basis: IC
+  - feature: kalman_slope
+    version: rz
+    basis: IC
+  - feature: sign_first30
+    version: raw
+    basis: IC
+  - feature: close_location
+    version: raw
+    basis: both
+  - feature: mom_3
+    version: raw
+    basis: both
+  - feature: kalman_innov
+    version: raw
+    basis: both
+  - feature: ema_dev_12
+    version: raw
+    basis: both
+  - feature: dL
+    version: raw
+    basis: both
+  - feature: stoch_k14
+    version: raw
+    basis: extreme
+  - feature: resid_qqq_z
+    version: raw
+    basis: both
+  - feature: spy_mom12
+    version: raw
+    basis: extreme
+  - feature: qqq_mom12
+    version: raw
+    basis: extreme
+  - feature: beta_qqq
+    version: rz
+    basis: extreme
+  - feature: mom_24
+    version: raw
+    basis: extreme
+  - feature: r_first30
+    version: raw
+    basis: both
+  - feature: bar_index
+    version: raw
+    basis: extreme
+  - feature: minutes_to_close
+    version: raw
+    basis: extreme
+  - feature: linreg_r2_24
+    version: raw
+    basis: IC
+  2023-01:
+  - feature: kalman_innov
+    version: raw
+    basis: both
+  - feature: macd_hist
+    version: raw
+    basis: both
+  - feature: d_sma20_dev
+    version: rz
+    basis: IC
+  - feature: linreg_slope_78
+    version: raw
+    basis: both
+  - feature: d_mom5
+    version: raw
+    basis: IC
+  - feature: mom_78
+    version: raw
+    basis: both
+  - feature: d_atr_c
+    version: rz
+    basis: IC
+  - feature: amihud
+    version: rz
+    basis: IC
+  - feature: kalman_slope
+    version: rz
+    basis: IC
+  - feature: dow
+    version: raw
+    basis: IC
+  - feature: sign_first30
+    version: raw
+    basis: IC
+  - feature: close_location
+    version: raw
+    basis: both
+  - feature: mom_3
+    version: raw
+    basis: both
+  - feature: ema_dev_12
+    version: raw
+    basis: both
+  - feature: dL
+    version: raw
+    basis: both
+  - feature: stoch_k14
+    version: raw
+    basis: extreme
+  - feature: resid_qqq_z
+    version: raw
+    basis: both
+  - feature: spy_mom12
+    version: raw
+    basis: extreme
+  - feature: qqq_mom12
+    version: raw
+    basis: extreme
+  - feature: r_first30
+    version: raw
+    basis: both
+  - feature: bar_index
+    version: raw
+    basis: extreme
+  - feature: minutes_to_close
+    version: raw
+    basis: extreme
+  - feature: beta_qqq
+    version: rz
+    basis: extreme
+  - feature: mom_24
+    version: raw
+    basis: extreme
+  - feature: linreg_r2_24
+    version: raw
+    basis: IC
+  - feature: gap_z
+    version: raw
+    basis: IC
+  2023-02:
+  - feature: kalman_innov
+    version: raw
+    basis: both
+  - feature: d_sma20_dev
+    version: raw
+    basis: IC
+  - feature: macd_hist
+    version: raw
+    basis: both
+  - feature: linreg_slope_78
+    version: raw
+    basis: both
+  - feature: d_mom5
+    version: raw
+    basis: IC
+  - feature: mom_78
+    version: raw
+    basis: both
+  - feature: amihud
+    version: rz
+    basis: IC
+  - feature: d_atr_c
+    version: rz
+    basis: IC
+  - feature: kalman_slope
+    version: rz
+    basis: IC
+  - feature: close_location
+    version: raw
+    basis: both
+  - feature: mom_3
+    version: raw
+    basis: both
+  - feature: ema_dev_12
+    version: raw
+    basis: both
+  - feature: dL
+    version: raw
+    basis: both
+  - feature: stoch_k14
+    version: raw
+    basis: extreme
+  - feature: resid_qqq_z
+    version: raw
+    basis: both
+  - feature: spy_mom12
+    version: raw
+    basis: extreme
+  - feature: qqq_mom12
+    version: raw
+    basis: extreme
+  - feature: bar_index
+    version: raw
+    basis: extreme
+  - feature: minutes_to_close
+    version: raw
+    basis: extreme
+  - feature: beta_qqq
+    version: rz
+    basis: extreme
+  - feature: r_first30
+    version: raw
+    basis: IC
+  - feature: linreg_r2_24
+    version: raw
+    basis: IC
+  - feature: sign_first30
+    version: raw
+    basis: IC
+  - feature: d_prev_ret_atr
+    version: raw
+    basis: IC
+  - feature: earn_after
+    version: raw
+    basis: IC
+  - feature: gap_z
+    version: raw
+    basis: IC
+  2023-03:
+  - feature: kalman_innov
+    version: raw
+    basis: both
+  - feature: d_sma20_dev
+    version: raw
+    basis: IC
+  - feature: macd_hist
+    version: raw
+    basis: both
+  - feature: linreg_slope_78
+    version: raw
+    basis: both
+  - feature: d_mom5
+    version: raw
+    basis: IC
+  - feature: mom_78
+    version: raw
+    basis: both
+  - feature: amihud
+    version: rz
+    basis: IC
+  - feature: d_atr_c
+    version: rz
+    basis: IC
+  - feature: kalman_slope
+    version: rz
+    basis: IC
+  - feature: sign_first30
+    version: raw
+    basis: IC
+  - feature: dow
+    version: raw
+    basis: IC
+  - feature: close_location
+    version: raw
+    basis: both
+  - feature: mom_3
+    version: raw
+    basis: both
+  - feature: ema_dev_12
+    version: raw
+    basis: both
+  - feature: dL
+    version: raw
+    basis: both
+  - feature: stoch_k14
+    version: raw
+    basis: extreme
+  - feature: resid_qqq_z
+    version: raw
+    basis: both
+  - feature: spy_mom12
+    version: raw
+    basis: both
+  - feature: qqq_mom12
+    version: raw
+    basis: both
+  - feature: beta_qqq
+    version: rz
+    basis: extreme
+  - feature: bar_index
+    version: raw
+    basis: extreme
+  - feature: minutes_to_close
+    version: raw
+    basis: extreme
+  - feature: r_first30
+    version: raw
+    basis: IC
+  - feature: linreg_r2_24
+    version: raw
+    basis: IC
+  - feature: d_prev_ret_atr
+    version: raw
+    basis: IC
+  - feature: earn_after
+    version: raw
+    basis: IC
+  - feature: gap_z
+    version: raw
+    basis: IC
+  2023-04:
+  - feature: kalman_innov
+    version: raw
+    basis: both
+  - feature: d_sma20_dev
+    version: raw
+    basis: IC
+  - feature: macd_hist
+    version: raw
+    basis: both
+  - feature: linreg_slope_78
+    version: raw
+    basis: both
+  - feature: d_mom5
+    version: raw
+    basis: IC
+  - feature: spy_mom12
+    version: raw
+    basis: both
+  - feature: mom_78
+    version: raw
+    basis: both
+  - feature: amihud
+    version: rz
+    basis: IC
+  - feature: d_atr_c
+    version: rz
+    basis: IC
+  - feature: kalman_slope
+    version: rz
+    basis: IC
+  - feature: sign_first30
+    version: raw
+    basis: IC
+  - feature: dow
+    version: raw
+    basis: IC
+  - feature: mom_3
+    version: raw
+    basis: both
+  - feature: garch_resid
+    version: raw
+    basis: both
+  - feature: ema_dev_12
+    version: raw
+    basis: both
+  - feature: dL
+    version: raw
+    basis: both
+  - feature: stoch_k14
+    version: raw
+    basis: extreme
+  - feature: resid_qqq_z
+    version: raw
+    basis: both
+  - feature: qqq_mom12
+    version: raw
+    basis: both
+  - feature: beta_qqq
+    version: rz
+    basis: extreme
+  - feature: r_first30
+    version: raw
+    basis: IC
+  - feature: bar_index
+    version: raw
+    basis: extreme
+  - feature: minutes_to_close
+    version: raw
+    basis: extreme
+  - feature: mom_24
+    version: raw
+    basis: extreme
+  - feature: first30_x_relvol
+    version: raw
+    basis: extreme
+  - feature: linreg_r2_24
+    version: raw
+    basis: IC
+  - feature: gap_z
+    version: raw
+    basis: IC
+  - feature: d_prev_ret_atr
+    version: raw
+    basis: IC
+  - feature: earn_after
+    version: raw
+    basis: IC
+  2023-05:
+  - feature: kalman_innov
+    version: raw
+    basis: both
+  - feature: d_sma20_dev
+    version: raw
+    basis: IC
+  - feature: macd_hist
+    version: raw
+    basis: both
+  - feature: d_mom5
+    version: raw
+    basis: IC
+  - feature: spy_mom12
+    version: raw
+    basis: both
+  - feature: mom_78
+    version: raw
+    basis: both
+  - feature: amihud
+    version: rz
+    basis: IC
+  - feature: d_atr_c
+    version: rz
+    basis: IC
+  - feature: kalman_slope
+    version: rz
+    basis: IC
+  - feature: dow
+    version: raw
+    basis: IC
+  - feature: mom_3
+    version: raw
+    basis: both
+  - feature: close_location
+    version: raw
+    basis: both
+  - feature: ema_dev_12
+    version: raw
+    basis: both
+  - feature: dL
+    version: raw
+    basis: both
+  - feature: stoch_k14
+    version: raw
+    basis: extreme
+  - feature: resid_qqq_z
+    version: raw
+    basis: both
+  - feature: linreg_slope_78
+    version: raw
+    basis: both
+  - feature: qqq_mom12
+    version: raw
+    basis: both
+  - feature: r_first30
+    version: raw
+    basis: IC
+  - feature: beta_qqq
+    version: rz
+    basis: extreme
+  - feature: bar_index
+    version: raw
+    basis: extreme
+  - feature: minutes_to_close
+    version: raw
+    basis: extreme
+  - feature: mom_24
+    version: raw
+    basis: extreme
+  - feature: linreg_r2_24
+    version: raw
+    basis: IC
+  - feature: sign_first30
+    version: raw
+    basis: IC
+  - feature: gap_z
+    version: raw
+    basis: IC
+  - feature: d_prev_ret_atr
+    version: raw
+    basis: IC
+  - feature: earn_after
+    version: raw
+    basis: IC
+  2023-06:
+  - feature: kalman_innov
+    version: raw
+    basis: both
+  - feature: d_sma20_dev
+    version: raw
+    basis: IC
+  - feature: macd_hist
+    version: raw
+    basis: both
+  - feature: linreg_slope_78
+    version: raw
+    basis: both
+  - feature: d_mom5
+    version: raw
+    basis: IC
+  - feature: spy_mom12
+    version: raw
+    basis: both
+  - feature: mom_78
+    version: raw
+    basis: both
+  - feature: amihud
+    version: rz
+    basis: IC
+  - feature: d_atr_c
+    version: rz
+    basis: IC
+  - feature: kalman_slope
+    version: rz
+    basis: IC
+  - feature: close_location
+    version: raw
+    basis: both
+  - feature: mom_3
+    version: raw
+    basis: both
+  - feature: ema_dev_12
+    version: raw
+    basis: both
+  - feature: dL
+    version: raw
+    basis: both
+  - feature: stoch_k14
+    version: raw
+    basis: extreme
+  - feature: resid_qqq_z
+    version: raw
+    basis: both
+  - feature: qqq_mom12
+    version: raw
+    basis: both
+  - feature: r_first30
+    version: raw
+    basis: IC
+  - feature: beta_qqq
+    version: rz
+    basis: extreme
+  - feature: mom_24
+    version: raw
+    basis: extreme
+  - feature: bar_index
+    version: raw
+    basis: extreme
+  - feature: minutes_to_close
+    version: raw
+    basis: extreme
+  - feature: sign_first30
+    version: raw
+    basis: IC
+  - feature: gap_z
+    version: raw
+    basis: IC
+  - feature: linreg_r2_24
+    version: raw
+    basis: IC
+  - feature: earn_after
+    version: raw
+    basis: IC
+  - feature: d_prev_ret_atr
+    version: raw
+    basis: IC
+  2023-07:
+  - feature: kalman_innov
+    version: raw
+    basis: both
+  - feature: body
+    version: raw
+    basis: both
+  - feature: d_sma20_dev
+    version: raw
+    basis: IC
+  - feature: macd_hist
+    version: raw
+    basis: both
+  - feature: d_mom5
+    version: raw
+    basis: IC
+  - feature: mom_78
+    version: raw
+    basis: both
+  - feature: amihud
+    version: rz
+    basis: IC
+  - feature: kalman_slope
+    version: rz
+    basis: IC
+  - feature: d_atr_c
+    version: rz
+    basis: IC
+  - feature: mom_3
+    version: raw
+    basis: both
+  - feature: ema_dev_12
+    version: raw
+    basis: both
+  - feature: dL
+    version: raw
+    basis: both
+  - feature: stoch_k14
+    version: raw
+    basis: extreme
+  - feature: resid_qqq_z
+    version: raw
+    basis: both
+  - feature: linreg_slope_78
+    version: raw
+    basis: both
+  - feature: spy_mom12
+    version: raw
+    basis: both
+  - feature: qqq_mom12
+    version: raw
+    basis: both
+  - feature: beta_qqq
+    version: rz
+    basis: extreme
+  - feature: r_first30
+    version: raw
+    basis: IC
+  - feature: bar_index
+    version: raw
+    basis: extreme
+  - feature: minutes_to_close
+    version: raw
+    basis: extreme
+  - feature: mom_24
+    version: raw
+    basis: extreme
+  - feature: first30_x_relvol
+    version: raw
+    basis: extreme
+  - feature: sign_first30
+    version: raw
+    basis: IC
+  - feature: linreg_r2_24
+    version: raw
+    basis: IC
+  - feature: d_prev_ret_atr
+    version: raw
+    basis: IC
+  - feature: earn_after
+    version: raw
+    basis: IC
+  - feature: gap_z
+    version: raw
+    basis: IC
+  2023-08:
+  - feature: kalman_innov
+    version: raw
+    basis: both
+  - feature: garch_resid
+    version: raw
+    basis: both
+  - feature: d_sma20_dev
+    version: raw
+    basis: IC
+  - feature: macd_hist
+    version: raw
+    basis: both
+  - feature: d_mom5
+    version: raw
+    basis: IC
+  - feature: mom_78
+    version: raw
+    basis: both
+  - feature: amihud
+    version: rz
+    basis: IC
+  - feature: d_atr_c
+    version: rz
+    basis: IC
+  - feature: kalman_slope
+    version: rz
+    basis: IC
+  - feature: earn_react
+    version: raw
+    basis: IC
+  - feature: dow
+    version: raw
+    basis: IC
+  - feature: mom_3
+    version: raw
+    basis: both
+  - feature: ema_dev_12
+    version: raw
+    basis: both
+  - feature: dL
+    version: raw
+    basis: both
+  - feature: stoch_k14
+    version: raw
+    basis: extreme
+  - feature: resid_qqq_z
+    version: raw
+    basis: both
+  - feature: linreg_slope_78
+    version: raw
+    basis: both
+  - feature: spy_mom12
+    version: raw
+    basis: both
+  - feature: qqq_mom12
+    version: raw
+    basis: both
+  - feature: beta_qqq
+    version: rz
+    basis: extreme
+  - feature: r_first30
+    version: raw
+    basis: both
+  - feature: minutes_to_close
+    version: raw
+    basis: extreme
+  - feature: bar_index
+    version: raw
+    basis: extreme
+  - feature: mom_24
+    version: raw
+    basis: extreme
+  - feature: first30_x_relvol
+    version: raw
+    basis: extreme
+  - feature: first30_x_rv
+    version: raw
+    basis: extreme
+  - feature: lower_shadow
+    version: rz
+    basis: extreme
+  - feature: linreg_r2_24
+    version: raw
+    basis: IC
+  - feature: sign_first30
+    version: raw
+    basis: IC
+  - feature: earn_after
+    version: raw
+    basis: IC
+  - feature: gap_z
+    version: raw
+    basis: IC
+  - feature: d_prev_ret_atr
+    version: raw
+    basis: IC
+  2023-09:
+  - feature: kalman_innov
+    version: raw
+    basis: both
+  - feature: body
+    version: raw
+    basis: both
+  - feature: d_sma20_dev
+    version: raw
+    basis: IC
+  - feature: macd_hist
+    version: raw
+    basis: both
+  - feature: d_mom5
+    version: raw
+    basis: IC
+  - feature: mom_78
+    version: raw
+    basis: both
+  - feature: amihud
+    version: rz
+    basis: IC
+  - feature: d_atr_c
+    version: rz
+    basis: IC
+  - feature: earn_react
+    version: raw
+    basis: IC
+  - feature: dow
+    version: raw
+    basis: IC
+  - feature: mom_3
+    version: raw
+    basis: both
+  - feature: ema_dev_12
+    version: raw
+    basis: both
+  - feature: dL
+    version: raw
+    basis: both
+  - feature: stoch_k14
+    version: raw
+    basis: extreme
+  - feature: resid_qqq_z
+    version: raw
+    basis: both
+  - feature: linreg_slope_78
+    version: raw
+    basis: both
+  - feature: spy_mom12
+    version: raw
+    basis: both
+  - feature: qqq_mom12
+    version: raw
+    basis: both
+  - feature: beta_qqq
+    version: rz
+    basis: extreme
+  - feature: r_first30
+    version: raw
+    basis: both
+  - feature: minutes_to_close
+    version: raw
+    basis: extreme
+  - feature: bar_index
+    version: raw
+    basis: extreme
+  - feature: kalman_slope
+    version: rz
+    basis: extreme
+  - feature: mom_24
+    version: raw
+    basis: extreme
+  - feature: lower_shadow
+    version: rz
+    basis: extreme
+  - feature: first30_x_rv
+    version: raw
+    basis: extreme
+  - feature: first30_x_relvol
+    version: raw
+    basis: extreme
+  - feature: linreg_r2_24
+    version: raw
+    basis: IC
+  - feature: sign_first30
+    version: raw
+    basis: IC
+  - feature: earn_after
+    version: raw
+    basis: IC
+  - feature: d_prev_ret_atr
+    version: raw
+    basis: IC
+  - feature: gap_z
+    version: raw
+    basis: IC
+  2023-10:
+  - feature: kalman_innov
+    version: raw
+    basis: both
+  - feature: d_sma20_dev
+    version: raw
+    basis: IC
+  - feature: macd_hist
+    version: raw
+    basis: both
+  - feature: linreg_slope_78
+    version: raw
+    basis: both
+  - feature: d_mom5
+    version: raw
+    basis: IC
+  - feature: mom_78
+    version: raw
+    basis: both
+  - feature: d_atr_c
+    version: rz
+    basis: IC
+  - feature: amihud
+    version: rz
+    basis: IC
+  - feature: dow
+    version: raw
+    basis: IC
+  - feature: earn_react
+    version: raw
+    basis: IC
+  - feature: close_location
+    version: raw
+    basis: both
+  - feature: mom_3
+    version: raw
+    basis: both
+  - feature: ema_dev_12
+    version: raw
+    basis: both
+  - feature: dL
+    version: raw
+    basis: both
+  - feature: stoch_k14
+    version: raw
+    basis: extreme
+  - feature: resid_qqq_z
+    version: raw
+    basis: both
+  - feature: spy_mom12
+    version: raw
+    basis: both
+  - feature: qqq_mom12
+    version: raw
+    basis: both
+  - feature: beta_qqq
+    version: rz
+    basis: extreme
+  - feature: minutes_to_close
+    version: raw
+    basis: extreme
+  - feature: mom_24
+    version: raw
+    basis: extreme
+  - feature: bar_index
+    version: raw
+    basis: extreme
+  - feature: r_first30
+    version: raw
+    basis: both
+  - feature: first30_x_rv
+    version: raw
+    basis: extreme
+  - feature: lower_shadow
+    version: rz
+    basis: extreme
+  - feature: first30_x_relvol
+    version: raw
+    basis: extreme
+  - feature: sign_first30
+    version: raw
+    basis: IC
+  - feature: d_prev_ret_atr
+    version: raw
+    basis: IC
+  - feature: earn_after
+    version: raw
+    basis: IC
+  - feature: gap_z
+    version: raw
+    basis: IC
+  2023-11:
+  - feature: spy_z
+    version: rz
+    basis: both
+  - feature: d_sma20_dev
+    version: raw
+    basis: IC
+  - feature: linreg_slope_78
+    version: raw
+    basis: both
+  - feature: d_mom5
+    version: raw
+    basis: IC
+  - feature: mom_78
+    version: raw
+    basis: both
+  - feature: d_atr_c
+    version: rz
+    basis: IC
+  - feature: amihud
+    version: rz
+    basis: IC
+  - feature: dow
+    version: raw
+    basis: IC
+  - feature: earn_react
+    version: raw
+    basis: IC
+  - feature: close_location
+    version: raw
+    basis: both
+  - feature: mom_3
+    version: raw
+    basis: both
+  - feature: kalman_innov
+    version: raw
+    basis: both
+  - feature: ema_dev_12
+    version: raw
+    basis: both
+  - feature: fracdiff_lnc
+    version: rz
+    basis: both
+  - feature: dL
+    version: raw
+    basis: both
+  - feature: mom_6
+    version: raw
+    basis: extreme
+  - feature: macd_hist
+    version: raw
+    basis: both
+  - feature: resid_qqq_z
+    version: raw
+    basis: extreme
+  - feature: spy_mom12
+    version: raw
+    basis: both
+  - feature: qqq_mom12
+    version: raw
+    basis: both
+  - feature: beta_qqq
+    version: rz
+    basis: extreme
+  - feature: mom_24
+    version: raw
+    basis: extreme
+  - feature: minutes_to_close
+    version: raw
+    basis: extreme
+  - feature: bar_index
+    version: raw
+    basis: extreme
+  - feature: r_first30
+    version: raw
+    basis: both
+  - feature: first30_x_relvol
+    version: raw
+    basis: extreme
+  - feature: first30_x_rv
+    version: raw
+    basis: extreme
+  - feature: lower_shadow
+    version: rz
+    basis: extreme
+  - feature: kalman_slope
+    version: rz
+    basis: extreme
+  - feature: sign_first30
+    version: raw
+    basis: IC
+  - feature: d_prev_ret_atr
+    version: raw
+    basis: IC
+  - feature: earn_after
+    version: raw
+    basis: IC
+  2023-12:
+  - feature: d_sma20_dev
+    version: raw
+    basis: IC
+  - feature: linreg_slope_78
+    version: raw
+    basis: both
+  - feature: d_mom5
+    version: raw
+    basis: IC
+  - feature: spy_mom12
+    version: raw
+    basis: both
+  - feature: mom_78
+    version: raw
+    basis: both
+  - feature: d_atr_c
+    version: rz
+    basis: IC
+  - feature: amihud
+    version: rz
+    basis: IC
+  - feature: dow
+    version: raw
+    basis: IC
+  - feature: earn_react
+    version: raw
+    basis: IC
+  - feature: close_location
+    version: raw
+    basis: both
+  - feature: mom_3
+    version: raw
+    basis: both
+  - feature: kalman_innov
+    version: raw
+    basis: both
+  - feature: ema_dev_12
+    version: raw
+    basis: both
+  - feature: fracdiff_lnc
+    version: rz
+    basis: both
+  - feature: dL
+    version: raw
+    basis: both
+  - feature: mom_6
+    version: raw
+    basis: extreme
+  - feature: macd_hist
+    version: raw
+    basis: both
+  - feature: resid_qqq_z
+    version: raw
+    basis: extreme
+  - feature: qqq_mom12
+    version: raw
+    basis: both
+  - feature: kalman_slope
+    version: rz
+    basis: extreme
+  - feature: bar_index
+    version: raw
+    basis: extreme
+  - feature: minutes_to_close
+    version: raw
+    basis: extreme
+  - feature: r_first30
+    version: raw
+    basis: both
+  - feature: mom_24
+    version: raw
+    basis: extreme
+  - feature: beta_qqq
+    version: rz
+    basis: extreme
+  - feature: first30_x_rv
+    version: raw
+    basis: extreme
+  - feature: first30_x_relvol
+    version: raw
+    basis: extreme
+  - feature: lower_shadow
+    version: rz
+    basis: extreme
+  - feature: d_prev_ret_atr
+    version: raw
+    basis: IC
+  - feature: sign_first30
+    version: raw
+    basis: IC
+  - feature: earn_after
+    version: raw
+    basis: IC
+  2024-01:
+  - feature: spy_z
+    version: raw
+    basis: both
+  - feature: d_sma20_dev
+    version: raw
+    basis: IC
+  - feature: linreg_slope_78
+    version: raw
+    basis: both
+  - feature: d_mom5
+    version: raw
+    basis: IC
+  - feature: spy_mom12
+    version: raw
+    basis: both
+  - feature: mom_78
+    version: raw
+    basis: both
+  - feature: d_atr_c
+    version: rz
+    basis: IC
+  - feature: amihud
+    version: rz
+    basis: IC
+  - feature: kalman_slope
+    version: rz
+    basis: IC
+  - feature: d_prev_ret_atr
+    version: raw
+    basis: IC
+  - feature: dow
+    version: raw
+    basis: IC
+  - feature: earn_react
+    version: raw
+    basis: IC
+  - feature: close_location
+    version: raw
+    basis: both
+  - feature: mom_3
+    version: raw
+    basis: both
+  - feature: kalman_innov
+    version: raw
+    basis: both
+  - feature: ema_dev_12
+    version: raw
+    basis: both
+  - feature: fracdiff_lnc
+    version: rz
+    basis: both
+  - feature: dL
+    version: raw
+    basis: both
+  - feature: mom_6
+    version: raw
+    basis: extreme
+  - feature: macd_hist
+    version: raw
+    basis: both
+  - feature: resid_qqq_z
+    version: raw
+    basis: extreme
+  - feature: qqq_mom12
+    version: raw
+    basis: both
+  - feature: bar_index
+    version: raw
+    basis: extreme
+  - feature: minutes_to_close
+    version: raw
+    basis: extreme
+  - feature: first30_x_rv
+    version: raw
+    basis: extreme
+  - feature: r_first30
+    version: raw
+    basis: both
+  - feature: mom_24
+    version: raw
+    basis: extreme
+  - feature: beta_qqq
+    version: rz
+    basis: extreme
+  - feature: first30_x_relvol
+    version: raw
+    basis: extreme
+  - feature: lower_shadow
+    version: rz
+    basis: extreme
+  - feature: sign_first30
+    version: raw
+    basis: IC
+  - feature: earn_after
+    version: raw
+    basis: IC
+  2024-02:
+  - feature: d_sma20_dev
+    version: raw
+    basis: IC
+  - feature: d_mom5
+    version: raw
+    basis: IC
+  - feature: linreg_slope_78
+    version: raw
+    basis: both
+  - feature: spy_mom12
+    version: raw
+    basis: both
+  - feature: mom_78
+    version: raw
+    basis: extreme
+  - feature: amihud
+    version: rz
+    basis: IC
+  - feature: d_atr_c
+    version: rz
+    basis: IC
+  - feature: dow
+    version: raw
+    basis: IC
+  - feature: earn_react
+    version: raw
+    basis: IC
+  - feature: close_location
+    version: raw
+    basis: both
+  - feature: mom_3
+    version: raw
+    basis: both
+  - feature: kalman_innov
+    version: raw
+    basis: both
+  - feature: ema_dev_12
+    version: raw
+    basis: both
+  - feature: fracdiff_lnc
+    version: rz
+    basis: both
+  - feature: dL
+    version: raw
+    basis: both
+  - feature: mom_6
+    version: raw
+    basis: extreme
+  - feature: macd_hist
+    version: raw
+    basis: both
+  - feature: bb_pctb
+    version: raw
+    basis: extreme
+  - feature: resid_qqq_z
+    version: raw
+    basis: extreme
+  - feature: qqq_mom12
+    version: raw
+    basis: both
+  - feature: beta_qqq
+    version: rz
+    basis: extreme
+  - feature: kalman_slope
+    version: rz
+    basis: extreme
+  - feature: r_first30
+    version: raw
+    basis: both
+  - feature: bar_index
+    version: raw
+    basis: extreme
+  - feature: minutes_to_close
+    version: raw
+    basis: extreme
+  - feature: first30_x_rv
+    version: raw
+    basis: extreme
+  - feature: first30_x_relvol
+    version: raw
+    basis: extreme
+  - feature: lower_shadow
+    version: rz
+    basis: extreme
+  - feature: d_prev_ret_atr
+    version: raw
+    basis: IC
+  - feature: sign_first30
+    version: raw
+    basis: IC
+  2024-03:
+  - feature: kalman_innov
+    version: raw
+    basis: both
+  - feature: garch_resid
+    version: raw
+    basis: both
+  - feature: spy_z
+    version: raw
+    basis: both
+  - feature: d_sma20_dev
+    version: raw
+    basis: IC
+  - feature: d_mom5
+    version: raw
+    basis: IC
+  - feature: spy_mom12
+    version: raw
+    basis: both
+  - feature: linreg_slope_78
+    version: raw
+    basis: both
+  - feature: mom_78
+    version: raw
+    basis: extreme
+  - feature: amihud
+    version: rz
+    basis: IC
+  - feature: d_atr_c
+    version: rz
+    basis: IC
+  - feature: earn_react
+    version: raw
+    basis: IC
+  - feature: dow
+    version: raw
+    basis: IC
+  - feature: mom_3
+    version: raw
+    basis: both
+  - feature: ema_dev_12
+    version: raw
+    basis: both
+  - feature: fracdiff_lnc
+    version: rz
+    basis: both
+  - feature: dL
+    version: raw
+    basis: both
+  - feature: mom_6
+    version: raw
+    basis: extreme
+  - feature: macd_hist
+    version: raw
+    basis: both
+  - feature: bb_pctb
+    version: raw
+    basis: extreme
+  - feature: resid_qqq_z
+    version: raw
+    basis: extreme
+  - feature: qqq_mom12
+    version: raw
+    basis: both
+  - feature: beta_qqq
+    version: rz
+    basis: extreme
+  - feature: bar_index
+    version: raw
+    basis: extreme
+  - feature: minutes_to_close
+    version: raw
+    basis: extreme
+  - feature: r_first30
+    version: raw
+    basis: both
+  - feature: first30_x_rv
+    version: raw
+    basis: extreme
+  - feature: kalman_slope
+    version: rz
+    basis: extreme
+  - feature: first30_x_relvol
+    version: raw
+    basis: extreme
+  - feature: lower_shadow
+    version: rz
+    basis: extreme
+  - feature: d_prev_ret_atr
+    version: raw
+    basis: IC
+  2024-04:
+  - feature: kalman_innov
+    version: raw
+    basis: both
+  - feature: spy_z
+    version: raw
+    basis: both
+  - feature: d_sma20_dev
+    version: raw
+    basis: IC
+  - feature: d_mom5
+    version: raw
+    basis: IC
+  - feature: linreg_slope_78
+    version: raw
+    basis: extreme
+  - feature: spy_mom12
+    version: raw
+    basis: both
+  - feature: mom_78
+    version: raw
+    basis: extreme
+  - feature: amihud
+    version: rz
+    basis: IC
+  - feature: d_atr_c
+    version: rz
+    basis: IC
+  - feature: earn_react
+    version: raw
+    basis: IC
+  - feature: close_location
+    version: raw
+    basis: both
+  - feature: mom_3
+    version: raw
+    basis: both
+  - feature: ema_dev_12
+    version: raw
+    basis: both
+  - feature: fracdiff_lnc
+    version: rz
+    basis: both
+  - feature: dL
+    version: raw
+    basis: both
+  - feature: mom_6
+    version: raw
+    basis: extreme
+  - feature: macd_hist
+    version: raw
+    basis: both
+  - feature: bb_pctb
+    version: raw
+    basis: extreme
+  - feature: resid_qqq_z
+    version: raw
+    basis: extreme
+  - feature: qqq_mom12
+    version: raw
+    basis: both
+  - feature: beta_qqq
+    version: rz
+    basis: extreme
+  - feature: r_first30
+    version: raw
+    basis: both
+  - feature: bar_index
+    version: raw
+    basis: extreme
+  - feature: minutes_to_close
+    version: raw
+    basis: extreme
+  - feature: first30_x_rv
+    version: raw
+    basis: extreme
+  - feature: first30_x_relvol
+    version: raw
+    basis: extreme
+  - feature: kalman_slope
+    version: rz
+    basis: extreme
+  - feature: d_prev_ret_atr
+    version: raw
+    basis: IC
+  - feature: dow
+    version: raw
+    basis: IC
+  2024-05:
+  - feature: kalman_innov
+    version: raw
+    basis: both
+  - feature: spy_z
+    version: raw
+    basis: both
+  - feature: d_sma20_dev
+    version: raw
+    basis: IC
+  - feature: d_mom5
+    version: raw
+    basis: IC
+  - feature: spy_mom12
+    version: raw
+    basis: both
+  - feature: mom_78
+    version: raw
+    basis: extreme
+  - feature: amihud
+    version: rz
+    basis: IC
+  - feature: d_atr_c
+    version: rz
+    basis: IC
+  - feature: earn_react
+    version: raw
+    basis: IC
+  - feature: close_location
+    version: raw
+    basis: both
+  - feature: mom_3
+    version: raw
+    basis: both
+  - feature: ema_dev_12
+    version: raw
+    basis: both
+  - feature: fracdiff_lnc
+    version: rz
+    basis: both
+  - feature: dL
+    version: raw
+    basis: both
+  - feature: mom_6
+    version: raw
+    basis: extreme
+  - feature: macd_hist
+    version: raw
+    basis: both
+  - feature: bb_pctb
+    version: raw
+    basis: extreme
+  - feature: resid_qqq_z
+    version: raw
+    basis: extreme
+  - feature: linreg_slope_78
+    version: raw
+    basis: both
+  - feature: qqq_mom12
+    version: raw
+    basis: both
+  - feature: r_first30
+    version: raw
+    basis: both
+  - feature: bar_index
+    version: raw
+    basis: extreme
+  - feature: minutes_to_close
+    version: raw
+    basis: extreme
+  - feature: first30_x_relvol
+    version: raw
+    basis: extreme
+  - feature: beta_qqq
+    version: rz
+    basis: extreme
+  - feature: first30_x_rv
+    version: raw
+    basis: extreme
+  - feature: hmm_p0
+    version: rz
+    basis: both
+  - feature: d_prev_ret_atr
+    version: raw
+    basis: IC
+  - feature: dow
+    version: raw
+    basis: IC
+  - feature: sign_first30
+    version: raw
+    basis: IC
+  - feature: earn_after
+    version: raw
+    basis: IC
+  - feature: gap_z
+    version: raw
+    basis: IC
+  2024-06:
+  - feature: kalman_innov
+    version: raw
+    basis: both
+  - feature: fracdiff_lnc
+    version: rz
+    basis: both
+  - feature: spy_z
+    version: raw
+    basis: both
+  - feature: d_sma20_dev
+    version: raw
+    basis: IC
+  - feature: d_mom5
+    version: raw
+    basis: IC
+  - feature: spy_mom12
+    version: raw
+    basis: both
+  - feature: mom_78
+    version: raw
+    basis: extreme
+  - feature: amihud
+    version: rz
+    basis: IC
+  - feature: d_atr_c
+    version: rz
+    basis: IC
+  - feature: d_prev_ret_atr
+    version: raw
+    basis: IC
+  - feature: earn_react
+    version: raw
+    basis: IC
+  - feature: close_location
+    version: raw
+    basis: both
+  - feature: mom_3
+    version: raw
+    basis: both
+  - feature: ema_dev_12
+    version: raw
+    basis: both
+  - feature: dL
+    version: raw
+    basis: both
+  - feature: mom_6
+    version: raw
+    basis: extreme
+  - feature: macd_hist
+    version: raw
+    basis: both
+  - feature: bb_pctb
+    version: raw
+    basis: extreme
+  - feature: resid_qqq_z
+    version: raw
+    basis: extreme
+  - feature: linreg_slope_78
+    version: raw
+    basis: extreme
+  - feature: qqq_mom12
+    version: raw
+    basis: both
+  - feature: bar_index
+    version: raw
+    basis: extreme
+  - feature: minutes_to_close
+    version: raw
+    basis: extreme
+  - feature: r_first30
+    version: raw
+    basis: both
+  - feature: first30_x_relvol
+    version: raw
+    basis: extreme
+  - feature: first30_x_rv
+    version: raw
+    basis: extreme
+  - feature: beta_qqq
+    version: rz
+    basis: extreme
+  - feature: lower_shadow
+    version: rz
+    basis: extreme
+  - feature: mom_24
+    version: raw
+    basis: extreme
+  - feature: dow
+    version: raw
+    basis: IC
+  - feature: sign_first30
+    version: raw
+    basis: IC
+  - feature: gap_z
+    version: raw
+    basis: IC
+  - feature: earn_after
+    version: raw
+    basis: IC
+  2024-07:
+  - feature: kalman_innov
+    version: raw
+    basis: both
+  - feature: garch_resid
+    version: raw
+    basis: both
+  - feature: fracdiff_lnc
+    version: rz
+    basis: both
+  - feature: spy_z
+    version: raw
+    basis: both
+  - feature: d_sma20_dev
+    version: raw
+    basis: IC
+  - feature: d_mom5
+    version: raw
+    basis: IC
+  - feature: linreg_slope_78
+    version: raw
+    basis: extreme
+  - feature: spy_mom12
+    version: raw
+    basis: both
+  - feature: mom_78
+    version: raw
+    basis: extreme
+  - feature: amihud
+    version: rz
+    basis: IC
+  - feature: d_atr_c
+    version: rz
+    basis: IC
+  - feature: d_prev_ret_atr
+    version: raw
+    basis: IC
+  - feature: earn_react
+    version: raw
+    basis: IC
+  - feature: dow
+    version: raw
+    basis: IC
+  - feature: mom_3
+    version: raw
+    basis: both
+  - feature: ema_dev_12
+    version: raw
+    basis: both
+  - feature: dL
+    version: raw
+    basis: both
+  - feature: mom_6
+    version: raw
+    basis: extreme
+  - feature: macd_hist
+    version: raw
+    basis: both
+  - feature: bb_pctb
+    version: raw
+    basis: extreme
+  - feature: resid_qqq_z
+    version: raw
+    basis: both
+  - feature: qqq_mom12
+    version: raw
+    basis: both
+  - feature: r_first30
+    version: raw
+    basis: both
+  - feature: bar_index
+    version: raw
+    basis: extreme
+  - feature: minutes_to_close
+    version: raw
+    basis: extreme
+  - feature: first30_x_relvol
+    version: raw
+    basis: extreme
+  - feature: first30_x_rv
+    version: raw
+    basis: extreme
+  - feature: beta_qqq
+    version: rz
+    basis: extreme
+  - feature: kalman_slope
+    version: rz
+    basis: extreme
+  - feature: mom_24
+    version: raw
+    basis: extreme
+  - feature: sign_first30
+    version: raw
+    basis: IC
+  - feature: hmm_p0
+    version: rz
+    basis: IC
+  - feature: earn_after
+    version: raw
+    basis: IC
+  - feature: gap_z
+    version: raw
+    basis: IC
+  2024-08:
+  - feature: kalman_innov
+    version: raw
+    basis: both
+  - feature: fracdiff_lnc
+    version: rz
+    basis: both
+  - feature: spy_z
+    version: raw
+    basis: both
+  - feature: d_sma20_dev
+    version: raw
+    basis: IC
+  - feature: d_mom5
+    version: raw
+    basis: IC
+  - feature: amihud
+    version: rz
+    basis: IC
+  - feature: d_atr_c
+    version: rz
+    basis: IC
+  - feature: d_prev_ret_atr
+    version: raw
+    basis: IC
+  - feature: earn_react
+    version: raw
+    basis: IC
+  - feature: dow
+    version: raw
+    basis: IC
+  - feature: close_location
+    version: raw
+    basis: both
+  - feature: mom_3
+    version: rz
+    basis: both
+  - feature: ema_dev_12
+    version: raw
+    basis: both
+  - feature: dL
+    version: raw
+    basis: both
+  - feature: mom_6
+    version: raw
+    basis: extreme
+  - feature: macd_hist
+    version: raw
+    basis: both
+  - feature: bb_pctb
+    version: raw
+    basis: extreme
+  - feature: resid_qqq_z
+    version: raw
+    basis: both
+  - feature: linreg_slope_78
+    version: raw
+    basis: extreme
+  - feature: spy_mom12
+    version: raw
+    basis: both
+  - feature: qqq_mom12
+    version: raw
+    basis: both
+  - feature: r_first30
+    version: raw
+    basis: both
+  - feature: mom_78
+    version: raw
+    basis: extreme
+  - feature: first30_x_relvol
+    version: raw
+    basis: extreme
+  - feature: first30_x_rv
+    version: raw
+    basis: extreme
+  - feature: minutes_to_close
+    version: raw
+    basis: extreme
+  - feature: bar_index
+    version: raw
+    basis: extreme
+  - feature: kalman_slope
+    version: rz
+    basis: extreme
+  - feature: beta_qqq
+    version: rz
+    basis: extreme
+  - feature: mom_24
+    version: raw
+    basis: extreme
+  - feature: sign_first30
+    version: raw
+    basis: IC
+  - feature: hmm_p0
+    version: rz
+    basis: IC
+  - feature: gap_z
+    version: raw
+    basis: IC
+  - feature: earn_after
+    version: raw
+    basis: IC
+  2024-09:
+  - feature: kalman_innov
+    version: raw
+    basis: both
+  - feature: garch_resid
+    version: raw
+    basis: both
+  - feature: spy_z
+    version: raw
+    basis: both
+  - feature: fracdiff_lnc
+    version: rz
+    basis: both
+  - feature: d_sma20_dev
+    version: raw
+    basis: IC
+  - feature: d_mom5
+    version: raw
+    basis: IC
+  - feature: spy_mom12
+    version: raw
+    basis: both
+  - feature: amihud
+    version: rz
+    basis: IC
+  - feature: d_atr_c
+    version: rz
+    basis: IC
+  - feature: d_prev_ret_atr
+    version: raw
+    basis: IC
+  - feature: dow
+    version: raw
+    basis: IC
+  - feature: earn_react
+    version: raw
+    basis: IC
+  - feature: mom_3
+    version: rz
+    basis: both
+  - feature: ema_dev_12
+    version: raw
+    basis: both
+  - feature: dL
+    version: raw
+    basis: both
+  - feature: mom_6
+    version: raw
+    basis: extreme
+  - feature: macd_hist
+    version: raw
+    basis: both
+  - feature: bb_pctb
+    version: raw
+    basis: extreme
+  - feature: resid_qqq_z
+    version: raw
+    basis: both
+  - feature: linreg_slope_78
+    version: raw
+    basis: extreme
+  - feature: qqq_mom12
+    version: raw
+    basis: both
+  - feature: r_first30
+    version: raw
+    basis: both
+  - feature: first30_x_rv
+    version: raw
+    basis: extreme
+  - feature: first30_x_relvol
+    version: raw
+    basis: extreme
+  - feature: mom_78
+    version: raw
+    basis: extreme
+  - feature: minutes_to_close
+    version: raw
+    basis: extreme
+  - feature: bar_index
+    version: raw
+    basis: extreme
+  - feature: beta_qqq
+    version: rz
+    basis: extreme
+  - feature: mom_24
+    version: raw
+    basis: extreme
+  - feature: sign_first30
+    version: raw
+    basis: IC
+  - feature: gap_z
+    version: raw
+    basis: IC
+  - feature: earn_after
+    version: raw
+    basis: IC
+  2024-10:
+  - feature: kalman_innov
+    version: raw
+    basis: both
+  - feature: garch_resid
+    version: raw
+    basis: both
+  - feature: fracdiff_lnc
+    version: rz
+    basis: both
+  - feature: spy_z
+    version: raw
+    basis: both
+  - feature: d_sma20_dev
+    version: raw
+    basis: IC
+  - feature: d_mom5
+    version: raw
+    basis: IC
+  - feature: spy_mom12
+    version: raw
+    basis: both
+  - feature: amihud
+    version: rz
+    basis: IC
+  - feature: d_atr_c
+    version: rz
+    basis: IC
+  - feature: d_prev_ret_atr
+    version: raw
+    basis: IC
+  - feature: dow
+    version: raw
+    basis: IC
+  - feature: earn_react
+    version: raw
+    basis: IC
+  - feature: mom_3
+    version: raw
+    basis: both
+  - feature: ema_dev_12
+    version: raw
+    basis: both
+  - feature: dL
+    version: raw
+    basis: both
+  - feature: mom_6
+    version: raw
+    basis: extreme
+  - feature: macd_hist
+    version: raw
+    basis: both
+  - feature: bb_pctb
+    version: raw
+    basis: extreme
+  - feature: resid_qqq_z
+    version: raw
+    basis: both
+  - feature: linreg_slope_78
+    version: raw
+    basis: both
+  - feature: qqq_mom12
+    version: raw
+    basis: both
+  - feature: r_first30
+    version: raw
+    basis: both
+  - feature: minutes_to_close
+    version: raw
+    basis: extreme
+  - feature: bar_index
+    version: raw
+    basis: extreme
+  - feature: first30_x_rv
+    version: raw
+    basis: extreme
+  - feature: first30_x_relvol
+    version: raw
+    basis: extreme
+  - feature: mom_78
+    version: raw
+    basis: extreme
+  - feature: kalman_slope
+    version: rz
+    basis: extreme
+  - feature: beta_qqq
+    version: rz
+    basis: extreme
+  - feature: mom_24
+    version: raw
+    basis: extreme
+  - feature: hmm_p0
+    version: rz
+    basis: both
+  - feature: sign_first30
+    version: raw
+    basis: IC
+  - feature: gap_z
+    version: raw
+    basis: IC
+  - feature: earn_after
+    version: raw
+    basis: IC
+  2024-11:
+  - feature: kalman_innov
+    version: raw
+    basis: both
+  - feature: garch_resid
+    version: raw
+    basis: both
+  - feature: fracdiff_lnc
+    version: rz
+    basis: both
+  - feature: spy_z
+    version: raw
+    basis: both
+  - feature: d_sma20_dev
+    version: raw
+    basis: IC
+  - feature: d_mom5
+    version: raw
+    basis: IC
+  - feature: linreg_slope_78
+    version: raw
+    basis: both
+  - feature: mom_78
+    version: raw
+    basis: extreme
+  - feature: amihud
+    version: rz
+    basis: IC
+  - feature: d_atr_c
+    version: rz
+    basis: IC
+  - feature: d_prev_ret_atr
+    version: raw
+    basis: IC
+  - feature: dow
+    version: raw
+    basis: IC
+  - feature: earn_after
+    version: raw
+    basis: IC
+  - feature: mom_3
+    version: raw
+    basis: both
+  - feature: ema_dev_12
+    version: raw
+    basis: both
+  - feature: dL
+    version: raw
+    basis: both
+  - feature: mom_6
+    version: raw
+    basis: extreme
+  - feature: macd_hist
+    version: raw
+    basis: both
+  - feature: bb_pctb
+    version: raw
+    basis: extreme
+  - feature: resid_qqq_z
+    version: raw
+    basis: extreme
+  - feature: qqq_mom12
+    version: raw
+    basis: both
+  - feature: spy_mom12
+    version: raw
+    basis: both
+  - feature: r_first30
+    version: raw
+    basis: both
+  - feature: minutes_to_close
+    version: raw
+    basis: extreme
+  - feature: bar_index
+    version: raw
+    basis: extreme
+  - feature: first30_x_rv
+    version: raw
+    basis: extreme
+  - feature: first30_x_relvol
+    version: raw
+    basis: extreme
+  - feature: beta_qqq
+    version: rz
+    basis: extreme
+  - feature: mom_24
+    version: raw
+    basis: extreme
+  - feature: kalman_slope
+    version: rz
+    basis: extreme
+  - feature: sign_first30
+    version: raw
+    basis: IC
+  - feature: gap_z
+    version: raw
+    basis: IC
+  2024-12:
+  - feature: kalman_innov
+    version: raw
+    basis: both
+  - feature: body_ratio
+    version: raw
+    basis: both
+  - feature: spy_z
+    version: raw
+    basis: both
+  - feature: fracdiff_lnc
+    version: rz
+    basis: both
+  - feature: d_sma20_dev
+    version: raw
+    basis: IC
+  - feature: d_mom5
+    version: raw
+    basis: IC
+  - feature: mom_78
+    version: raw
+    basis: extreme
+  - feature: amihud
+    version: rz
+    basis: IC
+  - feature: d_atr_c
+    version: rz
+    basis: IC
+  - feature: d_prev_ret_atr
+    version: raw
+    basis: IC
+  - feature: kalman_slope
+    version: rz
+    basis: IC
+  - feature: earn_after
+    version: raw
+    basis: IC
+  - feature: mom_3
+    version: raw
+    basis: both
+  - feature: ema_dev_12
+    version: raw
+    basis: both
+  - feature: dL
+    version: raw
+    basis: both
+  - feature: mom_6
+    version: raw
+    basis: extreme
+  - feature: macd_hist
+    version: raw
+    basis: both
+  - feature: bb_pctb
+    version: raw
+    basis: extreme
+  - feature: resid_qqq_z
+    version: raw
+    basis: both
+  - feature: linreg_slope_78
+    version: raw
+    basis: both
+  - feature: qqq_mom12
+    version: raw
+    basis: both
+  - feature: spy_mom12
+    version: raw
+    basis: both
+  - feature: r_first30
+    version: raw
+    basis: both
+  - feature: minutes_to_close
+    version: raw
+    basis: extreme
+  - feature: bar_index
+    version: raw
+    basis: extreme
+  - feature: first30_x_rv
+    version: raw
+    basis: extreme
+  - feature: first30_x_relvol
+    version: raw
+    basis: extreme
+  - feature: beta_qqq
+    version: rz
+    basis: extreme
+  - feature: mom_24
+    version: raw
+    basis: extreme
+  - feature: sign_first30
+    version: raw
+    basis: IC
+  - feature: gk_78
+    version: rz
+    basis: extreme
+  - feature: gap_z
+    version: raw
+    basis: IC
+  - feature: dow
+    version: raw
+    basis: IC
+  2025-01:
+  - feature: kalman_innov
+    version: raw
+    basis: both
+  - feature: body_ratio
+    version: raw
+    basis: both
+  - feature: spy_z
+    version: raw
+    basis: both
+  - feature: fracdiff_lnc
+    version: rz
+    basis: both
+  - feature: d_sma20_dev
+    version: raw
+    basis: IC
+  - feature: d_mom5
+    version: raw
+    basis: IC
+  - feature: mom_78
+    version: raw
+    basis: extreme
+  - feature: amihud
+    version: rz
+    basis: IC
+  - feature: d_atr_c
+    version: rz
+    basis: IC
+  - feature: d_prev_ret_atr
+    version: raw
+    basis: IC
+  - feature: kalman_slope
+    version: rz
+    basis: IC
+  - feature: earn_after
+    version: raw
+    basis: IC
+  - feature: dow
+    version: raw
+    basis: IC
+  - feature: mom_3
+    version: raw
+    basis: both
+  - feature: ema_dev_12
+    version: raw
+    basis: both
+  - feature: dL
+    version: raw
+    basis: both
+  - feature: mom_6
+    version: raw
+    basis: extreme
+  - feature: macd_hist
+    version: raw
+    basis: both
+  - feature: bb_pctb
+    version: raw
+    basis: extreme
+  - feature: resid_qqq_z
+    version: raw
+    basis: both
+  - feature: linreg_slope_78
+    version: raw
+    basis: both
+  - feature: qqq_mom12
+    version: raw
+    basis: both
+  - feature: spy_mom12
+    version: raw
+    basis: both
+  - feature: r_first30
+    version: raw
+    basis: both
+  - feature: minutes_to_close
+    version: raw
+    basis: extreme
+  - feature: bar_index
+    version: raw
+    basis: extreme
+  - feature: first30_x_rv
+    version: raw
+    basis: extreme
+  - feature: first30_x_relvol
+    version: raw
+    basis: extreme
+  - feature: beta_qqq
+    version: rz
+    basis: extreme
+  - feature: mom_24
+    version: raw
+    basis: extreme
+  - feature: sign_first30
+    version: raw
+    basis: IC
+  - feature: gk_78
+    version: rz
+    basis: extreme
+  - feature: hmm_p0
+    version: rz
+    basis: extreme
+  - feature: gap_z
+    version: raw
+    basis: IC
+  2025-02:
+  - feature: body
+    version: raw
+    basis: both
+  - feature: kalman_innov
+    version: raw
+    basis: both
+  - feature: spy_z
+    version: raw
+    basis: both
+  - feature: fracdiff_lnc
+    version: rz
+    basis: both
+  - feature: d_sma20_dev
+    version: raw
+    basis: IC
+  - feature: macd_hist
+    version: raw
+    basis: both
+  - feature: d_mom5
+    version: raw
+    basis: IC
+  - feature: r_first30
+    version: raw
+    basis: both
+  - feature: mom_78
+    version: raw
+    basis: extreme
+  - feature: amihud
+    version: rz
+    basis: IC
+  - feature: d_atr_c
+    version: rz
+    basis: IC
+  - feature: d_prev_ret_atr
+    version: raw
+    basis: IC
+  - feature: kalman_slope
+    version: rz
+    basis: IC
+  - feature: sign_first30
+    version: raw
+    basis: IC
+  - feature: dow
+    version: raw
+    basis: IC
+  - feature: mom_3
+    version: raw
+    basis: both
+  - feature: ema_dev_12
+    version: raw
+    basis: both
+  - feature: dL
+    version: raw
+    basis: both
+  - feature: mom_6
+    version: raw
+    basis: extreme
+  - feature: bb_pctb
+    version: raw
+    basis: extreme
+  - feature: resid_qqq_z
+    version: raw
+    basis: both
+  - feature: linreg_slope_78
+    version: raw
+    basis: both
+  - feature: qqq_mom12
+    version: raw
+    basis: both
+  - feature: spy_mom12
+    version: raw
+    basis: both
+  - feature: minutes_to_close
+    version: raw
+    basis: extreme
+  - feature: bar_index
+    version: raw
+    basis: extreme
+  - feature: first30_x_rv
+    version: raw
+    basis: extreme
+  - feature: first30_x_relvol
+    version: raw
+    basis: extreme
+  - feature: beta_qqq
+    version: rz
+    basis: extreme
+  - feature: mom_24
+    version: raw
+    basis: extreme
+  - feature: gap_z
+    version: raw
+    basis: both
+  - feature: ema12_26
+    version: raw
+    basis: extreme
+  - feature: earn_after
+    version: raw
+    basis: IC
+  2025-03:
+  - feature: kalman_innov
+    version: raw
+    basis: both
+  - feature: body_ratio
+    version: raw
+    basis: both
+  - feature: spy_z
+    version: raw
+    basis: both
+  - feature: fracdiff_lnc
+    version: rz
+    basis: both
+  - feature: d_sma20_dev
+    version: raw
+    basis: IC
+  - feature: macd_hist
+    version: raw
+    basis: both
+  - feature: d_mom5
+    version: raw
+    basis: IC
+  - feature: linreg_slope_78
+    version: raw
+    basis: both
+  - feature: r_first30
+    version: raw
+    basis: both
+  - feature: mom_78
+    version: raw
+    basis: extreme
+  - feature: amihud
+    version: rz
+    basis: IC
+  - feature: d_atr_c
+    version: rz
+    basis: IC
+  - feature: sign_first30
+    version: raw
+    basis: IC
+  - feature: d_prev_ret_atr
+    version: raw
+    basis: IC
+  - feature: dow
+    version: raw
+    basis: IC
+  - feature: mom_3
+    version: rz
+    basis: both
+  - feature: ema_dev_12
+    version: raw
+    basis: both
+  - feature: dL
+    version: raw
+    basis: both
+  - feature: mom_6
+    version: raw
+    basis: extreme
+  - feature: bb_pctb
+    version: raw
+    basis: extreme
+  - feature: resid_qqq_z
+    version: raw
+    basis: both
+  - feature: qqq_mom12
+    version: raw
+    basis: both
+  - feature: spy_mom12
+    version: raw
+    basis: both
+  - feature: minutes_to_close
+    version: raw
+    basis: extreme
+  - feature: bar_index
+    version: raw
+    basis: extreme
+  - feature: first30_x_rv
+    version: raw
+    basis: extreme
+  - feature: first30_x_relvol
+    version: raw
+    basis: extreme
+  - feature: beta_qqq
+    version: rz
+    basis: extreme
+  - feature: lower_shadow
+    version: rz
+    basis: extreme
+  - feature: mom_24
+    version: raw
+    basis: extreme
+  - feature: gap_z
+    version: raw
+    basis: both
+  - feature: kalman_slope
+    version: rz
+    basis: extreme
+  - feature: earn_after
+    version: raw
+    basis: IC
+  2025-04:
+  - feature: body
+    version: raw
+    basis: both
+  - feature: kalman_innov
+    version: raw
+    basis: both
+  - feature: spy_z
+    version: raw
+    basis: both
+  - feature: fracdiff_lnc
+    version: rz
+    basis: both
+  - feature: d_sma20_dev
+    version: raw
+    basis: IC
+  - feature: macd_hist
+    version: raw
+    basis: both
+  - feature: d_mom5
+    version: raw
+    basis: IC
+  - feature: linreg_slope_78
+    version: raw
+    basis: both
+  - feature: r_first30
+    version: raw
+    basis: both
+  - feature: mom_78
+    version: raw
+    basis: extreme
+  - feature: amihud
+    version: rz
+    basis: IC
+  - feature: d_atr_c
+    version: rz
+    basis: IC
+  - feature: sign_first30
+    version: raw
+    basis: IC
+  - feature: d_prev_ret_atr
+    version: raw
+    basis: IC
+  - feature: dow
+    version: raw
+    basis: IC
+  - feature: mom_3
+    version: rz
+    basis: both
+  - feature: ema_dev_12
+    version: raw
+    basis: both
+  - feature: dL
+    version: raw
+    basis: both
+  - feature: mom_6
+    version: raw
+    basis: extreme
+  - feature: bb_pctb
+    version: raw
+    basis: extreme
+  - feature: resid_qqq_z
+    version: raw
+    basis: extreme
+  - feature: qqq_mom12
+    version: raw
+    basis: both
+  - feature: spy_mom12
+    version: raw
+    basis: both
+  - feature: minutes_to_close
+    version: raw
+    basis: extreme
+  - feature: bar_index
+    version: raw
+    basis: extreme
+  - feature: first30_x_rv
+    version: raw
+    basis: extreme
+  - feature: first30_x_relvol
+    version: raw
+    basis: extreme
+  - feature: kalman_slope
+    version: rz
+    basis: extreme
+  - feature: beta_qqq
+    version: rz
+    basis: extreme
+  - feature: mom_24
+    version: raw
+    basis: extreme
+  - feature: gap_z
+    version: raw
+    basis: both
+  - feature: lower_shadow
+    version: rz
+    basis: extreme
+  - feature: vwap_dev
+    version: raw
+    basis: extreme
+  - feature: hmm_p0
+    version: rz
+    basis: IC
+  - feature: earn_after
+    version: raw
+    basis: IC
+  2025-05:
+  - feature: kalman_innov
+    version: raw
+    basis: both
+  - feature: body_ratio
+    version: raw
+    basis: both
+  - feature: spy_z
+    version: raw
+    basis: both
+  - feature: d_sma20_dev
+    version: raw
+    basis: IC
+  - feature: d_mom5
+    version: raw
+    basis: IC
+  - feature: r_first30
+    version: raw
+    basis: both
+  - feature: mom_78
+    version: raw
+    basis: extreme
+  - feature: sign_first30
+    version: raw
+    basis: IC
+  - feature: amihud
+    version: rz
+    basis: IC
+  - feature: d_atr_c
+    version: rz
+    basis: IC
+  - feature: d_prev_ret_atr
+    version: raw
+    basis: IC
+  - feature: dow
+    version: raw
+    basis: IC
+  - feature: mom_3
+    version: rz
+    basis: both
+  - feature: ema_dev_12
+    version: raw
+    basis: both
+  - feature: mom_6
+    version: raw
+    basis: extreme
+  - feature: dL
+    version: raw
+    basis: both
+  - feature: fracdiff_lnc
+    version: rz
+    basis: both
+  - feature: macd_hist
+    version: raw
+    basis: both
+  - feature: mom_12
+    version: raw
+    basis: extreme
+  - feature: resid_qqq_z
+    version: raw
+    basis: extreme
+  - feature: linreg_slope_78
+    version: raw
+    basis: both
+  - feature: qqq_mom12
+    version: raw
+    basis: both
+  - feature: minutes_to_close
+    version: raw
+    basis: extreme
+  - feature: spy_mom12
+    version: raw
+    basis: both
+  - feature: bar_index
+    version: raw
+    basis: extreme
+  - feature: first30_x_rv
+    version: raw
+    basis: extreme
+  - feature: first30_x_relvol
+    version: raw
+    basis: extreme
+  - feature: kalman_slope
+    version: rz
+    basis: extreme
+  - feature: beta_qqq
+    version: rz
+    basis: extreme
+  - feature: gap_z
+    version: raw
+    basis: both
+  - feature: mom_24
+    version: raw
+    basis: extreme
+  - feature: lower_shadow
+    version: rz
+    basis: extreme
+  - feature: qqq_relvol
+    version: raw
+    basis: extreme
+  - feature: earn_after
+    version: raw
+    basis: IC
+  - feature: hmm_p0
+    version: rz
+    basis: IC
+  2025-06:
+  - feature: kalman_innov
+    version: raw
+    basis: both
+  - feature: body_ratio
+    version: raw
+    basis: both
+  - feature: spy_z
+    version: raw
+    basis: both
+  - feature: fracdiff_lnc
+    version: rz
+    basis: both
+  - feature: d_sma20_dev
+    version: raw
+    basis: IC
+  - feature: d_mom5
+    version: raw
+    basis: IC
+  - feature: r_first30
+    version: raw
+    basis: both
+  - feature: sign_first30
+    version: raw
+    basis: IC
+  - feature: amihud
+    version: rz
+    basis: IC
+  - feature: d_prev_ret_atr
+    version: raw
+    basis: IC
+  - feature: d_atr_c
+    version: rz
+    basis: IC
+  - feature: dow
+    version: raw
+    basis: IC
+  - feature: mom_3
+    version: rz
+    basis: both
+  - feature: ema_dev_12
+    version: raw
+    basis: both
+  - feature: mom_6
+    version: raw
+    basis: both
+  - feature: macd_hist
+    version: raw
+    basis: both
+  - feature: mom_12
+    version: raw
+    basis: extreme
+  - feature: linreg_slope_78
+    version: raw
+    basis: both
+  - feature: resid_qqq_z
+    version: raw
+    basis: extreme
+  - feature: qqq_mom12
+    version: raw
+    basis: both
+  - feature: minutes_to_close
+    version: raw
+    basis: extreme
+  - feature: spy_mom12
+    version: raw
+    basis: both
+  - feature: bar_index
+    version: raw
+    basis: extreme
+  - feature: first30_x_relvol
+    version: raw
+    basis: extreme
+  - feature: first30_x_rv
+    version: raw
+    basis: extreme
+  - feature: mom_78
+    version: raw
+    basis: extreme
+  - feature: kalman_slope
+    version: rz
+    basis: extreme
+  - feature: beta_qqq
+    version: rz
+    basis: extreme
+  - feature: gap_z
+    version: raw
+    basis: both
+  - feature: mom_24
+    version: raw
+    basis: extreme
+  - feature: lower_shadow
+    version: rz
+    basis: extreme
+  - feature: qqq_relvol
+    version: raw
+    basis: extreme
+  - feature: earn_after
+    version: raw
+    basis: IC
+  - feature: hmm_p0
+    version: rz
+    basis: IC
+  2025-07:
+  - feature: kalman_innov
+    version: raw
+    basis: both
+  - feature: body_ratio
+    version: raw
+    basis: both
+  - feature: spy_z
+    version: raw
+    basis: both
+  - feature: fracdiff_lnc
+    version: rz
+    basis: both
+  - feature: d_sma20_dev
+    version: raw
+    basis: IC
+  - feature: d_mom5
+    version: raw
+    basis: IC
+  - feature: r_first30
+    version: raw
+    basis: both
+  - feature: sign_first30
+    version: raw
+    basis: IC
+  - feature: amihud
+    version: rz
+    basis: IC
+  - feature: d_atr_c
+    version: rz
+    basis: IC
+  - feature: d_prev_ret_atr
+    version: raw
+    basis: IC
+  - feature: dow
+    version: raw
+    basis: IC
+  - feature: mom_3
+    version: rz
+    basis: both
+  - feature: ema_dev_12
+    version: raw
+    basis: both
+  - feature: mom_6
+    version: raw
+    basis: extreme
+  - feature: macd_hist
+    version: raw
+    basis: both
+  - feature: mom_12
+    version: raw
+    basis: extreme
+  - feature: linreg_slope_78
+    version: raw
+    basis: both
+  - feature: resid_qqq_z
+    version: raw
+    basis: extreme
+  - feature: minutes_to_close
+    version: raw
+    basis: extreme
+  - feature: qqq_mom12
+    version: raw
+    basis: both
+  - feature: bar_index
+    version: raw
+    basis: extreme
+  - feature: spy_mom12
+    version: raw
+    basis: both
+  - feature: first30_x_relvol
+    version: raw
+    basis: extreme
+  - feature: mom_78
+    version: raw
+    basis: both
+  - feature: first30_x_rv
+    version: raw
+    basis: extreme
+  - feature: beta_qqq
+    version: rz
+    basis: extreme
+  - feature: kalman_slope
+    version: rz
+    basis: extreme
+  - feature: gap_z
+    version: raw
+    basis: both
+  - feature: mom_24
+    version: raw
+    basis: extreme
+  - feature: lower_shadow
+    version: rz
+    basis: extreme
+  - feature: earn_after
+    version: raw
+    basis: IC
+  2025-08:
+  - feature: body
+    version: raw
+    basis: both
+  - feature: kalman_innov
+    version: raw
+    basis: both
+  - feature: spy_z
+    version: raw
+    basis: both
+  - feature: fracdiff_lnc
+    version: rz
+    basis: both
+  - feature: d_sma20_dev
+    version: raw
+    basis: IC
+  - feature: d_mom5
+    version: raw
+    basis: IC
+  - feature: r_first30
+    version: raw
+    basis: both
+  - feature: sign_first30
+    version: raw
+    basis: IC
+  - feature: amihud
+    version: rz
+    basis: IC
+  - feature: d_atr_c
+    version: rz
+    basis: IC
+  - feature: d_prev_ret_atr
+    version: raw
+    basis: IC
+  - feature: kalman_slope
+    version: rz
+    basis: IC
+  - feature: dow
+    version: raw
+    basis: IC
+  - feature: mom_3
+    version: rz
+    basis: both
+  - feature: ema_dev_12
+    version: raw
+    basis: both
+  - feature: mom_6
+    version: raw
+    basis: extreme
+  - feature: macd_hist
+    version: raw
+    basis: both
+  - feature: mom_12
+    version: raw
+    basis: extreme
+  - feature: linreg_slope_78
+    version: raw
+    basis: both
+  - feature: resid_qqq_z
+    version: raw
+    basis: extreme
+  - feature: qqq_mom12
+    version: raw
+    basis: both
+  - feature: spy_mom12
+    version: raw
+    basis: both
+  - feature: minutes_to_close
+    version: raw
+    basis: extreme
+  - feature: bar_index
+    version: raw
+    basis: extreme
+  - feature: first30_x_relvol
+    version: raw
+    basis: extreme
+  - feature: first30_x_rv
+    version: raw
+    basis: extreme
+  - feature: mom_78
+    version: raw
+    basis: both
+  - feature: beta_qqq
+    version: rz
+    basis: extreme
+  - feature: gap_z
+    version: raw
+    basis: both
+  - feature: mom_24
+    version: raw
+    basis: extreme
+  - feature: upper_shadow
+    version: rz
+    basis: extreme
+  - feature: lower_shadow
+    version: rz
+    basis: extreme
+  - feature: earn_after
+    version: raw
+    basis: IC
+  - feature: hmm_p0
+    version: rz
+    basis: IC
+  2025-09:
+  - feature: body
+    version: raw
+    basis: both
+  - feature: kalman_innov
+    version: raw
+    basis: both
+  - feature: spy_z
+    version: raw
+    basis: both
+  - feature: fracdiff_lnc
+    version: rz
+    basis: both
+  - feature: d_sma20_dev
+    version: raw
+    basis: IC
+  - feature: d_mom5
+    version: raw
+    basis: IC
+  - feature: r_first30
+    version: raw
+    basis: both
+  - feature: sign_first30
+    version: raw
+    basis: IC
+  - feature: amihud
+    version: rz
+    basis: IC
+  - feature: d_atr_c
+    version: rz
+    basis: IC
+  - feature: d_prev_ret_atr
+    version: raw
+    basis: IC
+  - feature: dow
+    version: raw
+    basis: IC
+  - feature: mom_3
+    version: rz
+    basis: both
+  - feature: ema_dev_12
+    version: raw
+    basis: both
+  - feature: mom_6
+    version: raw
+    basis: extreme
+  - feature: dH
+    version: rz
+    basis: both
+  - feature: macd_hist
+    version: raw
+    basis: both
+  - feature: bb_pctb
+    version: raw
+    basis: extreme
+  - feature: linreg_slope_78
+    version: raw
+    basis: both
+  - feature: resid_qqq_z
+    version: raw
+    basis: extreme
+  - feature: qqq_mom12
+    version: raw
+    basis: both
+  - feature: spy_mom12
+    version: raw
+    basis: both
+  - feature: minutes_to_close
+    version: raw
+    basis: extreme
+  - feature: bar_index
+    version: raw
+    basis: extreme
+  - feature: first30_x_relvol
+    version: raw
+    basis: extreme
+  - feature: first30_x_rv
+    version: raw
+    basis: extreme
+  - feature: beta_qqq
+    version: rz
+    basis: extreme
+  - feature: mom_78
+    version: raw
+    basis: extreme
+  - feature: gap_z
+    version: raw
+    basis: both
+  - feature: mom_24
+    version: raw
+    basis: extreme
+  - feature: kalman_slope
+    version: rz
+    basis: extreme
+  - feature: lower_shadow
+    version: rz
+    basis: extreme
+  - feature: earn_after
+    version: raw
+    basis: IC
+  2025-10:
+  - feature: body
+    version: raw
+    basis: both
+  - feature: kalman_innov
+    version: raw
+    basis: both
+  - feature: spy_z
+    version: raw
+    basis: both
+  - feature: fracdiff_lnc
+    version: rz
+    basis: both
+  - feature: d_sma20_dev
+    version: raw
+    basis: IC
+  - feature: qqq_z
+    version: raw
+    basis: both
+  - feature: d_mom5
+    version: raw
+    basis: IC
+  - feature: r_first30
+    version: raw
+    basis: both
+  - feature: amihud
+    version: rz
+    basis: IC
+  - feature: sign_first30
+    version: raw
+    basis: IC
+  - feature: d_atr_c
+    version: rz
+    basis: IC
+  - feature: d_prev_ret_atr
+    version: raw
+    basis: IC
+  - feature: dow
+    version: raw
+    basis: IC
+  - feature: mom_3
+    version: rz
+    basis: both
+  - feature: ema_dev_12
+    version: raw
+    basis: both
+  - feature: mom_6
+    version: raw
+    basis: extreme
+  - feature: dH
+    version: rz
+    basis: both
+  - feature: macd_hist
+    version: raw
+    basis: both
+  - feature: bb_pctb
+    version: raw
+    basis: extreme
+  - feature: linreg_slope_78
+    version: raw
+    basis: extreme
+  - feature: qqq_mom12
+    version: raw
+    basis: both
+  - feature: spy_mom12
+    version: raw
+    basis: both
+  - feature: resid_qqq_z
+    version: raw
+    basis: extreme
+  - feature: minutes_to_close
+    version: raw
+    basis: extreme
+  - feature: bar_index
+    version: raw
+    basis: extreme
+  - feature: first30_x_relvol
+    version: raw
+    basis: extreme
+  - feature: first30_x_rv
+    version: raw
+    basis: extreme
+  - feature: kalman_slope
+    version: rz
+    basis: extreme
+  - feature: beta_qqq
+    version: rz
+    basis: extreme
+  - feature: mom_24
+    version: raw
+    basis: extreme
+  - feature: mom_78
+    version: raw
+    basis: extreme
+  - feature: gap_z
+    version: raw
+    basis: IC
+  - feature: earn_after
+    version: raw
+    basis: IC
+  - feature: hmm_p0
+    version: rz
+    basis: IC
+  2025-11:
+  - feature: kalman_innov
+    version: raw
+    basis: both
+  - feature: body_ratio
+    version: raw
+    basis: both
+  - feature: spy_z
+    version: raw
+    basis: both
+  - feature: fracdiff_lnc
+    version: rz
+    basis: both
+  - feature: d_sma20_dev
+    version: raw
+    basis: IC
+  - feature: qqq_z
+    version: raw
+    basis: both
+  - feature: d_mom5
+    version: raw
+    basis: IC
+  - feature: r_first30
+    version: raw
+    basis: both
+  - feature: amihud
+    version: rz
+    basis: IC
+  - feature: sign_first30
+    version: raw
+    basis: IC
+  - feature: d_atr_c
+    version: rz
+    basis: IC
+  - feature: d_prev_ret_atr
+    version: raw
+    basis: IC
+  - feature: dow
+    version: raw
+    basis: IC
+  - feature: close_location
+    version: rz
+    basis: extreme
+  - feature: mom_3
+    version: rz
+    basis: both
+  - feature: ema_dev_12
+    version: raw
+    basis: both
+  - feature: stoch_k14
+    version: rz
+    basis: both
+  - feature: mom_6
+    version: raw
+    basis: extreme
+  - feature: dH
+    version: rz
+    basis: both
+  - feature: macd_hist
+    version: raw
+    basis: both
+  - feature: linreg_slope_78
+    version: raw
+    basis: both
+  - feature: spy_mom12
+    version: raw
+    basis: both
+  - feature: qqq_mom12
+    version: raw
+    basis: both
+  - feature: minutes_to_close
+    version: raw
+    basis: extreme
+  - feature: bar_index
+    version: raw
+    basis: extreme
+  - feature: resid_qqq_z
+    version: raw
+    basis: extreme
+  - feature: first30_x_relvol
+    version: raw
+    basis: extreme
+  - feature: first30_x_rv
+    version: raw
+    basis: extreme
+  - feature: kalman_slope
+    version: rz
+    basis: extreme
+  - feature: beta_qqq
+    version: rz
+    basis: extreme
+  - feature: mom_24
+    version: raw
+    basis: extreme
+  - feature: mom_78
+    version: raw
+    basis: extreme
+  - feature: gap_z
+    version: raw
+    basis: IC
+  - feature: hmm_p0
+    version: rz
+    basis: IC
+  - feature: linreg_r2_24
+    version: raw
+    basis: IC
+  2025-12:
+  - feature: kalman_innov
+    version: raw
+    basis: both
+  - feature: garch_resid
+    version: raw
+    basis: both
+  - feature: spy_z
+    version: raw
+    basis: both
+  - feature: d_sma20_dev
+    version: raw
+    basis: IC
+  - feature: qqq_z
+    version: raw
+    basis: both
+  - feature: d_mom5
+    version: raw
+    basis: IC
+  - feature: r_first30
+    version: raw
+    basis: both
+  - feature: sign_first30
+    version: raw
+    basis: IC
+  - feature: d_atr_c
+    version: rz
+    basis: IC
+  - feature: amihud
+    version: rz
+    basis: IC
+  - feature: d_prev_ret_atr
+    version: raw
+    basis: IC
+  - feature: close_location
+    version: rz
+    basis: extreme
+  - feature: ema_dev_12
+    version: raw
+    basis: both
+  - feature: fracdiff_lnc
+    version: rz
+    basis: both
+  - feature: mom_6
+    version: raw
+    basis: extreme
+  - feature: macd_hist
+    version: raw
+    basis: both
+  - feature: mom_12
+    version: raw
+    basis: extreme
+  - feature: linreg_slope_78
+    version: raw
+    basis: extreme
+  - feature: minutes_to_close
+    version: raw
+    basis: extreme
+  - feature: bar_index
+    version: raw
+    basis: extreme
+  - feature: resid_qqq_z
+    version: raw
+    basis: extreme
+  - feature: spy_mom12
+    version: raw
+    basis: both
+  - feature: qqq_mom12
+    version: raw
+    basis: both
+  - feature: first30_x_relvol
+    version: raw
+    basis: extreme
+  - feature: kalman_slope
+    version: rz
+    basis: extreme
+  - feature: first30_x_rv
+    version: raw
+    basis: extreme
+  - feature: beta_qqq
+    version: rz
+    basis: extreme
+  - feature: mom_24
+    version: raw
+    basis: extreme
+  - feature: mom_78
+    version: raw
+    basis: extreme
+  - feature: gap_z
+    version: raw
+    basis: IC
+  - feature: dow
+    version: raw
+    basis: IC
+  - feature: hmm_p0
+    version: rz
+    basis: IC
+  - feature: linreg_r2_24
+    version: raw
+    basis: IC

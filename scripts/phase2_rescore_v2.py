@@ -1,4 +1,4 @@
-"""D21 step C: re-score Phase 2 with the D19 anchored IC v2 (no refits).
+"""Phase 2 re-scoring with D19 + D22 (no refits).
 
 Per fold M (96 folds 2018-01..2025-12) the fold's feature frame is rebuilt from its checkpoint
 (data/processed/phase2_folds/<M>.pkl: fitted GARCH-t / HMM / Kalman / frac-d parameters and feature versions;
@@ -10,7 +10,13 @@ D19 anchors (training rows = months < M):
   and h = 1..24 for the decay curve;
 - slot IC: D19 IC within each half-hour slot of month M (same anchors and training moments), signed;
 - clustered MDA (same clusters, k, rows and LightGBM parameters) scored with D19 (score="v2");
-- the extreme-bucket rule unchanged (stored condprob cells), and p2.select -> the fold's v2 feature list.
+- the extreme-bucket rule unchanged (stored condprob cells).
+Selection (in the summary step): the stable-IC rule with the D22 thresholds (each feature's own null 95.4%
+quantile of |full-period t| from reports/tables/phase2_rescore/null_quantiles.csv, h = 12 for the no-delay and
+h = 12 delayed for the delayed condition, used for every fold and for h = 1, 3, 12; features without a null
+quantile keep 2.0), then p2.select -> the fold's v2 feature list. Single-feature D10* at h = 12 and h = 12
+delayed against each feature's own null quantiles (null t_full 97.7%, 2023-2025 t 84.1%), with the empirical
+p-value and BH at FDR 10% for information.
 Then: configs/features.yaml v2 (old file kept as configs/features_v1_biased.yaml), the D10 table old vs D19,
 the selection changes, D16 rule (a) with the D19 training sign (registry, rerun_of), and the stored Phase 1
 predictions re-scored with the D19 model IC (no retraining).
@@ -50,7 +56,7 @@ from tslaq.utils.registry import log_run
 warnings.filterwarnings("ignore")
 CK = ROOT / "data" / "processed" / "phase2_folds"
 OUT = ROOT / "data" / "processed" / "phase2_rescore_v2"
-TAB = ROOT / "reports" / "tables" / "phase2_metric_fix_v3"
+TAB = ROOT / "reports" / "tables" / "phase2_rescore"
 MONTHS = [str(p) for p in pd.period_range("2018-01", "2025-12", freq="M")]
 H = (1, 3, 12)
 DECAY_H = tuple(range(1, 25))
@@ -127,16 +133,13 @@ def run_fold(M: str) -> float:
         z = L[f"z_{h}"].to_numpy()
         pos = np.flatnonzero(tr & np.isfinite(z) & (le >= 0))[:: p2.SETTINGS["mda"]["row_step"]]
         mda[h] = clustered_mda(X, z, le, pos, r["clusters"], p2.SETTINGS["mda"]["k"], params=params, score="v2")
-    K = p2.extreme_keep(r["C"])
-    S = p2.select(T, K, r["clusters"], mda)
-    S["version"] = S["feature"].map(versions)
     out = {"month": M, "seconds": time.time() - t0, "T": T, "oos": pd.DataFrame(oos), "slot": SL,
-           "mda": pd.concat(mda, names=["h"]), "S": S, "versions": versions,
+           "mda": mda, "K": p2.extreme_keep(r["C"]), "clusters": r["clusters"], "versions": versions,
            "train_ic": IC[IC["month"] < M] if M == MONTHS[-1] else None}
     OUT.mkdir(parents=True, exist_ok=True)
     with open(path, "wb") as fh:
         pickle.dump(out, fh)
-    print(f"{M}: {out['seconds']:.0f}s kept={int(S['kept'].sum())}", flush=True)
+    print(f"{M}: {out['seconds']:.0f}s", flush=True)
     return out["seconds"]
 
 
@@ -210,17 +213,77 @@ def phase1_rescore(L: pd.DataFrame) -> pd.DataFrame:
     return pd.DataFrame(rows)
 
 
+D22_THR = ("each feature's own mirror-null 95.4% quantile of |full-period t| at h = 12 "
+           "(reports/tables/phase2_rescore/null_quantiles.csv); 2.0 if the feature has no null quantile")
+
+
+def d22_thresholds() -> tuple[pd.Series, pd.Series]:
+    Q = pd.read_csv(TAB / "null_quantiles.csv", dtype={"h": str})
+    q = Q.set_index(["h", "feature"])["abs_t_unsigned_q95.4"]
+    return q["12"], q["d12"]
+
+
+def d22_select(r: dict, q12: pd.Series, qd12: pd.Series) -> pd.DataFrame:
+    """Stable-IC rule with the D22 per-feature thresholds, then the unchanged p2.select."""
+    T = r["T"].copy()
+    st = p2.SETTINGS["stable_ic"]
+    thr = T["feature"].map(q12).fillna(st["min_abs_t"])
+    thr_d = T["feature"].map(qd12).fillna(st["delayed_min_abs_t"])
+    T["thr_t"], T["thr_d_t"] = thr, thr_d
+    T["stable"] = ((T["t"].abs() >= thr) & (T["year_sign_share"] >= st["min_year_sign_share"])
+                   & (np.sign(T["last24_ic"]) == np.sign(T["ic"]))
+                   & (np.sign(T["d_ic"]) == np.sign(T["ic"])) & (T["d_t"].abs() >= thr_d))
+    S = p2.select(T, r["K"], r["clusters"], r["mda"])
+    S["version"] = S["feature"].map(r["versions"])
+    return S
+
+
+def bh(p: np.ndarray, q: float = 0.10) -> np.ndarray:
+    p = np.asarray(p, float)
+    n = len(p)
+    o = np.argsort(p)
+    ok = p[o] <= q * np.arange(1, n + 1) / n
+    k = np.flatnonzero(ok).max() + 1 if ok.any() else 0
+    out = np.zeros(n, bool)
+    out[o[:k]] = True
+    return out
+
+
+def d10_star(WF: pd.DataFrame) -> pd.DataFrame:
+    """D10* for h = 12 and h = 12 delayed against each feature's own null (D22)."""
+    Q = pd.read_csv(TAB / "null_quantiles.csv", dtype={"h": str}).set_index(["h", "feature"])
+    N = pd.read_csv(TAB / "null_per_draw_t.csv", dtype={"h": str})
+    rows = []
+    for r in WF[WF["h"].isin(["12", "d12"])].itertuples():
+        if (r.h, r.feature) not in Q.index:
+            continue
+        q = Q.loc[(r.h, r.feature)]
+        n = N[(N["h"] == r.h) & (N["feature"] == r.feature)]
+        a = bool(r.t_full >= q["t_full_q97.7"])
+        b = bool(r.ic_2325 > 0 and r.t_2325 >= q["t_2325_q84.1"])
+        k = int(((n["t_full"] >= r.t_full) & (n["t_2325"] >= r.t_2325)).sum())
+        ok = np.isfinite(r.t_full) and np.isfinite(r.t_2325)  # undefined part (b): no empirical p, not in BH
+        rows.append({"feature": r.feature, "h": r.h, "t_full": r.t_full, "null_q97.7": q["t_full_q97.7"],
+                     "ic_full": r.ic_full, "ic_2325": r.ic_2325, "t_2325": r.t_2325, "null_2325_q84.1": q["t_2325_q84.1"],
+                     "part_a": a, "part_b": b, "d10_star": a and b, "d10_fixed": bool(r.d10_pass),
+                     "n_null": len(n), "emp_p": (1 + k) / (1 + len(n)) if ok else np.nan})
+    D = pd.DataFrame(rows)
+    D["bh10"] = False
+    for h, g in D.groupby("h"):
+        g = g[g["emp_p"].notna()]
+        D.loc[g.index, "bh10"] = bh(g["emp_p"].to_numpy())
+    return D
+
+
 def summarize():
     TAB.mkdir(parents=True, exist_ok=True)
     folds = {}
     for M in MONTHS:
         with open(OUT / f"{M}.pkl", "rb") as fh:
             folds[M] = pickle.load(fh)
-    old = {}
-    for M in MONTHS:
-        with open(CK / f"{M}.pkl", "rb") as fh:
-            r = pickle.load(fh)
-        old[M] = r["S"]
+    q12, qd12 = d22_thresholds()
+    for r in folds.values():
+        r["S"] = d22_select(r, q12, qd12)
     OOS = pd.concat([r["oos"] for r in folds.values()], ignore_index=True)
     OOS.to_csv(TAB / "rescore_d19_oos_signed_ic_by_fold.csv", index=False)
     WF = wf_table(OOS[OOS["h"].isin(SEL_KEYS)])
@@ -231,7 +294,11 @@ def summarize():
         WF[["feature", "h", *cols]].add_prefix("d19_").rename(columns={"d19_feature": "feature", "d19_h": "h"}),
         on=["feature", "h"], how="outer")
     D10 = D10.sort_values(["h", "d19_t_full"], ascending=[True, False])
-    D10.to_csv(TAB / "d10_old_vs_d19.csv", index=False)
+    DS = d10_star(WF)
+    DS.to_csv(TAB / "d10_star_h12.csv", index=False)
+    D10 = D10.merge(DS[["feature", "h", "null_q97.7", "null_2325_q84.1", "d10_star", "emp_p", "bh10"]],
+                    on=["feature", "h"], how="left")
+    D10.to_csv(TAB / "d10_old_vs_d19_d22.csv", index=False)
     # decay: out-of-sample signed IC by h, and the last fold's training-window mean IC (raw versions)
     dec = OOS[~OOS["h"].str.startswith("d")].copy()
     dec["h"] = dec["h"].astype(int)
@@ -274,15 +341,18 @@ def summarize():
     FS["basis_v2"] = SEL.groupby("feature")["basis"].agg(lambda s: ", ".join(f"{k} {v}" for k, v in s.value_counts().items()))
     FS["delta"] = FS["share_folds_v2"] - FS["share_folds_v1"]
     FS.sort_values("share_folds_v2", ascending=False).to_csv(TAB / "feature_selection_v1_vs_v2.csv")
-    cfg = {"version": 2, "metric": "D19 anchored IC v2 (stable-IC rule and clustered MDA); extreme-bucket rule unchanged",
+    cfg = {"version": 2, "metric": ("D19 anchored IC v2 with D22 null-calibrated stable-IC thresholds (each feature's own "
+                                    "mirror-null 95.4% quantile of |t|, same for every fold; last-fold fitted-parameter "
+                                    "approximation in the null); clustered MDA on D19; extreme-bucket rule unchanged"),
            "generated": time.strftime("%Y-%m-%d"), "data_version": load_config("data")["data_version"],
            "previous_version": "configs/features_v1_biased.yaml (old monthly-pooled Spearman, biased)",
-           "note": v1["note"], "settings": v1["settings"],
+           "note": v1["note"], "settings": v1["settings"] | {"stable_ic": v1["settings"]["stable_ic"] | {
+               "min_abs_t": D22_THR, "delayed_min_abs_t": D22_THR.replace("h = 12", "h = 12 delayed")}},
            "by_fold": {M: [{"feature": x.feature, "version": x.version, "basis": x.basis}
                            for x in r["S"][r["S"]["kept"]].itertuples()] for M, r in folds.items()}}
     with open(ROOT / "configs" / "features.yaml", "w", encoding="utf-8") as fh:
         yaml.safe_dump(cfg, fh, sort_keys=False, allow_unicode=True, width=200)
-    folds[MONTHS[-1]]["mda"].to_csv(TAB / "mda_d19_lastfold.csv")
+    pd.concat(folds[MONTHS[-1]]["mda"], names=["h"]).to_csv(TAB / "mda_d19_lastfold.csv")
     # D16 rule (a) with the D19 training sign
     L = G["L"]
     F = G["F_free"]
@@ -303,19 +373,22 @@ def summarize():
              "max_drawdown": float((eq - eq.cummax()).min()), "turnover": float(2 * np.abs(R["pos"]).mean()),
              "sharpe_2x_costs": net6.mean() / net6.std() * np.sqrt(252), "data_version": load_config("data")["data_version"],
              "rerun_of": "rule_d_sma20_dev 2026-10-23T20:58:32 (b1dff46)",
-             "notes": (f"D16 rule (a) re-run with the D19 training sign (D21); sign counts {sg.value_counts().to_dict()}; "
+             "notes": (f"D16 rule (a) re-run with the D19 training sign (D22); sign counts {sg.value_counts().to_dict()}; "
                        f"gross Sharpe {full['sharpe_ann_0bp']:.2f}; break-even {full['breakeven_bp_per_side']:.2f} bp/side; "
                        f"+1 bar delay net 3bp Sharpe {RMd.iloc[0]['sharpe_ann_3bp']:.2f}")})
     log_run({"config_hash": config_hash(p2.SETTINGS, {"metric": "D19"}), "phase": 2, "model": "phase2_feature_screen",
              "n_params": 0, "fold_scheme": "expanding monthly WF 2018-01..2025-12, cached per-fold fits; selection per fold",
              "data_version": load_config("data")["data_version"],
              "rerun_of": "phase2_feature_screen 2026-10-22T22:51:40 (b2fda20)",
-             "notes": (f"re-scored with D19 (D21), no refits; D10 h12 single-feature passes: "
-                       f"{int(WF[(WF['h'] == '12') & WF['d10_pass']].shape[0])}")})
+             "notes": (f"re-scored with D19 + D22, no refits; D10* h12 single-feature passes: "
+                       f"{int(DS[(DS['h'] == '12') & DS['d10_star']].shape[0])}, delayed "
+                       f"{int(DS[(DS['h'] == 'd12') & DS['d10_star']].shape[0])}")})
     P1 = phase1_rescore(L)
     P1.to_csv(TAB / "phase1_preds_d19.csv", index=False)
     s = {"n_folds": len(folds), "fold_seconds_total": float(sum(r["seconds"] for r in folds.values())),
-         "d10_pass_d19": {k: WF[(WF["h"] == k) & WF["d10_pass"]]["feature"].tolist() for k in SEL_KEYS},
+         "d10_star_pass": {k: DS[(DS["h"] == k) & DS["d10_star"]]["feature"].tolist() for k in ("12", "d12")},
+         "d10_star_bh10": {k: DS[(DS["h"] == k) & DS["bh10"]]["feature"].tolist() for k in ("12", "d12")},
+         "d10_fixed_pass_d19": {k: WF[(WF["h"] == k) & WF["d10_pass"]]["feature"].tolist() for k in SEL_KEYS},
          "d10_pass_old": {k: WO[(WO["h"] == k) & WO["d10_pass"]]["feature"].tolist() for k in SEL_KEYS},
          "selected_per_fold_v1": CH["n_v1"].describe().to_dict(), "selected_per_fold_v2": CH["n_v2"].describe().to_dict(),
          "folds_below_20_v2": int((CH["n_v2"] < 20).sum()),
@@ -332,6 +405,7 @@ if __name__ == "__main__":
     ap.add_argument("--workers", type=int, default=0)
     ap.add_argument("--time-one", action="store_true")
     ap.add_argument("--summarize", action="store_true")
+    ap.add_argument("--folds-only", action="store_true", help="per-fold scoring only (no quantiles needed)")
     a = ap.parse_args()
     if a.time_one:
         t0 = time.time()
@@ -340,10 +414,14 @@ if __name__ == "__main__":
         sec = run_fold(MONTHS[-1])
         print(f"init {t1 - t0:.0f}s, one fold {sec:.0f}s -> projected {96 * sec / 60:.0f} min single, "
               f"{96 * sec / 60 / 4 * 1.3:.0f} min with 4 workers", flush=True)
-    if a.workers:
+    if a.workers == 1:  # sequential, newest fold first (so a later pool, oldest first, rarely collides)
+        init()
+        for M in reversed(MONTHS):
+            run_fold(M)
+    elif a.workers:
         with Pool(a.workers, initializer=init) as pool:
             pool.map(run_fold, MONTHS, chunksize=1)
-    if a.summarize or a.workers:
+    if (a.summarize or a.workers) and not a.folds_only:
         if not G:
             init()
         summarize()

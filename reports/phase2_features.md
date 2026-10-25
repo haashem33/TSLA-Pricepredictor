@@ -168,6 +168,12 @@ fold after 2025-05.
 > **2026-10-25 (v3):** with the corrected drift (D21) D19 still narrowly fails criterion 3 (`reports/phase2_metric_fix_v3.md`);
 > the D20 fallback applies. The numbers below have not been re-scored.
 >
+> **Re-scored 2026-10-25 (D19 + D22, final): see `reports/phase2_rescore.md`.** Under D10\* (each feature against its
+> own 300-draw mirror null) 19 features pass at h = 12 (19 delayed), all intraday trend / day-level momentum
+> continuation (≈ 2.7 effective signals); none of the 8 old passers except dL and sign_first30 survive, and the
+> daily-context features (d_sma20_dev, d_mom5, d_atr_c, amihud, d_prev_ret_atr) fail. The per-fold lists in
+> `configs/features.yaml` are now version 2; the table below is the old biased metric, kept for the record.
+>
 > **Amended 2026-10-23:** a session-permutation placebo shows that the within-month IC of d_sma20_dev, d_mom5
 > and d_atr_c is a mechanical bias of the monthly-pooled metric for multi-day-persistent features (real IC inside
 > the placebo band); amihud is suspect for the same reason. See `reports/phase2_daily_diagnostics.md`. The D10
@@ -236,6 +242,9 @@ Interpretation and caveats:
   tokenizer (Phase 3) will use the σ̂ percentile per 7.2 unless you prefer otherwise.
 
 ## 6. Gate 2 status
+
+> **Superseded 2026-10-25:** Gate 2 re-confirmed under D19 + D22 (`reports/phase2_rescore.md` §8): 86 of 96 folds
+> keep 20–32 features, 10 folds 17–19 (D13); 19 single features pass D10\* at h = 12. The table below is the v1 status.
 
 | requirement | result |
 |---|---|

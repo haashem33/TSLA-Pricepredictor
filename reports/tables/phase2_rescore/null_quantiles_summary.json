@@ -1,0 +1,31 @@
+{
+ "n_draws": 300,
+ "n_expected": 300,
+ "seeds": [
+  2000,
+  2299
+ ],
+ "mu_per_intraday_bar": 1.360871228909053e-06,
+ "null_mean_z12": 0.0019240544766493206,
+ "target_mean_z12": 0.00192391473467247,
+ "approximation": "GARCH-t / HMM / Kalman / frac-d parameters of the last fold (2025-12) used for all folds",
+ "pooled_d10_fixed_rate": {
+  "12": 0.017951807228915664,
+  "d12": 0.0185140562248996
+ },
+ "nominal_d10_rate_iid": 0.01667,
+ "pooled_quantiles": {
+  "12": {
+   "t_full": 2.0390877377009544,
+   "t_2325": 2.154911968401773
+  },
+  "d12": {
+   "t_full": 2.0604820003431428,
+   "t_2325": 2.1450267776863168
+  }
+ },
+ "max_abs_null_unsigned_mean": {
+  "12": 0.0016063714852522068,
+  "d12": 0.0016246815801808016
+ }
+}

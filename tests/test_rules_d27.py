@@ -67,7 +67,7 @@ def test_r1_pnl_matches_hand_computation_and_flattens():
 
 
 def test_r2_timing_threshold_overlap():
-    O, _C, sess = _bars()
+    O, C, sess = _bars()
     sid, last = bp.session_arrays(sess)
     pos, z, q = _signals(len(O))
     for d in (0, 1):
@@ -82,7 +82,7 @@ def test_r2_timing_threshold_overlap():
 
 
 def test_rules_do_not_change_when_future_prices_change():
-    O, _C, sess = _bars()
+    O, C, sess = _bars()
     sid, last = bp.session_arrays(sess)
     pos, z, q = _signals(len(O))
     k = 120

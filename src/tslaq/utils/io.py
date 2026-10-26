@@ -3,6 +3,7 @@ from __future__ import annotations
 
 import hashlib
 import json
+import os
 from pathlib import Path
 
 import yaml
@@ -21,7 +22,9 @@ def config_hash(*cfgs: dict) -> str:
 
 
 def data_version() -> str:
-    return load_config("data").get("data_version", "v1")
+    """configs/data.yaml data_version; the environment variable TSLAQ_DATA_VERSION overrides it (D28 holdout run
+    only, which reads the v2 + holdout bars from data/interim/v2h/)."""
+    return os.environ.get("TSLAQ_DATA_VERSION") or load_config("data").get("data_version", "v1")
 
 
 def interim_path(symbol: str, version: str | None = None) -> Path:

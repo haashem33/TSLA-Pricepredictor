@@ -34,15 +34,21 @@ def _client():
     return StockHistoricalDataClient(os.environ["ALPACA_API_KEY"], os.environ["ALPACA_SECRET_KEY"])
 
 
-def fetch_month(client, symbol: str, month: str) -> pd.DataFrame:
+def fetch_month(client, symbol: str, month: str, adjustment: str = "raw", end_utc: pd.Timestamp | None = None
+                ) -> pd.DataFrame:
+    """One month of SIP 1-minute bars (UTC month boundaries). `adjustment` = "raw" or "split"; `end_utc` caps the
+    request (D28: nothing after the holdout end is requested)."""
     from alpaca.data.enums import Adjustment, DataFeed
     from alpaca.data.requests import StockBarsRequest
     from alpaca.data.timeframe import TimeFrame
 
     start = pd.Timestamp(f"{month}-01", tz="UTC")
     end = start + pd.offsets.MonthBegin(1)
+    if end_utc is not None:
+        end = min(end, end_utc)
+    adj = {"raw": Adjustment.RAW, "split": Adjustment.SPLIT}[adjustment]
     req = StockBarsRequest(symbol_or_symbols=symbol, timeframe=TimeFrame.Minute, start=start.to_pydatetime(),
-                           end=end.to_pydatetime(), adjustment=Adjustment.RAW, feed=DataFeed.SIP)
+                           end=end.to_pydatetime(), adjustment=adj, feed=DataFeed.SIP)
     df = client.get_stock_bars(req).df.reset_index()
     df = df.drop(columns="symbol")
     df["timestamp"] = pd.to_datetime(df["timestamp"], utc=True)

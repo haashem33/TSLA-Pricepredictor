@@ -34,3 +34,10 @@ v2:
   raw_end_month_exclusive: "2022-09"
   check_months: ["2022-10", "2023-03"]   # post-split: v2 rebuild must equal v1 exactly
   splits_file: data/raw/dividends/TSLA_splits.csv
+# D28 final holdout evaluation (scripts/run_holdout_d28.py). Holdout 1-min bars (Alpaca SIP, split-adjusted like the
+# v2 source files from 2022-09) in raw_dir/<SYMBOL>/<YYYY-MM>.parquet; v2 + holdout bars in data/interim/<version>/.
+holdout_eval:
+  version: v2h
+  raw_dir: data/raw/holdout
+  months: ["2026-01", "2026-02", "2026-03", "2026-04", "2026-05", "2026-06", "2026-07", "2026-08", "2026-09", "2026-10"]
+  end_date: "2026-10-09"

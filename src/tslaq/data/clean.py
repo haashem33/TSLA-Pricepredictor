@@ -140,7 +140,10 @@ def load_raw_v2(symbol: str, months: list[str], cfg: dict) -> pd.DataFrame:
 
 
 def build_symbol(symbol: str, cfg: dict | None = None, version: str | None = None,
-                 months: list[str] | None = None) -> tuple[pd.DataFrame, dict]:
+                 months: list[str] | None = None, end_date: str | None = None,
+                 extra_m1: pd.DataFrame | None = None) -> tuple[pd.DataFrame, dict]:
+    """Canonical bars for `months`. Defaults stop before the holdout. D28 only: `extra_m1` (1-minute bars of later
+    months, same columns) is appended and `end_date` replaces the holdout cap (sessions and dividends up to it)."""
     cfg = cfg or load_config("data")
     version = version or cfg.get("data_version", "v1")
     months = months or month_range(cfg["start_month"], cfg["holdout_start"][:7])
@@ -149,9 +152,11 @@ def build_symbol(symbol: str, cfg: dict | None = None, version: str | None = Non
         m1 = load_raw_v2(symbol, months, cfg)
     else:
         m1 = pd.concat([load_raw_month(symbol, m, cfg) for m in months], ignore_index=True)
+    if extra_m1 is not None:
+        m1 = pd.concat([m1, extra_m1], ignore_index=True)
     start = f"{months[0]}-01"
-    end = (pd.Period(months[-1], "M").end_time).strftime("%Y-%m-%d")
-    end = min(end, (pd.Timestamp(cfg["holdout_start"]) - pd.Timedelta(days=1)).strftime("%Y-%m-%d"))
+    cap = end_date or (pd.Timestamp(cfg["holdout_start"]) - pd.Timedelta(days=1)).strftime("%Y-%m-%d")
+    end = cap if extra_m1 is not None else min((pd.Period(months[-1], "M").end_time).strftime("%Y-%m-%d"), cap)
     sessions = nyse_sessions(start, end, cfg["bar_minutes"])
     bars = aggregate_to_bars(m1, sessions, cfg["bar_minutes"])
     if use_raw:
@@ -164,7 +169,7 @@ def build_symbol(symbol: str, cfg: dict | None = None, version: str | None = Non
     div_file = ROOT / cfg["dividends_dir"] / f"{symbol}.csv"
     if div_file.exists():
         divs = pd.read_csv(div_file)
-        divs = divs[pd.to_datetime(divs["ex_dividend_date"]) < pd.Timestamp(cfg["holdout_start"])]
+        divs = divs[pd.to_datetime(divs["ex_dividend_date"]) <= pd.Timestamp(end)]
         df, fac = dividend_adjust(df, divs)
         info["dividends"] = fac
     df = flag_bad_ticks(df, cfg["bad_tick_mult"], cfg["bad_tick_window_bars"], cfg["bad_tick_window_sessions"])
@@ -181,14 +186,16 @@ def daily_from_bars(df: pd.DataFrame) -> pd.DataFrame:
                          "is_half_day": g["is_half_day"].first()}).reset_index()
 
 
-def earnings_sessions(cfg: dict | None = None) -> pd.DataFrame:
-    """Map each TSLA report to its reaction session (next session if after close or time unknown)."""
+def earnings_sessions(cfg: dict | None = None, end_date: str | None = None) -> pd.DataFrame:
+    """Map each TSLA report to its reaction session (next session if after close or time unknown). Reports on or
+    after the holdout start are skipped; with `end_date` (D28 only) reports up to and including it are kept."""
     cfg = cfg or load_config("data")
     e = pd.read_csv(ROOT / cfg["earnings_file"], comment="#")
-    sess = nyse_sessions("2015-12-01", cfg["holdout_start"])["session_date"]
+    stop = pd.Timestamp(end_date) + pd.Timedelta(days=1) if end_date else pd.Timestamp(cfg["holdout_start"])
+    sess = nyse_sessions("2015-12-01", (stop + pd.Timedelta(days=10)).strftime("%Y-%m-%d"))["session_date"]
     out = []
     for d, t in zip(pd.to_datetime(e["reported_date"]), e["report_time"].fillna("unknown")):
-        if d >= pd.Timestamp(cfg["holdout_start"]):
+        if d >= stop:
             continue
         before_open = str(t).lower().startswith("pre")
         later = sess[sess >= d] if before_open else sess[sess > d]

@@ -1,0 +1,140 @@
+{
+ "tsla_raw_vs_split": [
+  {
+   "month": "2026-01",
+   "rows_split": 18975,
+   "rows_raw": 18975,
+   "common": 18975,
+   "max_abs_close_diff": 0.0,
+   "max_abs_volume_diff": 0.0
+  },
+  {
+   "month": "2026-02",
+   "rows_split": 17611,
+   "rows_raw": 17611,
+   "common": 17611,
+   "max_abs_close_diff": 0.0,
+   "max_abs_volume_diff": 0.0
+  },
+  {
+   "month": "2026-03",
+   "rows_split": 20659,
+   "rows_raw": 20659,
+   "common": 20659,
+   "max_abs_close_diff": 0.0,
+   "max_abs_volume_diff": 0.0
+  },
+  {
+   "month": "2026-04",
+   "rows_split": 19999,
+   "rows_raw": 19999,
+   "common": 19999,
+   "max_abs_close_diff": 0.0,
+   "max_abs_volume_diff": 0.0
+  },
+  {
+   "month": "2026-05",
+   "rows_split": 18976,
+   "rows_raw": 18976,
+   "common": 18976,
+   "max_abs_close_diff": 0.0,
+   "max_abs_volume_diff": 0.0
+  },
+  {
+   "month": "2026-06",
+   "rows_split": 19743,
+   "rows_raw": 19743,
+   "common": 19743,
+   "max_abs_close_diff": 0.0,
+   "max_abs_volume_diff": 0.0
+  },
+  {
+   "month": "2026-07",
+   "rows_split": 20427,
+   "rows_raw": 20427,
+   "common": 20427,
+   "max_abs_close_diff": 0.0,
+   "max_abs_volume_diff": 0.0
+  },
+  {
+   "month": "2026-08",
+   "rows_split": 19216,
+   "rows_raw": 19216,
+   "common": 19216,
+   "max_abs_close_diff": 0.0,
+   "max_abs_volume_diff": 0.0
+  },
+  {
+   "month": "2026-09",
+   "rows_split": 19343,
+   "rows_raw": 19343,
+   "common": 19343,
+   "max_abs_close_diff": 0.0,
+   "max_abs_volume_diff": 0.0
+  },
+  {
+   "month": "2026-10",
+   "rows_split": 6358,
+   "rows_raw": 6358,
+   "common": 6358,
+   "max_abs_close_diff": 0.0,
+   "max_abs_volume_diff": 0.0
+  }
+ ],
+ "TSLA": {
+  "rows_dev_v2": 195180,
+  "rows_dev_v2h": 195180,
+  "dev_timestamps_identical": true,
+  "dev_frames_identical": true,
+  "dev_max_abs_logret_diff": 0.0,
+  "holdout_sessions": 194,
+  "holdout_bars": 15132,
+  "holdout_first": "2026-01-02",
+  "holdout_last": "2026-10-09",
+  "holdout_missing_bars": 0,
+  "holdout_bad_tick": 3,
+  "holdout_bad_range": 0,
+  "holdout_half_days": 0,
+  "dropped_sessions_holdout": [],
+  "sessions_without_data": 0
+ },
+ "SPY": {
+  "rows_dev_v2": 195258,
+  "rows_dev_v2h": 195258,
+  "dev_timestamps_identical": true,
+  "dev_frames_identical": false,
+  "dev_max_abs_logret_diff": 1.7763568394002505e-15,
+  "holdout_sessions": 194,
+  "holdout_bars": 15132,
+  "holdout_first": "2026-01-02",
+  "holdout_last": "2026-10-09",
+  "holdout_missing_bars": 0,
+  "holdout_bad_tick": 2,
+  "holdout_bad_range": 1,
+  "holdout_half_days": 0,
+  "dropped_sessions_holdout": [],
+  "sessions_without_data": 0
+ },
+ "QQQ": {
+  "rows_dev_v2": 195102,
+  "rows_dev_v2h": 195102,
+  "dev_timestamps_identical": true,
+  "dev_frames_identical": false,
+  "dev_max_abs_logret_diff": 1.7763568394002505e-15,
+  "holdout_sessions": 194,
+  "holdout_bars": 15132,
+  "holdout_first": "2026-01-02",
+  "holdout_last": "2026-10-09",
+  "holdout_missing_bars": 0,
+  "holdout_bad_tick": 3,
+  "holdout_bad_range": 0,
+  "holdout_half_days": 0,
+  "dropped_sessions_holdout": [],
+  "sessions_without_data": 0
+ },
+ "earnings_reaction_sessions_holdout": [
+  "2026-01-29",
+  "2026-04-23",
+  "2026-07-23"
+ ]
+}

@@ -1,0 +1,4 @@
+symbol,rows_alpaca,rows_local,rows_common,max_abs_diff_open,max_abs_diff_high,max_abs_diff_low,max_abs_diff_close,max_abs_diff_volume
+TSLA,20443,20443,20443,0.0,0.0,0.0,0.0,0.0
+SPY,19432,19432,19432,0.0,0.0,0.0,0.0,0.0
+QQQ,19792,19792,19792,0.0,0.0,0.0,0.0,0.0

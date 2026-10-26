@@ -1,0 +1,37 @@
+{
+ "criterion": "total net P&L of R1 at D26 cost over the holdout > 0",
+ "criterion_pass": false,
+ "total_net_pnl_bp_d26": -725.0109934273596,
+ "net_sharpe_ann_d26": -0.4875386654022901,
+ "d26_cost_2026_bp_per_side": 0.7494770385753178,
+ "n_sessions": 194,
+ "first_session": "2026-01-02",
+ "last_session": "2026-10-09",
+ "ic_summary": [
+  {
+   "outcome": "no_delay",
+   "n_months": 10,
+   "ic_mean": 0.013789976938064547,
+   "ic_sd": 0.04505495428166904,
+   "t": 0.9678788204479618,
+   "share_ic_pos": 0.7
+  },
+  {
+   "outcome": "delayed",
+   "n_months": 10,
+   "ic_mean": 0.015670954758140485,
+   "ic_sd": 0.043248232538539516,
+   "t": 1.145848217057578,
+   "share_ic_pos": 0.7
+  }
+ ],
+ "dev_fold_ic_max_abs_diff_vs_stored": {
+  "no_delay": 9.8879238130678e-17,
+  "delayed": 9.84455572616838e-17
+ },
+ "freeze": {
+  "git_commit": "f3a40be462c475a400fec6aa4e09c4e628a7cdc0",
+  "worktree_clean": false,
+  "config_hash": "da5d24529c"
+ }
+}

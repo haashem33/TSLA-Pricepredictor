@@ -295,3 +295,15 @@ per year and month:
 | # | Decision | Reason | Where in CLAUDE.md |
 |---|---|---|---|
 | D29a | **Amendments to D29.** **D29a-1 (replaces resolution A2):** σ_{t,m} = the mean of move_{d,m} over the 14 most recent previous sessions d that contain minute m. Half-days have no minutes after their close, and dropped or missing sessions are absent. 14 such sessions are required. **D29a-2 (cost floor):** in C_real, the half-spread per side = max(SPY EDGE mean half-spread of year Y−1, half a tick = $0.005 per share). The spread table reports the yearly EDGE half-spread in bp next to the half-tick in bp (at the year's median price), and which one binds. In the backtest the floor is applied per order, at the fill price: cost = max(EDGE_{Y−1} bp × notional, $0.005 × shares). **D29a-3 (interpretation, fixed now):** P2 has limited power. If the paper's Sharpe of about 1.3 is real, the chance of meeting "Sharpe > 0.5" over 22 months is about 86%; with no edge it is about 25% (normal approximation, se of the annualized Sharpe ≈ √(12/22) = 0.74). If P2 and P3 both pass, the next step is paper trading on live data for at least 3 months, on an instrument the user can trade from the EU (likely Micro E-mini S&P 500 futures, MES), with its own pre-registered criteria and cost model. If P2 fails, the recommendation is to stop. A pass is not proof. | (1) Requiring the 14 previous calendar sessions would block afternoon trading for about 14 sessions after every half-day. (2) SPY's quoted spread is almost always one tick, so an EDGE estimate below half a tick is not a credible cost. (3) The interpretation is fixed before any P2 number exists. | separate study |
+
+> **D29 Stage A result and freeze (2026-10-31; P1 only, no SPY bar after 2024-02-29 used, P2 / P3 not run)**
+> ([`spy_stageA.md`](spy_stageA.md)).
+> - **Data check passed.** 2,052 sessions; 159,516 five-minute bars matched v2 with max \|Δ log return\| 4.4e-16; the
+>   cache is dividend-unadjusted (32 ex-dates, factor difference ≤ 2.2e-16).
+> - **P1 is within the D29 tolerance** (primary, C_paper, E0, 2016-02..2024-02 vs the paper's monthly table):
+>   correlation 0.993, Sharpe 1.26 vs 1.37, CAGR 18.3% vs 20.1%, yearly sign 8 of 8. No code fix was needed.
+> - **Frozen code:** git commit **8163aa6** (`scripts/spy_stageA.py`, `src/tslaq/spy/`), **config hash 3d8abf0044**
+>   (`reports/tables/spy_stageA/frozen_config.json`). Commits after 8820812 changed no strategy logic: 6ce1b73 fixed
+>   the units of the paper column in `p1_yearly.csv`, and 8163aa6 filters the v2 reads at load time. Both were
+>   verified to reproduce `p1_summary.csv` byte for byte.
+> - **Trials:** 3 trials logged (`d29_spy_momentum_*`, git 8820812); **n_trials_so_far = 46**.

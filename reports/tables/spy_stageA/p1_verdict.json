@@ -1,0 +1,18 @@
+{
+  "n_months": 97,
+  "corr_monthly": 0.9933525420145908,
+  "sharpe_monthly_ours": 1.2594456278578308,
+  "sharpe_monthly_paper": 1.365328793994675,
+  "cagr_ours": 0.18331379389921687,
+  "cagr_paper": 0.20122612448886223,
+  "vol_ours": 0.14232018596732463,
+  "vol_paper": 0.1424376513990682,
+  "years_same_sign": 8,
+  "ok_corr": true,
+  "ok_sharpe": true,
+  "ok_cagr": true,
+  "ok_sign": true,
+  "within_range": true,
+  "config_hash": "3d8abf0044",
+  "start_session": "2016-01-26"
+}

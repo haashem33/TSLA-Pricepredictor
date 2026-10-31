@@ -1,0 +1,106 @@
+{
+  "study": "D29/D29a",
+  "lookback": 14,
+  "vm": 1.0,
+  "target_vol": 0.02,
+  "max_lev": 4.0,
+  "decisions": [
+    30,
+    60,
+    90,
+    120,
+    150,
+    180,
+    210,
+    240,
+    270,
+    300,
+    330,
+    360
+  ],
+  "commission": 0.0035,
+  "min_commission": 0.35,
+  "paper_slippage": 0.001,
+  "half_tick": 0.005,
+  "sec_bp": 0.1,
+  "aum0": 100000,
+  "data": {
+    "source": "local_alpaca",
+    "local_source_dir": "C:/Users/haash/Desktop/Data/raw",
+    "symbols": [
+      "TSLA",
+      "SPY",
+      "QQQ"
+    ],
+    "target": "TSLA",
+    "start_month": "2016-01",
+    "holdout_start": "2026-01-01",
+    "sealed_end": "2026-10-09",
+    "bar_minutes": 5,
+    "bars_per_day": 78,
+    "max_missing_frac": 0.05,
+    "bad_tick_mult": 15,
+    "bad_tick_window_bars": 390,
+    "bad_tick_window_sessions": 20,
+    "dividends_dir": "data/raw/dividends",
+    "earnings_file": "data/raw/earnings/TSLA_earnings_dates.csv",
+    "alphavantage": {
+      "api_key_env": "ALPHAVANTAGE_API_KEY",
+      "min_seconds_between_calls": 12
+    },
+    "volatility": {
+      "seasonal_window_sessions": 60,
+      "lambda_grid": [
+        0.9,
+        0.93,
+        0.95,
+        0.97,
+        0.98,
+        0.99,
+        0.995
+      ],
+      "lambda_default": 0.97,
+      "burn_in_sessions": 5
+    },
+    "data_version": "v2",
+    "v2": {
+      "raw_dir": "data/raw/TSLA_raw",
+      "raw_start_month": "2016-01",
+      "raw_end_month_exclusive": "2022-09",
+      "check_months": [
+        "2022-10",
+        "2023-03"
+      ],
+      "splits_file": "data/raw/dividends/TSLA_splits.csv"
+    },
+    "holdout_eval": {
+      "version": "v2h",
+      "raw_dir": "data/raw/holdout",
+      "months": [
+        "2026-01",
+        "2026-02",
+        "2026-03",
+        "2026-04",
+        "2026-05",
+        "2026-06",
+        "2026-07",
+        "2026-08",
+        "2026-09",
+        "2026-10"
+      ],
+      "end_date": "2026-10-09"
+    }
+  },
+  "spread_sha1": "8d99c1d853b1d1adad403e02478547f82cb77784",
+  "half_spread_bp_by_cost_year": {
+    "2016": 0.16227690794149194,
+    "2017": 0.16227690794149194,
+    "2018": 0.1436760100482914,
+    "2019": 0.1546046607143599,
+    "2020": 0.12516785740498151,
+    "2021": 0.18653832312189408,
+    "2022": 0.11517962726270267,
+    "2023": 0.1975025266235332,
+    "2024": 0.12334808550009625
+  }
+}

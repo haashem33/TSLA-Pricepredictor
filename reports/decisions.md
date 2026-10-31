@@ -380,3 +380,9 @@ file is read with the timestamp filter in (2).
 > - **No pre-registered next step.** D29a-3 does not cover "P2 passes, P3 fails". Recommendation (not
 >   pre-registered): stop; no paper trading on this strategy. The user decides.
 > - **Registry and forward test.** Three re-run rows (n_trials_so_far 46). The forward test stays sealed.
+
+## 2026-10-31 — close-out of the SPY study (decision by the user, taken after seeing the Stage B results)
+
+| # | Decision | Reason | Where in CLAUDE.md |
+|---|---|---|---|
+| D29c | **SPY study closed: stop, no paper trading of this strategy.** **Stage B result** ([`spy_stageB.md`](spy_stageB.md)): **P2 (2024-03..2025-12) PASS**: net Sharpe 0.59 at C_real (E0), 0.20 with E1, 0.37 at 2× C_real. **P3 (2026-01-02..2026-10-09) FAIL**: net P&L −13.6% at C_real (Sharpe −1.38). Information at real cost: 2025 −4.8% (SPY +17.7%); 2024-05..2025-12 Sharpe 0.46. **Not pre-registered:** D29a-3 covered "P2 and P3 both pass" (paper trading) and "P2 fails" (stop), but **not "P2 passes, P3 fails"**. **This decision was taken by the user after the P2 and P3 results were seen, and is labelled as such:** stop; no paper trading (MES or otherwise) of this strategy. The forward test (data after 2026-10-09 16:00 ET) stays sealed. No further SPY trial is run; n_trials_so_far stays at 46. | The P2 pass rests largely on 2024, which the authors had already published. The unseen parts (2025, P3) lost money at every cost level and with both executions, and the gross break-even fell from 2.1 bp per side (P1) to 0.87 bp (P2). | separate study |

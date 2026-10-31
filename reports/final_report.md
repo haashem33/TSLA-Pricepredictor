@@ -249,10 +249,102 @@ matrix). No null draw reached 19 passers, and the null averages 1.3 passers per 
    - the session-permutation placebo that exposed the monthly-IC artefact;
    - the pre-registration discipline (decisions recorded and committed before each run).
 
+## 11. Follow-up study: SPY intraday momentum (D29)
+
+Added 2026-11-01. This is a separate, pre-registered study (D29, D29a, D29b, D29c in [`decisions.md`](decisions.md)).
+It does not change any TSLA result above.
+
+### The question
+
+Does a published, fully specified intraday strategy survive after publication, at realistic costs? The strategy is
+Zarattini, Aziz & Barbon (2024), "Beat the Market: An Effective Intraday Momentum Strategy for S&P500 ETF (SPY)":
+- **Signal.** A time-of-day "noise area" built from the average move from the open over the last 14 days. The
+  strategy trades breakouts beyond it, checked every half hour from 10:00, with a VWAP trailing stop.
+- **Sizing and exit.** Volatility-targeted size (2% daily, at most 4×), flat at the close.
+
+**Rules fixed before any backtest.**
+- **Data.** SPY 1-minute bars (data v2, and v2h for 2026).
+- **Execution.** Fill at the next bar's open; also tested with one extra bar of delay.
+- **Costs.** The paper's own ($0.0035 + $0.001 per share). A realistic one: the prior year's EDGE half-spread,
+  floored at half a tick, + $0.0035 per share (minimum $0.35) + the SEC fee.
+- **Periods.** P1 (2016-01..2024-02) is the replication. P2 (2024-03..2025-12) is post-publication. P3
+  (2026-01-02..2026-10-09) is a second out-of-sample check.
+
+### Replication (Stage A, P1)
+
+Source: [`spy_stageA.md`](spy_stageA.md).
+
+**Our implementation reproduces the paper.** Primary configuration at the paper's costs, against the paper's monthly
+table for 2016-02..2024-02 (all four pre-registered tolerance checks pass):
+
+| check | ours | paper |
+|---|---|---|
+| monthly correlation | 0.993 | |
+| Sharpe | 1.26 | 1.37 |
+| CAGR | 18.3% | 20.1% |
+| same yearly sign | 8 of 8 years | |
+
+([`spy_stageA.md`](spy_stageA.md) §Summary, §4).
+
+**Results at our costs over P1** ([`spy_stageA.md`](spy_stageA.md) §4.1):
+- Net Sharpe 1.03 at realistic cost (0.39 bp per side on average), 0.69 at 2× realistic cost, and 0.92 with one
+  extra bar of delay. SPY buy-and-hold had 0.86.
+- Gross break-even was 2.1 bp per side.
+
+### Post-publication (Stage B, P2 and P3)
+
+Source: [`spy_stageB.md`](spy_stageB.md). One run with the frozen code. The data checks and the P1 reproduction were
+exact ([`spy_stageB.md`](spy_stageB.md) §1).
+
+**Criteria** ([`spy_stageB.md`](spy_stageB.md) §Summary, §2):
+- **P2: PASS.** Net Sharpe 0.59 at realistic cost (bar 0.5), 0.20 with one extra bar of delay, 0.37 at 2× realistic
+  cost.
+- **P3: FAIL.** Net P&L −13.6% at realistic cost (Sharpe −1.38), while SPY rose 15.1%.
+
+**The P2 pass rests on months the authors had already published.**
+- Our 2024 is +32.5% at the paper's cost, against their published +32.2%.
+- On the parts nobody had seen, the strategy lost money:
+  - 2025: −4.8% at realistic cost (SPY +17.7%);
+  - P2 without the paper's own data months (2024-05..2025-12): Sharpe 0.46;
+  - P3: −13.6%.
+- Gross break-even fell from 2.1 bp per side (P1) to 0.87 bp (P2). P3 is negative before costs.
+- All three tested configurations lose in P3 under every cost level and both executions.
+- The DSR is 0.61 at best.
+
+([`spy_stageB.md`](spy_stageB.md) §2, §3, §4.)
+
+### Decision
+
+"P2 passes, P3 fails" was **not covered** by the pre-registered interpretation (D29a-3). **The user decided, after
+seeing the results, to stop: no paper trading of this strategy** (D29c, labelled as a post-result decision). The
+forward test stays sealed. The registry holds **46 trials** (43 TSLA + 3 SPY configurations; the Stage B rows are
+re-runs).
+
+### Lesson
+
+**The published edge faded after publication.**
+- **Before publication.** The replication was faithful, and in-sample the strategy beat buy-and-hold on a
+  risk-adjusted basis.
+- **Since the paper's data ended,** the strategy has been flat to negative while the market rose.
+- **Full period 2016-01-26..2026-10-09, at realistic cost:**
+
+  | | total return | Sharpe |
+  |---|---|---|
+  | strategy | 204.5% | 0.79 |
+  | SPY buy-and-hold | 393.3% | 0.94 |
+
+  ([`spy_stageB.md`](spy_stageB.md) §3).
+
+The TSLA project pointed the same way: a small intraday trend-continuation effect exists, but after costs and after
+the period it was found in, it is not a tradable edge. A faithful replication is not evidence of a future edge; only
+the post-publication data was a test.
+
 ## Files
 
 - **Reports.**
-  - [`decisions.md`](decisions.md) (D1–D28);
+  - [`decisions.md`](decisions.md) (D1–D28; SPY study D29, D29a, D29b, D29c);
+  - SPY study: [`spy_momentum_plan.md`](spy_momentum_plan.md), [`spy_stageA.md`](spy_stageA.md),
+    [`spy_stageB.md`](spy_stageB.md);
   - [`phase1_summary.md`](phase1_summary.md), [`phase2_features.md`](phase2_features.md),
     [`phase2_daily_diagnostics.md`](phase2_daily_diagnostics.md), the `phase2_metric_fix*.md` reports and
     [`phase2_rescore.md`](phase2_rescore.md);

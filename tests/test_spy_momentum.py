@@ -198,3 +198,14 @@ def test_flip_is_one_order_with_cost_split():
     assert trades["cost"].sum() == pytest.approx(daily["cost"].iloc[0])
     assert daily["long_net"].iloc[0] + daily["short_net"].iloc[0] == pytest.approx(
         daily["pnl_gross"].iloc[0] - daily["cost"].iloc[0])
+
+
+def test_stage_a_loaders_refuse_or_filter_later_data():
+    from tslaq.spy import data as sd
+    with pytest.raises(PermissionError):
+        sd.load_raw_1min(["2024-03"])
+    with pytest.raises(PermissionError):
+        sd.build_spy_1min("2024-03")
+    if sd.interim_path("SPY", "v2").exists():
+        v = sd.read_v2("v2", pd.Timestamp("2024-02-29"), ["session_date"])
+        assert v["session_date"].max() <= pd.Timestamp("2024-02-29")

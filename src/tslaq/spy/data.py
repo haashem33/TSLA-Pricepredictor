@@ -56,8 +56,14 @@ def minute_frame(m1: pd.DataFrame, sessions: pd.DataFrame) -> pd.DataFrame:
     return df.dropna(subset=["close"]).reset_index(drop=True)
 
 
-def v2_session_set(version: str = "v2") -> pd.DatetimeIndex:
-    v = pd.read_parquet(interim_path("SPY", version), columns=["session_date"])
+def read_v2(version: str, end: pd.Timestamp, columns: list[str] | None = None) -> pd.DataFrame:
+    """SPY 5-minute v2 / v2h bars with session_date <= end, filtered at read time (no later row is loaded)."""
+    return pd.read_parquet(interim_path("SPY", version), columns=columns,
+                           filters=[("session_date", "<=", pd.Timestamp(end))])
+
+
+def v2_session_set(end: pd.Timestamp, version: str = "v2") -> pd.DatetimeIndex:
+    v = read_v2(version, end, ["session_date"])
     return pd.DatetimeIndex(v["session_date"].unique())
 
 
@@ -78,7 +84,7 @@ def build_spy_1min(end_month: str = STAGE_A_END, start_month: str = "2016-01") -
             "n_missing_minutes": int(df["missing"].sum())}
     frac = df.groupby("session_date")["missing"].mean()
     bad = frac[frac > cfg["max_missing_frac"]]
-    v2s = v2_session_set("v2")
+    v2s = v2_session_set(pd.Timestamp(end), "v2")
     in_range = df["session_date"].drop_duplicates()
     not_v2 = in_range[~in_range.isin(v2s)]
     drop = set(bad.index) | set(not_v2)
@@ -103,8 +109,9 @@ def data_check(df: pd.DataFrame, version: str = "v2") -> tuple[pd.DataFrame, dic
     |difference| <= 1e-10); (2) the source cache is dividend-unadjusted: v2 adjusted close / our raw close is
     constant between ex-dates and jumps by exactly the dividend factor (1 - D / C_prev) at each ex-date."""
     end = df["session_date"].max()
-    v = pd.read_parquet(interim_path("SPY", version))
-    v = v[v["session_date"] <= end].sort_values("timestamp").reset_index(drop=True)
+    v = read_v2(version, end)
+    assert v["session_date"].max() <= end
+    v = v.sort_values("timestamp").reset_index(drop=True)
     five = df[df["minute"] % 5 == 0].copy()
     five["bar_index"] = five["minute"] // 5 - 1
     five = five.sort_values("timestamp").reset_index(drop=True)

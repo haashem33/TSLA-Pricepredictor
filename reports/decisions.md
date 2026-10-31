@@ -307,3 +307,64 @@ per year and month:
 >   the units of the paper column in `p1_yearly.csv`, and 8163aa6 filters the v2 reads at load time. Both were
 >   verified to reproduce `p1_summary.csv` byte for byte.
 > - **Trials:** 3 trials logged (`d29_spy_momentum_*`, git 8820812); **n_trials_so_far = 46**.
+
+## 2026-10-31 — D29 Stage B specification (instructed by the user with the Stage B approval; recorded before any P2 or P3 strategy number was computed)
+
+| # | Decision | Reason | Where in CLAUDE.md |
+|---|---|---|---|
+| D29b | **Stage B (P2, P3) under the frozen D29 code.** The specification is below the table. | The extension of data and costs and the one-time evaluation are fixed before any P2 or P3 number exists. | separate study |
+
+### D29b specification
+
+**(1) Frozen strategy code.**
+- `git diff 8163aa6 HEAD -- src/tslaq/spy/momentum.py src/tslaq/spy/metrics.py` is empty (checked at HEAD 1c28016:
+  0 lines).
+- Only the loaders (`src/tslaq/spy/data.py`) and the runner (a new `scripts/spy_stageB.py`) may be extended.
+- Constants, rules and cost formulas are those of config hash 3d8abf0044. The only additions are the half-spreads for
+  cost years 2025 and 2026, from (3).
+
+**(2) Data extension.**
+- **P2 bars:** `data/raw/SPY/2024-03..2025-12`.
+- **P3 bars:** `data/raw/holdout/SPY/2026-01..2026-10`, read with a timestamp filter at read time, so nothing at or
+  after 2026-10-09 20:00 UTC (16:00 ET) is loaded. The loader asserts this.
+- **Cleaning:** the same D29 rules and the same dividend back-adjustment (SPY dividends up to 2026-10-09). Sessions
+  are dropped if they are absent from v2 (through 2025-12) or v2h (2026).
+- **Data check before the backtest:** aggregated to 5 minutes, the frame reproduces the SPY log returns of
+  `data/interim/v2` (2016-01..2025-12) and `data/interim/v2h` (2026-01-02..2026-10-09):
+  - max |difference| ≤ 1e-10;
+  - the same sessions;
+  - the unadjusted-cache check on both.
+- **Reproduction check before any P2 / P3 output:** the continuous simulation's daily returns over P1 must reproduce
+  the Stage A daily files for every configuration × cost × execution (max |difference| ≤ 1e-12). If either check
+  fails, the run stops and writes no P2 / P3 number.
+
+**(3) Costs.**
+- The SPY EDGE spread table is extended to 2024 and 2025 with the same code (`scripts/spy_stageA.py::spread_table`
+  procedure). It is model-free and is computed and committed in a separate step before the Stage B run.
+- Cost year Y uses EDGE of Y−1 with the D29a-2 half-tick floor: 2025 uses 2024 and 2026 uses 2025. Earlier years are
+  unchanged.
+
+**(4) Information note (fixed now).**
+- The authors have already published 2024 (+32.2%) and 2025-01 (−1.2%) for this strategy, so P2 is partly known.
+- The least-known parts are 2025 and P3. 2025 (full year) is reported separately next to P2 and P3.
+- This is information only. The D29 pass criteria are unchanged.
+
+**(5) One evaluation only.**
+- The Stage B runner refuses to run if its marker file `reports/tables/spy_stageB/stageB_done.json` exists, as in
+  D28.
+- Nothing changes after any P2 or P3 number has been seen.
+
+**(6) Evaluation.**
+- **Simulation:** one continuous simulation from 2016-01-26 to 2026-10-09.
+- **Criteria (D29):** applied to the primary configuration.
+- **Reported:** every D29 "reported, not criteria" metric for all 3 configurations × {gross, C_paper, C_real,
+  2× C_real} × {E0, E1}, for P2, P3, 2024-05..2025-12 and 2025, per year and per month, plus SPY buy-and-hold.
+- **DSR (information):** N = n_trials_so_far (46; Stage B rows are re-runs); V = the variance of the three
+  configurations' P2 daily Sharpe ratios at C_real E0, and also the D27 V (0.2773).
+- **Interpretation:** as fixed in D29a-3.
+- **Registry:** Stage B rows are logged with `rerun_of` = the Stage A model names `d29_spy_momentum_*`.
+
+**(7) Disclosure.** While checking the holdout file format before this entry, the timestamp column of
+`data/raw/holdout/SPY/2026-10.parquet` was read for its min / max only. Its max is 2026-10-09 23:59 UTC, i.e. it
+contains post-market bars of 2026-10-09 after 16:00 ET. No price or volume after 16:00 ET was read. From here on the
+file is read with the timestamp filter in (2).

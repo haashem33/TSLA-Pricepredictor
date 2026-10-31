@@ -135,7 +135,10 @@ def main(log: bool = True):
     bench_df = pd.DataFrame({"session_date": b.index, "ret": b.to_numpy()})
     Yt = pd.DataFrame({f"{c}|{k}|E{d}": v for (c, k, d), v in years.items()})
     Yt["spy_buy_hold"] = mt.yearly(bench_df)
-    Yt["paper_dynamic"] = pd.Series(mt.PAPER_YEARLY)
+    Yt["paper_dynamic_full_year"] = pd.Series(mt.PAPER_YEARLY) / 100
+    pm = mt.paper_monthly_series()
+    pm = pm[(pm.index >= pd.Period("2016-02", "M")) & (pm.index <= pd.Period("2024-02", "M"))]
+    Yt["paper_dynamic_same_months"] = (1 + pm).groupby(pm.index.year).prod() - 1  # 2016 from Feb, 2024 Jan-Feb
     Yt.index.name = "year"
     Yt.to_csv(TAB / "p1_yearly.csv")
     Mt = pd.DataFrame({f"{c}|{k}|E{d}": v for (c, k, d), v in months.items()})

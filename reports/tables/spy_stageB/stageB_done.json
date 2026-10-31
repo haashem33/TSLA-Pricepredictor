@@ -1,0 +1,15 @@
+{
+ "status": "done",
+ "config_hash_stageB": "f532e2ee90",
+ "config_hash": "3d8abf0044",
+ "frozen_strategy_commit": "8163aa6",
+ "P2_sharpe_real_E0": 0.5863751881657341,
+ "P2_sharpe_real_E1": 0.1960315997768574,
+ "P2_sharpe_real2x_E0": 0.36636611270180885,
+ "P3_total_return_real_E0": -0.1363316360846697,
+ "P2_c1": true,
+ "P2_c2": true,
+ "P2_c3": true,
+ "P2_PASS": true,
+ "P3_PASS": false
+}

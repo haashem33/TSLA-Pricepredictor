@@ -368,3 +368,15 @@ per year and month:
 `data/raw/holdout/SPY/2026-10.parquet` was read for its min / max only. Its max is 2026-10-09 23:59 UTC, i.e. it
 contains post-market bars of 2026-10-09 after 16:00 ET. No price or volume after 16:00 ET was read. From here on the
 file is read with the timestamp filter in (2).
+
+> **D29b result (2026-10-31; single Stage B run, frozen strategy code 8163aa6 / 3d8abf0044)**
+> ([`spy_stageB.md`](spy_stageB.md)).
+> - **Checks passed.** Data check v2 2016–2025 and v2h 2026 (max \|Δ log return\| 4.5e-16 / 0.0, same sessions);
+>   P1 reproduction exact for all 24 runs.
+> - **P2 (2024-03..2025-12): PASS.** Net Sharpe 0.59 at C_real (E0), 0.20 at C_real with E1, 0.37 at 2× C_real.
+> - **P3 (2026-01-02..2026-10-09): FAIL.** Net P&L −13.6% at C_real (Sharpe −1.38).
+> - **Information.** 2025 at C_real −4.8% (SPY +17.7%). 2024-05..2025-12 Sharpe 0.46. Our 2024 (+32.5% at paper
+>   cost) matches the authors' published +32.2%, so the P2 pass rests on already-published months.
+> - **No pre-registered next step.** D29a-3 does not cover "P2 passes, P3 fails". Recommendation (not
+>   pre-registered): stop; no paper trading on this strategy. The user decides.
+> - **Registry and forward test.** Three re-run rows (n_trials_so_far 46). The forward test stays sealed.

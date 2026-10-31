@@ -5,6 +5,8 @@ open/high/low/close (dividend back-adjusted), raw_open/raw_close (unadjusted, fo
 volume, missing, is_half_day, n_minutes, bad_tick, bad_range.
 
 Stage A (D29): `end_month` must be <= STAGE_A_END; no month after it is read.
+Stage B (D29b): `build_spy_1min_full` adds data/raw/SPY/ up to STAGE_B_RAW_END and data/raw/holdout/SPY/ 2026, read
+with a timestamp filter so that no bar at or after SEALED_END_UTC (2026-10-09 16:00 ET) is loaded.
 """
 from __future__ import annotations
 
@@ -17,7 +19,12 @@ from tslaq.data.download import month_range
 from tslaq.utils.io import ROOT, interim_path, load_config
 
 STAGE_A_END = "2024-02"
+STAGE_B_RAW_END = "2025-12"
 RAW_DIR = ROOT / "data" / "raw" / "SPY"
+HOLDOUT_DIR = ROOT / "data" / "raw" / "holdout" / "SPY"
+HOLDOUT_MONTHS = [f"2026-{k:02d}" for k in range(1, 11)]
+SEALED_END = "2026-10-09"
+SEALED_END_UTC = pd.Timestamp("2026-10-09 16:00", tz=NY).tz_convert("UTC")  # first instant NOT read
 
 
 def load_raw_1min(months: list[str], max_month: str = STAGE_A_END) -> pd.DataFrame:
@@ -26,6 +33,19 @@ def load_raw_1min(months: list[str], max_month: str = STAGE_A_END) -> pd.DataFra
     if late:
         raise PermissionError(f"months after {max_month} requested: {late[:3]}...; not loading.")
     return pd.concat([pd.read_parquet(RAW_DIR / f"{m}.parquet") for m in months], ignore_index=True)
+
+
+def load_holdout_1min(months: list[str] = HOLDOUT_MONTHS) -> pd.DataFrame:
+    """D29b: Alpaca SIP 1-minute bars of 2026 (data v2h source), filtered at read time to timestamps before
+    2026-10-09 16:00 ET; asserts that nothing at or after it was loaded."""
+    bad = [m for m in months if m not in HOLDOUT_MONTHS]
+    if bad:
+        raise PermissionError(f"not a P3 month: {bad}")
+    cut = SEALED_END_UTC.to_pydatetime()
+    parts = [pd.read_parquet(HOLDOUT_DIR / f"{m}.parquet", filters=[("timestamp", "<", cut)]) for m in months]
+    out = pd.concat(parts, ignore_index=True)
+    assert pd.to_datetime(out["timestamp"], utc=True).max() < SEALED_END_UTC
+    return out
 
 
 def minute_frame(m1: pd.DataFrame, sessions: pd.DataFrame) -> pd.DataFrame:
@@ -56,10 +76,14 @@ def minute_frame(m1: pd.DataFrame, sessions: pd.DataFrame) -> pd.DataFrame:
     return df.dropna(subset=["close"]).reset_index(drop=True)
 
 
-def read_v2(version: str, end: pd.Timestamp, columns: list[str] | None = None) -> pd.DataFrame:
-    """SPY 5-minute v2 / v2h bars with session_date <= end, filtered at read time (no later row is loaded)."""
-    return pd.read_parquet(interim_path("SPY", version), columns=columns,
-                           filters=[("session_date", "<=", pd.Timestamp(end))])
+def read_v2(version: str, end: pd.Timestamp, columns: list[str] | None = None,
+            start: pd.Timestamp | None = None) -> pd.DataFrame:
+    """SPY 5-minute v2 / v2h bars with start <= session_date <= end, filtered at read time (no later row is
+    loaded)."""
+    f = [("session_date", "<=", pd.Timestamp(end))]
+    if start is not None:
+        f.append(("session_date", ">=", pd.Timestamp(start)))
+    return pd.read_parquet(interim_path("SPY", version), columns=columns, filters=f)
 
 
 def v2_session_set(end: pd.Timestamp, version: str = "v2") -> pd.DatetimeIndex:
@@ -71,20 +95,37 @@ def build_spy_1min(end_month: str = STAGE_A_END, start_month: str = "2016-01") -
     """D29 cleaning at 1-minute resolution. Sessions dropped: > 5% missing minutes, plus any session absent from the
     SPY v2 5-minute frame (within the same date range). Dividend back-adjustment with dividends up to the last
     session of the frame only."""
-    cfg = load_config("data")
     if end_month > STAGE_A_END:
         raise PermissionError(f"Stage A: end_month {end_month} > {STAGE_A_END}")
     months = month_range(start_month, (pd.Period(end_month, "M") + 1).strftime("%Y-%m"))
     m1 = load_raw_1min(months)
     end = pd.Period(end_month, "M").end_time.strftime("%Y-%m-%d")
-    sessions = nyse_sessions(f"{start_month}-01", end, cfg["bar_minutes"])
+    return _clean(m1, f"{start_month}-01", end, v2_session_set(pd.Timestamp(end), "v2"))
+
+
+def build_spy_1min_full() -> tuple[pd.DataFrame, dict]:
+    """D29b: 2016-01..2025-12 from data/raw/SPY/ and 2026-01-02..2026-10-09 from data/raw/holdout/SPY/; sessions
+    must be in v2 (to 2025-12-31) or v2h (2026)."""
+    months = month_range("2016-01", "2026-01")
+    m1 = pd.concat([load_raw_1min(months, max_month=STAGE_B_RAW_END), load_holdout_1min()], ignore_index=True)
+    known = v2_session_set(pd.Timestamp("2025-12-31"), "v2").append(
+        pd.DatetimeIndex(read_v2("v2h", pd.Timestamp(SEALED_END), ["session_date"],
+                                 start=pd.Timestamp("2026-01-01"))["session_date"].unique()))
+    df, info = _clean(m1, "2016-01-01", SEALED_END, known)
+    assert df["session_date"].max() <= pd.Timestamp(SEALED_END)
+    assert df["timestamp"].max() <= pd.Timestamp(f"{SEALED_END} 16:00", tz=NY)
+    return df, info
+
+
+def _clean(m1: pd.DataFrame, start: str, end: str, v2s: pd.DatetimeIndex) -> tuple[pd.DataFrame, dict]:
+    cfg = load_config("data")
+    sessions = nyse_sessions(start, end, cfg["bar_minutes"])
     df = minute_frame(m1, sessions)
     info = {"n_sessions_calendar": len(sessions),
             "sessions_without_data": int(len(sessions) - df["session_date"].nunique()),
             "n_missing_minutes": int(df["missing"].sum())}
     frac = df.groupby("session_date")["missing"].mean()
     bad = frac[frac > cfg["max_missing_frac"]]
-    v2s = v2_session_set(pd.Timestamp(end), "v2")
     in_range = df["session_date"].drop_duplicates()
     not_v2 = in_range[~in_range.isin(v2s)]
     drop = set(bad.index) | set(not_v2)
@@ -104,12 +145,15 @@ def build_spy_1min(end_month: str = STAGE_A_END, start_month: str = "2016-01") -
     return df[cols], info
 
 
-def data_check(df: pd.DataFrame, version: str = "v2") -> tuple[pd.DataFrame, dict]:
+def data_check(df: pd.DataFrame, version: str = "v2", start: pd.Timestamp | None = None
+               ) -> tuple[pd.DataFrame, dict]:
     """(1) 5-minute closes from the 1-minute frame reproduce the v2 SPY 5-minute log returns (same sessions, max
     |difference| <= 1e-10); (2) the source cache is dividend-unadjusted: v2 adjusted close / our raw close is
     constant between ex-dates and jumps by exactly the dividend factor (1 - D / C_prev) at each ex-date."""
+    if start is not None:
+        df = df[df["session_date"] >= start]
     end = df["session_date"].max()
-    v = read_v2(version, end)
+    v = read_v2(version, end, start=start)
     assert v["session_date"].max() <= end
     v = v.sort_values("timestamp").reset_index(drop=True)
     five = df[df["minute"] % 5 == 0].copy()

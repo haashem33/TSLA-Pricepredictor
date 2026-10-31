@@ -32,11 +32,13 @@ TOL = {"corr_min": 0.80, "sharpe_ref": 1.37, "sharpe_tol": 0.30, "cagr_ref": 0.2
        "sign_years_min": 7}
 
 
-def spread_table() -> tuple[pd.DataFrame, dict, pd.DataFrame]:
-    """D25 (ii) EDGE procedure on SPY source 1-minute bars (unadjusted), 2016-2023; D29a-2 half-tick comparison."""
+def spread_table(end_exclusive: str = "2024-01", max_month: str = STAGE_A_END
+                 ) -> tuple[pd.DataFrame, dict, pd.DataFrame]:
+    """D25 (ii) EDGE procedure on SPY source 1-minute bars (unadjusted), 2016 up to `end_exclusive` (Stage A:
+    2016-2023; D29b: 2016-2025); D29a-2 half-tick comparison."""
     rows = []
-    for m in month_range("2016-01", "2024-01"):
-        d = load_raw_1min([m])
+    for m in month_range("2016-01", end_exclusive):
+        d = load_raw_1min([m], max_month=max_month)
         ts = d["timestamp"].dt.tz_convert("America/New_York")
         mins = ts.dt.hour * 60 + ts.dt.minute
         keep = (mins >= 570) & (mins < 960)
@@ -63,7 +65,7 @@ def spread_table() -> tuple[pd.DataFrame, dict, pd.DataFrame]:
     Y = Y.drop(columns=["edge_mean", "edge_median"])
     # cost year Y uses EDGE of Y-1 (2016 its own year)
     e = dict(zip(Y["year"], Y["edge_mean_half_bp"]))
-    hs = {y: e[y - 1] if (y - 1) in e else e[y] for y in range(2016, 2025)}
+    hs = {y: e[y - 1] if (y - 1) in e else e[y] for y in range(2016, max(e) + 2)}
     return Y, hs, D
 
 

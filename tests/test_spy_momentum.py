@@ -209,3 +209,15 @@ def test_stage_a_loaders_refuse_or_filter_later_data():
     if sd.interim_path("SPY", "v2").exists():
         v = sd.read_v2("v2", pd.Timestamp("2024-02-29"), ["session_date"])
         assert v["session_date"].max() <= pd.Timestamp("2024-02-29")
+
+
+def test_stage_b_holdout_loader_is_capped():
+    from tslaq.spy import data as sd
+    with pytest.raises(PermissionError):
+        sd.load_holdout_1min(["2026-11"])
+    with pytest.raises(PermissionError):
+        sd.load_raw_1min(["2026-01"], max_month=sd.STAGE_B_RAW_END)
+    assert sd.SEALED_END_UTC == pd.Timestamp("2026-10-09 20:00", tz="UTC")
+    if (sd.HOLDOUT_DIR / "2026-10.parquet").exists():
+        d = sd.load_holdout_1min(["2026-10"])
+        assert pd.to_datetime(d["timestamp"], utc=True).max() < sd.SEALED_END_UTC

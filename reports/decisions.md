@@ -130,3 +130,162 @@ Development is concluded (D27: no trial passes). As the final out-of-sample step
 > - **Recommendation as fixed in D28: stop.** No paper trading, no Phase 4 on this design; the forward test stays
 >   sealed. One registry trial `d28_holdout_R1_Gate3B_h12`; **n_trials_so_far = 43**. Final report:
 >   `reports/final_report.md`.
+
+## 2026-10-31 — new pre-registered study: SPY intraday momentum (instructed by the user; recorded before any backtest)
+
+The TSLA project is concluded (D28) and none of its results change. This is a separate study on SPY. It replicates and
+tests the strategy in Zarattini, Aziz & Barbon, "Beat the Market: An Effective Intraday Momentum Strategy for S&P500
+ETF (SPY)" (SSRN; SFI Research Paper 24-97).
+
+- **Source.** The version of 2025-02-03 (first version 2024-05-10), from alexandria.unisg.ch, bitstream
+  a99aba00-f967-49b3-aceb-f544dc386e0b, SHA-256 41d635d162551c4add329d2a11cd9571aea391befd00e472ed81c0070bb207ad.
+  The PDF is not committed.
+- **Secondary reference.** The authors' public Python code (concretumgroup.com). Where the paper is silent, D29
+  follows the code. Where the two disagree, D29 follows the paper. The ambiguities and their resolutions are A1–A20
+  in [`spy_momentum_plan.md`](spy_momentum_plan.md).
+- **What stays off limits.** No order is placed, and no order-routing code is written. The forward test (data after
+  2026-10-09) stays sealed.
+
+| # | Decision | Reason | Where in CLAUDE.md |
+|---|---|---|---|
+| D29 | **SPY intraday momentum study, pre-registered.** The rules, data, execution, costs, periods, criteria, order of evaluation and trial count are as specified below the table. Primary configuration: noise area (14 days, VM 1) + VWAP trailing stop, semi-hourly decisions, volatility-targeted sizing (2% daily, cap 4×). Pass criteria: P2 (2024-03..2025-12) net Sharpe > 0.5 at realistic cost, > 0 with one extra bar of delay and > 0 at 2× realistic cost; P3 (2026-01-02..2026-10-09) net P&L > 0 at realistic cost. P1 (2016-01..2024-02) is a replication, reported against a fixed tolerance. | A published, fully specified rule that has a post-publication period in our data is a cheap, honest test of whether a documented intraday edge survives realistic costs. The rules, costs, tolerance and criteria are fixed before any SPY backtest, so the result cannot be tuned. | separate study; reuses the §10.4 / §10.7 conventions |
+
+### D29 specification
+
+**Rules (as extracted).** Notation and the first three steps:
+
+- **Notation.** All bars are 1-minute bars. Minute m is the bar ending at 09:30 + m minutes. O_t is the open of day
+  t's first bar. C_{t−1} is the previous session's last regular-session close.
+
+1. **Move from the open.** move_{d,m} = |C_{d,m} / O_d − 1|.
+2. **Average move.** σ_{t,m} = the mean of move_{t−i,m} over i = 1..14, using the 14 previous sessions in the data.
+   All 14 are required.
+3. **Noise area.**
+   - UB_{t,m} = max(O_t, C_{t−1}) · (1 + VM · σ_{t,m}).
+   - LB_{t,m} = min(O_t, C_{t−1}) · (1 − VM · σ_{t,m}).
+   - VM = 1.
+
+The remaining steps:
+
+4. **VWAP.** VWAP_{t,m} = Σ (H+L+C)/3 · V / Σ V, accumulated from 09:30 over the regular session only.
+5. **Decision times.** Positions change only at 10:00, 10:30, …, 15:30 (on half-days 10:00..12:30), using the close
+   of the bar that ends at that time.
+6. **Primary configuration** (paper Table 3, row "Curr.Band + VWAP, Dyn.").
+   - The signal is +1 if C > UB and C > VWAP, −1 if C < LB and C < VWAP, and 0 otherwise.
+   - At each decision the position becomes signal × N_t.
+   - This is the paper's entry plus its trailing stop (max(UB, VWAP) for longs, min(LB, VWAP) for shorts), checked
+     only at decision times.
+   - Re-entry is allowed whenever the condition holds again (as in the authors' code).
+7. **Exit.** Flat at the close of the session's last bar (16:00; 13:00 on half-days).
+8. **Sizing.**
+   - Shares: N_t = round(AUM_{t−1} / O_t · min(4, 0.02 / σ_SPY,t)).
+   - σ_SPY,t is the sample sd (ddof 1) of the dividend-adjusted daily close-to-close returns ret_{t−i}, i = 1..14.
+   - Start: $100,000 on the first session with complete look-backs (≈ 2016-01-25), then compounding.
+   - Daily return: dollar P&L_t / AUM_{t−1}.
+   - Prices: N_t and the per-share costs use **unadjusted** prices. Signals use the dividend back-adjusted series.
+     Intraday returns are the same in both; on an ex-date the adjusted C_{t−1} equals the unadjusted C_{t−1} − D, as
+     in the code.
+
+**Secondary configurations (replication only).**
+- **(a) "Opp.Band, 100%".** When flat, at a decision, go long if C > UB or short if C < LB. Hold until a decision at
+  which C is beyond the opposite band, then reverse. Flat at the close. N_t = round(AUM_{t−1} / O_t).
+- **(b) "Curr.Band + VWAP, 100%".** Rule 6 with N_t = round(AUM_{t−1} / O_t).
+
+**No tuning.** Lookback 14, VM 1, volatility target 2% and leverage cap 4× are fixed as in the paper.
+
+**Data.**
+- **Source.** SPY Alpaca SIP 1-minute regular-session bars (bar start 09:30..15:59 ET).
+  - 2016-01..2025-12 come from `data/raw/SPY/`, the data v2 source.
+  - 2026-01-02..2026-10-09 come from `data/raw/holdout/SPY/`, the data v2h source. The code asserts that no bar after
+    2026-10-09 16:00 ET is read.
+  - The `SPY_1min_sip_2026-*` files in the local source directory are never read.
+- **Cleaning.** The v2 rules at 1-minute resolution:
+  - NYSE calendar with half-days;
+  - missing minutes forward-filled at the previous close with zero volume;
+  - sessions with more than 5% missing minutes dropped, plus every session that is missing or dropped in SPY v2 / v2h
+    (for example 2019-08-12);
+  - bad ticks flagged, not deleted;
+  - dividend back-adjustment with `data/raw/dividends/SPY.csv` (`clean.dividend_adjust`).
+- **Data check before any backtest.**
+  - Aggregated to 5 minutes, the 1-minute frame must reproduce the SPY 5-minute log returns in `data/interim/v2`
+    (2016–2025) and `v2h` (2026): max |difference| ≤ 1e-10, same sessions.
+  - The cache must be dividend-unadjusted (checked against the dividend file on ex-dates).
+
+**Execution.**
+- **E0 (main).** The signal is taken at the decision bar's close and filled at the open of the next 1-minute bar.
+  That price is Open_HH:MM, the paper's fill reference.
+- **E1.** One extra bar of delay: the fill is at the open of HH:MM+1.
+- **Close exit.** At the last bar's close in both E0 and E1.
+- **P&L.** Shares × the price change between fills.
+
+**Costs.** Charged per order on |Δshares|, for every position change including the close exit.
+- **C_paper** (the paper's own assumption, §3 and §4.6). $0.0035 per share commission + $0.001 per share slippage.
+  No minimum; the $0.0020 volume tier is not modelled.
+- **C_real** (realistic), the sum of:
+  - **half-spread:** the SPY EDGE mean half-spread of year Y−1 × notional. EDGE is Ardia, Guidotti & Kroencke 2024,
+    computed per session on 1-minute OHLC with the yearly mean taken, i.e. the D25 (ii) / D26 procedure applied to SPY.
+    2016 uses its own year, because there is no 2015 data; 2026 uses 2025.
+  - **commission:** $0.0035 per share, minimum $0.35 per order.
+  - **SEC fee:** 0.10 bp × notional (Section 31 fee averaged over buys and sells, as in D26).
+- **2× C_real.** Every component of C_real doubled.
+- **Gross.** Results without costs are reported as well.
+
+**Periods.** All metrics come from the daily returns within each period of one continuous simulation. Sharpe = mean /
+sd of daily returns × √252, with no risk-free rate.
+
+| period | dates | role |
+|---|---|---|
+| P1 | 2016-01..2024-02 | replication |
+| P2 | 2024-03..2025-12 | post-publication test |
+| P3 | 2026-01-02..2026-10-09 | second out-of-sample check |
+
+SPY 2026 data is in v2h. D28 used it only as TSLA market context, never for an SPY strategy.
+
+**Pre-registered criteria (primary configuration).**
+1. **P1: report only.**
+   - **Comparison.** The paper's monthly table (FAQ Q24), months 2016-02..2024-02: annualized Sharpe from monthly
+     returns 1.37, CAGR 20.1%, vol 14.2%. Ours is taken at C_paper with E0.
+   - **"Within a reasonable range"** means all of these hold:
+     - (i) the correlation of monthly returns is ≥ 0.80;
+     - (ii) the Sharpe from monthly returns is within ±0.30 of 1.37;
+     - (iii) the CAGR is within ±4 pp of 20.1%;
+     - (iv) the yearly return has the same sign in at least 7 of the 8 years 2016 (from February)..2023.
+   - **A miss is reported, not fixed.** Code changes are allowed only to correct deviations from the D29 rules, and
+     each one is documented with before and after numbers.
+2. **P2 PASS** if all three hold:
+   - net Sharpe > 0.5 at C_real (E0);
+   - net Sharpe > 0 at C_real with E1;
+   - net Sharpe > 0 at 2× C_real (E0).
+3. **P3 PASS** if the net P&L (compounded total return) is > 0 at C_real (E0).
+
+**Order of evaluation.**
+- **Stage A** runs P1 only and loads no bar after 2024-02-29.
+- **Freeze.** The code is then frozen, and its commit and config hash are recorded.
+- **Stage B** runs P2 and P3 once with the frozen code. Nothing changes after any P2 or P3 number has been seen.
+- Each stage needs the user's approval.
+
+**Benchmark.** SPY buy-and-hold, 1×, dividend-adjusted close-to-close (overnight included), over the same periods and
+with the same metrics.
+
+**Reported, not criteria.** For every configuration × {gross, C_paper, C_real, 2× C_real} × {E0, E1} × period, and
+per year and month:
+- **Returns and risk:** total return, CAGR, vol, Sharpe, t of the mean daily return, Sortino, MDD, skew, worst and
+  best day.
+- **Hit ratio:** positive days among days with a trade, and among all days.
+- **Market exposure:** alpha and beta vs SPY (daily OLS, Newey–West t).
+- **Trading:** trades and trades per day, average P&L per share, the long and short legs separately, and the
+  break-even cost per side (gross P&L / traded notional, in bp).
+- **Comparisons:** the 2024-05..2025-12 slice of P2 (information only), and the authors' own post-publication
+  figures (2024 +32.2%, 2025-01 −1.2%).
+- **DSR (§10.7), information only:** N = n_trials_so_far; V = the variance of the three D29 configurations' P2 daily
+  Sharpe ratios, and also with the D27 V.
+
+**Trials.**
+- n_trials_so_far continues from **43**.
+- D29 adds **3 trials** (the primary and the two secondary configurations), giving 46.
+- Stage B rows are logged with `rerun_of` pointing to the Stage A rows.
+- Cost levels, E1 and the periods are additional scorings of the same trial, not new trials.
+
+**Out of scope.**
+- The paper's §4 analyses: VIX regimes, daily patterns, day of week, the VM and lookback sweeps, gamma / RSI, I-Star.
+- Other tickers and futures.

@@ -289,3 +289,9 @@ per year and month:
 **Out of scope.**
 - The paper's §4 analyses: VIX regimes, daily patterns, day of week, the VM and lookback sweeps, gamma / RSI, I-Star.
 - Other tickers and futures.
+
+## 2026-10-31 — D29 amendments (instructed by the user with the Stage A approval; recorded before any backtest code was run)
+
+| # | Decision | Reason | Where in CLAUDE.md |
+|---|---|---|---|
+| D29a | **Amendments to D29.** **D29a-1 (replaces resolution A2):** σ_{t,m} = the mean of move_{d,m} over the 14 most recent previous sessions d that contain minute m. Half-days have no minutes after their close, and dropped or missing sessions are absent. 14 such sessions are required. **D29a-2 (cost floor):** in C_real, the half-spread per side = max(SPY EDGE mean half-spread of year Y−1, half a tick = $0.005 per share). The spread table reports the yearly EDGE half-spread in bp next to the half-tick in bp (at the year's median price), and which one binds. In the backtest the floor is applied per order, at the fill price: cost = max(EDGE_{Y−1} bp × notional, $0.005 × shares). **D29a-3 (interpretation, fixed now):** P2 has limited power. If the paper's Sharpe of about 1.3 is real, the chance of meeting "Sharpe > 0.5" over 22 months is about 86%; with no edge it is about 25% (normal approximation, se of the annualized Sharpe ≈ √(12/22) = 0.74). If P2 and P3 both pass, the next step is paper trading on live data for at least 3 months, on an instrument the user can trade from the EU (likely Micro E-mini S&P 500 futures, MES), with its own pre-registered criteria and cost model. If P2 fails, the recommendation is to stop. A pass is not proof. | (1) Requiring the 14 previous calendar sessions would block afternoon trading for about 14 sessions after every half-day. (2) SPY's quoted spread is almost always one tick, so an EDGE estimate below half a tick is not a credible cost. (3) The interpretation is fixed before any P2 number exists. | separate study |

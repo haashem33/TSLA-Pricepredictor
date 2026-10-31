@@ -47,7 +47,7 @@ def spread_step():
     Y, hs, D = spread_table("2026-01", STAGE_B_RAW_END)
     Y.to_csv(TAB / "spread_by_year.csv", index=False)
     D.to_csv(TAB / "spread_daily.csv", index=False)
-    A = pd.read_csv(TAB_A / "spread_by_year.csv")
+    A = pd.read_csv(TAB_A / "spread_by_year.csv", float_precision="round_trip")
     same = np.allclose(Y[Y.year <= 2023].drop(columns="binding_at_median_price").to_numpy(float),
                        A.drop(columns="binding_at_median_price").to_numpy(float), rtol=0, atol=0)
     print(Y.round(3).to_string(index=False))
@@ -56,7 +56,7 @@ def spread_step():
 
 
 def load_hs() -> dict:
-    Y = pd.read_csv(TAB / "spread_by_year.csv")
+    Y = pd.read_csv(TAB / "spread_by_year.csv", float_precision="round_trip")
     e = dict(zip(Y["year"], Y["edge_mean_half_bp"]))
     hs = {y: e[y - 1] if (y - 1) in e else e[y] for y in range(2016, 2027)}
     frozen = json.loads((TAB_A / "frozen_config.json").read_text())["half_spread_bp_by_cost_year"]
